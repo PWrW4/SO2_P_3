@@ -55,3 +55,7 @@ Sala i osprzęt
 Klasa prowadzącego
 ## Student
 Klasa studenta
+
+# Docker  
+`winpty docker run --rm -it --mount src="$(pwd)",target=/workdir,type=bind rikorose/gcc-cmake:latest bash`  
+`cat /proc/version`  
