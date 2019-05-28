@@ -6,9 +6,10 @@ using namespace std;
  //   {
   //      this->actualPosition = actualPosition;
   //  }
-  	Person::Person(Status status)
+  	Person::Person(Status status, PersonType type)
     {
        this->status = status;
+       this->type = type;
     }
     Person::Person() {}
 	Person::~Person() {}

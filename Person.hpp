@@ -9,13 +9,20 @@ enum Status
     Working = 3
 };
 
+enum PersonType {
+    Professor = 0,
+    Student = 1,
+    DziekanatCrew = 2
+};
+
 class Person
 {
 public:
 //	Room actualPosition;
     Status status;
+    PersonType type;
 //	Person(Room actualPosition);
-    Person(Status status);
+    Person(Status status, PersonType type);
     Person();
 	~Person();
 };
