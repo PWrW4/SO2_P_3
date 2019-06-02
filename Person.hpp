@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 class Room;
 
@@ -20,15 +21,18 @@ enum PersonType {
 class Person
 {
 public:
+    std::string name;
 	Room *actualPosition;
     Status status;
     PersonType type;
-    Person(Status status, PersonType type,Room *actualPosition);
+    Person(std::string name, Status status, PersonType type,Room *actualPosition);
+    Person(Status status, PersonType type);
     Person();
 	~Person();
 
     virtual void operator()();   // method to override in upper classes, main thread function
-    void travel(Room *source, Room *destination);
+    int travel(Room *destination);
     void dispose();                 // WC routine method - usable only when in Toilet
     void getTP();                   // fetching toilet paper - usable only when in Storage Room
+    void Print();
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 
 #include "Person.hpp"
 
@@ -15,11 +16,19 @@ enum RoomType {
 class Room
 {
 public:
+	std::string name;
 	int capacity;
 	RoomType type;
-	std::vector <Person> people;
+	std::vector <Person*> people;
 
-	Room(int capacity, RoomType type, std::vector <Person>people);
+	Room(std::string name, int capacity, RoomType type,std::vector <Person*> people);
+	Room(std::string name, int capacity, RoomType type);
+	Room(int capacity, RoomType type);
     Room();
 	~Room();
+
+	int addPerson(Person * person);
+	int delPerson(Person * person);
+	void Print();
+	void PrintPeople();
 };
