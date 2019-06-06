@@ -2,24 +2,10 @@
 #include <string>
 #include <thread>
 #include <atomic>
+#include "Status.cpp"
+#include "PersonType.cpp"
 
 class Room;
-
-enum Status
-{
-    Waiting = 0,
-    Traveling = 1,
-    Accessing = 2,
-    Working = 3,
-    Enterance = 4
-};
-
-enum PersonType {
-    Professor = 0,
-    Student = 1,
-    DziekanatCrew = 2,
-    CloakroomCrew = 3
-};
 
 class Person
 {
@@ -30,7 +16,7 @@ public:
     Status status;
     PersonType type;
     std::atomic<bool> end;
-    Person(std::string name, Status status, PersonType type,Room *actualPosition);
+    Person(std::string name, Status status, PersonType type, Room *actualPosition);
     Person();
 	~Person();
 

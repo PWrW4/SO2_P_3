@@ -5,6 +5,7 @@
 #include "Person.hpp"
 #include "Room.hpp"
 #include "Visualization.hpp"
+#include "Student.hpp"
 
 
 using namespace std;
@@ -40,20 +41,20 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    Room *wc = new Room("kibelek", 2, Toilet);
-	Room *corr = new Room("korytarz", 10, Corridor);
-	Person *st1 = new Person("Student",Waiting,Student,corr);
-	Person *st2 = new Person("Profesor",Waiting,Professor,corr);
-	Person *st3 = new Person("KierownikDziekanatu",Waiting,DziekanatCrew,corr);
+    Room *wc = new Room("kibelek", 2, E_Toilet);
+	Room *corr = new Room("korytarz", 10, E_Corridor);
+	Person *st1 = new Person("Student",E_Waiting,E_Student,corr);
+	Person *st2 = new Person("Profesor",E_Waiting,E_Professor,corr);
+	Person *st3 = new Person("KierownikDziekanatu",E_Waiting,E_DziekanatCrew,corr);
 
 	for(int i = 0; i < numberStudents; i++)
     {
-        Person *s = new Person("Student" + std::to_string(i),Enterance,Student,corr);
-        students.push_back(s);
+        Student *s = new Student("Student" + std::to_string(i),E_Enterance,E_Student,corr);
+        //students.push_back(s);
     }
     for(int i = 0; i < numberProfesors; i++)
     {
-        Person *p = new Person("Profesor" + std::to_string(i),Enterance,Professor,corr);
+        Person *p = new Person("Profesor" + std::to_string(i),E_Enterance,E_Professor,corr);
         profesors.push_back(p);
 	}
 

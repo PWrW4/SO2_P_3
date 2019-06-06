@@ -4,16 +4,16 @@
 
 using namespace std;
 
-  	Person::Person(std::string name, Status status, PersonType type,Room *actualPosition)
-    {
-       this->name = name;
-       this->status = status;
-       this->type = type;
-       this->actualPosition = actualPosition;
-       this->end = false;
-       std::lock_guard<std::mutex> lock_at_start(actualPosition->travelMutex);
-       actualPosition->addPerson(this);
-    }
+   Person::Person(std::string name, Status status, PersonType type,Room *actualPosition)
+   {
+      this->name = name;
+      this->status = status;
+      this->type = type;
+      this->actualPosition = actualPosition;
+      this->end = false;
+      std::lock_guard<std::mutex> lock_at_start(actualPosition->travelMutex);
+      actualPosition->addPerson(this);
+   }
    Person::Person() {}
    Person::~Person() {}
 

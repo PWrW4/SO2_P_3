@@ -1,5 +1,5 @@
-SO2_projekt3: SO2_projekt3.o Timer.o Visualization.o Person.o Room.o Classroom.o Cloakroom.o DeanOffice.o Floor.o Lecturer.o Student.o Checker.o UniversityWorker.o
-	g++ -std=c++11 -pthread -lncurses ./object/SO2_projekt3.o ./object/Timer.o ./object/Visualization.o ./object/Person.o ./object/Room.o ./object/Classroom.o ./object/Cloakroom.o ./object/DeanOffice.o ./object/Floor.o ./object/Lecturer.o ./object/Checker.o ./object/Student.o ./object/UniversityWorker.o -o ./executable/SO2_projekt3
+SO2_projekt3: SO2_projekt3.o Timer.o Status.o PersonType.o RoomType.o Visualization.o Person.o Room.o Classroom.o Cloakroom.o DeanOffice.o Floor.o Lecturer.o Student.o Checker.o UniversityWorker.o
+	g++ -std=c++11 -pthread -lncurses ./object/SO2_projekt3.o ./object/RoomType.o ./object/Timer.o ./object/Visualization.o ./object/Person.o ./object/Room.o ./object/Classroom.o ./object/Cloakroom.o ./object/DeanOffice.o ./object/Floor.o ./object/Lecturer.o ./object/Checker.o ./object/Student.o ./object/UniversityWorker.o ./object/PersonType.o ./object/Status.o -o ./executable/SO2_projekt3
 Student.o: Student.cpp
 	g++ -std=c++11 -c Student.cpp -o ./object/Student.o
 Lecturer.o: Lecturer.cpp
@@ -22,8 +22,14 @@ Timer.o: Timer.cpp
 	g++ -std=c++11 -c Timer.cpp -o ./object/Timer.o
 Checker.o: Checker.cpp
 	g++ -std=c++11 -c Checker.cpp -o ./object/Checker.o
-Checker.o: UniversityWorker.cpp
+UniversityWorker.o: UniversityWorker.cpp
 	g++ -std=c++11 -c UniversityWorker.cpp -o ./object/UniversityWorker.o
+PersonType.o: PersonType.cpp
+	g++ -std=c++11 -c PersonType.cpp -o ./object/PersonType.o
+Status.o: Status.cpp
+	g++ -std=c++11 -c Status.cpp -o ./object/Status.o
+RoomType.o: RoomType.cpp
+	g++ -std=c++11 -c RoomType.cpp -o ./object/RoomType.o
 SO2_projekt3.o: SO2_projekt3.cpp
 	g++ -std=c++11 -c SO2_projekt3.cpp -o ./object/SO2_projekt3.o
 
