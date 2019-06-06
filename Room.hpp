@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <mutex>
 
 #include "Person.hpp"
 
@@ -16,6 +17,7 @@ enum RoomType {
 class Room
 {
 public:
+	std::mutex roomMutex;
 	std::string name;
 	int capacity;
 	RoomType type;
