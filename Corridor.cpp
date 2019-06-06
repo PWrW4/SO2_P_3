@@ -2,7 +2,7 @@
 #include "Corridor.hpp"
 
 	Corridor::Corridor(std::string name, int capacity)
-        : Room(name, capacity, RoomType::Corridor)
+        : Room(name, capacity, RoomType::E_Corridor)
     {
 
     }

@@ -2,7 +2,7 @@
 #include "Classroom.hpp"
 
 	Classroom::Classroom(std::string name, int capacity)
-        : Room(name, capacity, RoomType::Classroom)
+        : Room(name, capacity, RoomType::E_Classroom)
     {
 
     }

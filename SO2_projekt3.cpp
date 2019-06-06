@@ -47,77 +47,77 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    Room *wc = new Room("kibelek", 2, E_Toilet);
-	Room *corr = new Room("korytarz", 10, E_Corridor);
-	Person *st1 = new Person("Student",E_Waiting,E_Student,corr);
-	Person *st2 = new Person("Profesor",E_Waiting,E_Professor,corr);
-	Person *st3 = new Person("KierownikDziekanatu",E_Waiting,E_DziekanatCrew,corr);
+    // Room *wc = new Room("kibelek", 2, E_Toilet);
+	// Room *corr = new Room("korytarz", 10, E_Corridor);
+	// Person *st1 = new Person("Student",E_Waiting,E_Student,corr);
+	// Person *st2 = new Person("Profesor",E_Waiting,E_Professor,corr);
+	// Person *st3 = new Person("KierownikDziekanatu",E_Waiting,E_DziekanatCrew,corr);
 
-    // Room *strg = new Room("skladzik", 2, RoomType::Storage);
-    // Room *wc = new Toilet("kibelek", 2, RoomType::Toilet);
-	// Room *corr = new Corridor("korytarz", 100), RoomType::Corridor);
-    // Room *entr = new Entrance("Wejscie", 50, RoomType::Entrance);
-    // Room *classroom = new Classroom("salka",30, RoomType::Classroom);
-    // Room *dziekanat = new DeanOffice("dziekanat",6, RoomType::DeanOffice);
+    Room *strg = new Room("skladzik", 2, E_Storage);
+    Room *wc = new Toilet("kibelek", 2);
+	Room *corr = new Corridor("korytarz", 100);
+    Room *entr = new Entrance("Wejscie", 50);
+    Room *classroom = new Classroom("salka",30);
+    Room *dziekanat = new DeanOffice("dziekanat",6);
 
 
 	for(int i = 0; i < numberStudents; i++)
     {
-        Student *s = new Student("Student" + std::to_string(i),E_Enterance,E_Student,corr);
+        Student *s = new Student("Student" + std::to_string(i),E_Entering,E_Student,entr);
         students.push_back(s);
     }
     for(int i = 0; i < numberProfesors; i++)
     {
-        Person *p = new Person("Profesor" + std::to_string(i),E_Enterance,E_Professor,corr);
+        Person *p = new Person("Profesor" + std::to_string(i),E_Entering,E_Professor,entr);
         profesors.push_back(p);
 	}
 
-    // entr->Print();
-    // Room *room = corr;
-    // for(int i=0; i<students.size(); i++)    // go to corridor
-    // {
-    //     students[i]->travel(room);
-    // }
-    // for(int i=0; i<profesors.size(); i++)
-    // {
-    //     profesors[i]->travel(room);
-    // }
+    entr->Print();
+    Room *room = corr;
+    for(int i=0; i<students.size(); i++)    // go to corridor
+    {
+        students[i]->travel(room);
+    }
+    for(int i=0; i<profesors.size(); i++)
+    {
+        profesors[i]->travel(room);
+    }
 
-    // entr->Print();
-    // corr->Print();
-    // for(int i=0; i<students.size(); i++)
-    // {
-    //     if(i<4)
-    //         room = wc;
-    //     else if(i > 10)
-    //         room = classroom;
-    //     else
-    //         room = dziekanat;
+    entr->Print();
+    corr->Print();
+    for(int i=0; i<students.size(); i++)
+    {
+        if(i<4)
+            room = wc;
+        else if(i > 10)
+            room = classroom;
+        else
+            room = dziekanat;
         
-    //     students[i]->travel(room);
-    // }
-    // corr->Print();
-    // wc->Print();
-    // classroom->Print();
-    // dziekanat->Print();
-    // room = classroom;
-    // for(int i=0; i<profesors.size(); i++)
+        students[i]->travel(room);
+    }
+    corr->Print();
+    wc->Print();
+    classroom->Print();
+    dziekanat->Print();
+    room = classroom;
+    for(int i=0; i<profesors.size(); i++)
+    {
+        profesors[i]->travel(room);
+    }
+    corr->Print();
+    classroom->Print();
+
+    // std::cout<< "start koniec";
+    // for(auto s : students)
     // {
-    //     profesors[i]->travel(room);
+    //     s->t.join();
     // }
-    // corr->Print();
-    // classroom->Print();
 
-    std::cout<< "start koniec";
-    for(auto s : students)
-    {
-        s->t.join();
-    }
-
-    for(auto p : profesors)
-    {
-        p->t.join();
-    }
+    // for(auto p : profesors)
+    // {
+    //     p->t.join();
+    // }
 
     std::cout<< "koniec koniec";
     endwin();

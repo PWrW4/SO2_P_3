@@ -2,7 +2,7 @@
 #include "DeanOffice.hpp"
 
 	DeanOffice::DeanOffice(std::string name, int capacity)
-        : Room(name, capacity, RoomType::DeanOffice)
+        : Room(name, capacity, RoomType::E_DeanOffice)
     {
 
     }

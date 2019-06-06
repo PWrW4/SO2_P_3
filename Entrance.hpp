@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Entrance : Room
+class Entrance : public Room
 {
 private:
     
