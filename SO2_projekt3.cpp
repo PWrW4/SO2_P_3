@@ -3,10 +3,16 @@
 #include <mutex>
 
 #include "Person.hpp"
+
+#include "Classroom.hpp"
+#include "Cloakroom.hpp"
+#include "DeanOffice.hpp"
+#include "Entrance.hpp"
+#include "Toilet.hpp"
+#include "Corridor.hpp"
 #include "Room.hpp"
 #include "Visualization.hpp"
 #include "Student.hpp"
-
 
 using namespace std;
 
@@ -47,10 +53,18 @@ int main(int argc, char *argv[])
 	Person *st2 = new Person("Profesor",E_Waiting,E_Professor,corr);
 	Person *st3 = new Person("KierownikDziekanatu",E_Waiting,E_DziekanatCrew,corr);
 
+    // Room *strg = new Room("skladzik", 2, RoomType::Storage);
+    // Room *wc = new Toilet("kibelek", 2, RoomType::Toilet);
+	// Room *corr = new Corridor("korytarz", 100), RoomType::Corridor);
+    // Room *entr = new Entrance("Wejscie", 50, RoomType::Entrance);
+    // Room *classroom = new Classroom("salka",30, RoomType::Classroom);
+    // Room *dziekanat = new DeanOffice("dziekanat",6, RoomType::DeanOffice);
+
+
 	for(int i = 0; i < numberStudents; i++)
     {
         Student *s = new Student("Student" + std::to_string(i),E_Enterance,E_Student,corr);
-        //students.push_back(s);
+        students.push_back(s);
     }
     for(int i = 0; i < numberProfesors; i++)
     {
@@ -58,7 +72,41 @@ int main(int argc, char *argv[])
         profesors.push_back(p);
 	}
 
+    // entr->Print();
+    // Room *room = corr;
+    // for(int i=0; i<students.size(); i++)    // go to corridor
+    // {
+    //     students[i]->travel(room);
+    // }
+    // for(int i=0; i<profesors.size(); i++)
+    // {
+    //     profesors[i]->travel(room);
+    // }
 
+    // entr->Print();
+    // corr->Print();
+    // for(int i=0; i<students.size(); i++)
+    // {
+    //     if(i<4)
+    //         room = wc;
+    //     else if(i > 10)
+    //         room = classroom;
+    //     else
+    //         room = dziekanat;
+        
+    //     students[i]->travel(room);
+    // }
+    // corr->Print();
+    // wc->Print();
+    // classroom->Print();
+    // dziekanat->Print();
+    // room = classroom;
+    // for(int i=0; i<profesors.size(); i++)
+    // {
+    //     profesors[i]->travel(room);
+    // }
+    // corr->Print();
+    // classroom->Print();
 
     std::cout<< "start koniec";
     for(auto s : students)
@@ -73,6 +121,14 @@ int main(int argc, char *argv[])
 
     std::cout<< "koniec koniec";
     endwin();
+    for(int i=0; i<students.size(); i++) 
+    {
+        delete students[i];
+    }
+    for(int i=0; i<profesors.size(); i++)
+    {
+        delete profesors[i];
+    }   
 }
 
 
