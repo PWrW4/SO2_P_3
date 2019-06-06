@@ -17,7 +17,7 @@ enum RoomType {
 class Room
 {
 public:
-	std::mutex roomMutex;
+	std::mutex travelMutex;
 	std::string name;
 	int capacity;
 	RoomType type;

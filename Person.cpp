@@ -10,21 +10,22 @@ using namespace std;
        this->status = status;
        this->type = type;
        this->actualPosition = actualPosition;
+       this->end = false;
+       std::lock_guard<std::mutex> lock_at_start(actualPosition->travelMutex);
        actualPosition->addPerson(this);
-    }
-   Person::Person(Status status, PersonType type)
-    {
-       this->name = "person";
-       this->status = status;
-       this->type = type;
     }
    Person::Person() {}
    Person::~Person() {}
 
    void Person::operator()() {}
+   void Person::mainLoop() {}
+
 
    int Person::travel(Room *destination)
    {
+      std::lock(actualPosition->travelMutex,destination->travelMutex);
+      std::lock_guard<std::mutex> from_lock(actualPosition->travelMutex, std::adopt_lock);
+      std::lock_guard<std::mutex> to_lock(destination->travelMutex, std::adopt_lock);
       if(actualPosition->delPerson(this) != -1)          // go to
          if(destination->addPerson(this) != -1)          // try
          {

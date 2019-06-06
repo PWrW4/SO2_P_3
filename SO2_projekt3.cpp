@@ -1,8 +1,10 @@
 #include <cstdlib>
 #include <iostream>
 #include <mutex>
+
 #include "Person.hpp"
 #include "Room.hpp"
+#include "Visualization.hpp"
 
 
 using namespace std;
@@ -57,31 +59,19 @@ int main(int argc, char *argv[])
 
 
 
-	wc->Print();
-	corr->Print();
-	cout<<endl;
+    std::cout<< "start koniec";
+    for(auto s : students)
+    {
+        s->t.join();
+    }
 
-	st1->travel(wc);
-	wc->Print();
-	corr->Print();
-	cout<<endl;
+    for(auto p : profesors)
+    {
+        p->t.join();
+    }
 
-	st2->travel(wc);
-	wc->Print();
-	corr->Print();
-	cout<<endl;
-
-	st3->travel(wc);
-	wc->Print();
-	corr->Print();
-	cout<<endl;
-
-	st1->travel(corr);
-	wc->Print();
-	corr->Print();
-	cout<<endl;
-
-	delete st1,st2,st3,wc,corr;
+    std::cout<< "koniec koniec";
+    endwin();
 }
 
 

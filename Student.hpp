@@ -4,12 +4,10 @@
 
 class Student : public Person
 {
-    Student();
-    ~Student();
-
-    void operator()();
-
-
-
-
-} 
+    public:
+        Student(std::string name, Status status, PersonType type,Room *actualPosition);
+        Student();
+        ~Student();
+        void mainLoop() override;
+        void operator()();
+};
