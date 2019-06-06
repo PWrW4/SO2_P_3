@@ -1,3 +1,4 @@
+#include <string>
 #include "Entrance.hpp"
 
 	Entrance::Entrance(std::string name, int capacity)

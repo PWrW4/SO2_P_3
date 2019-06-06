@@ -1,3 +1,4 @@
+#include <string>
 #include "Toilet.hpp"
 
 	Toilet::Toilet(std::string name, int capacity)

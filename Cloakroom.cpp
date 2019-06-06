@@ -1,3 +1,4 @@
+#include <string>
 #include "Cloakroom.hpp"
 
 	Cloakroom::Cloakroom(std::string name, int capacity)

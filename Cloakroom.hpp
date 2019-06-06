@@ -1,3 +1,4 @@
+#include <string>
 #include "Room.hpp"
 
 class Cloakroom : public Room

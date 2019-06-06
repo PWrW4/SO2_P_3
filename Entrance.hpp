@@ -1,5 +1,5 @@
-#pragma once
 #include "Room.hpp"
+#include <string>
 #include <thread>
 #include <chrono>
 
@@ -14,7 +14,7 @@ private:
 public:
     std::mutex EntranceMutex;
 
-    Entrance(std::string name, int capacity)
+    Entrance(std::string name, int capacity);
     Entrance();
     ~Entrance();
 }; 

@@ -1,3 +1,4 @@
+#include <string>
 #include "Room.hpp"
 
 class Corridor : public Room

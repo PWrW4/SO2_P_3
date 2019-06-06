@@ -9,7 +9,7 @@ enum Status
     Traveling = 1,
     Accessing = 2,
     Working = 3,
-    Enterance = 4
+    Entering = 4
 };
 
 enum PersonType {

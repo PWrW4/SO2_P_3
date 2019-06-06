@@ -1,3 +1,4 @@
+#include <string>
 #include "Corridor.hpp"
 
 	Corridor::Corridor(std::string name, int capacity)

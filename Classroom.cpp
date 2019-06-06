@@ -1,3 +1,4 @@
+#include <string>
 #include "Classroom.hpp"
 
 	Classroom::Classroom(std::string name, int capacity)

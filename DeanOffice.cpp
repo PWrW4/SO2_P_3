@@ -1,3 +1,4 @@
+#include <string>
 #include "DeanOffice.hpp"
 
 	DeanOffice::DeanOffice(std::string name, int capacity)
