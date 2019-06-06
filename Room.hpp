@@ -10,8 +10,9 @@ enum RoomType {
     Classroom = 1,
     Toilet = 2,
     Cloakroom = 3,
-	Deansoffice = 4,
-	Storage = 5
+	DeanOffice = 4,
+	Storage = 5,
+	Entrance = 6
 };
 
 class Room

@@ -6,4 +6,4 @@ class Classroom : public Room
     Classroom(std::string name, int capacity);
     Classroom();
     ~Classroom();
-}
+};
