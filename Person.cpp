@@ -4,10 +4,6 @@
 
 using namespace std;
 
-//	Person::Person(Room actualPosition)
- //   {
-  //      this->actualPosition = actualPosition;
-  //  }
   	Person::Person(std::string name, Status status, PersonType type,Room *actualPosition)
     {
        this->name = name;
@@ -23,7 +19,7 @@ using namespace std;
        this->type = type;
     }
    Person::Person() {}
-	Person::~Person() {}
+   Person::~Person() {}
 
    void Person::operator()() {}
 

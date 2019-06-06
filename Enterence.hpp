@@ -3,25 +3,23 @@
 #include <thread>
 #include <chrono>
 
+using namespace std;
 
 class Enterence : Room
 {
 private:
     void mainLoop();
 public:
+    std::mutex enteranceMutex;
+    std::vector<Person*> enterancePeople;
     Enterence();
     ~Enterence();
 };
 
 Enterence::Enterence()
 {
-    std::thread t(mainLoop);
 }
 
 Enterence::~Enterence()
 {
-}
-
-void Enterence::mainLoop(){
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

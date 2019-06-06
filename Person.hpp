@@ -8,7 +8,8 @@ enum Status
     Waiting = 0,
     Traveling = 1,
     Accessing = 2,
-    Working = 3
+    Working = 3,
+    Enterance = 4
 };
 
 enum PersonType {

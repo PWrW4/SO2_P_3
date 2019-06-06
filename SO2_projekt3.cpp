@@ -1,14 +1,54 @@
 #include <cstdlib>
 #include <iostream>
 
-
+#include "Person.hpp"
 #include "Room.hpp"
 
 
 using namespace std;
 
+std::vector<Person*> students;
+std::vector<Person*> profesors;
+int numberStudents;
+int numberProfesors;
+
 int main(int argc, char *argv[])
 {
+    srand(time(NULL));
+
+    if(argc == 3)
+    {
+        numberStudents = atoi(argv[1]);
+        numberProfesors = atoi(argv[2]);
+
+        if(numberStudents <= 0 || numberProfesors <= 0)
+        {
+            std::cout << "Wprowadzane liczby muszą być większe od zera!\n";
+            return -1;
+        }
+        if(5 > numberShips || numberShips > 30 || 5 > numberCranes || numberCranes > 10 || 0 > numberTrucks || numberTrucks > 20)
+        {
+            std::cout << "Wprowadzane liczby muszą być większe niż 5 i nie większe niż 10.\n";
+            return -2;
+        }
+    }
+    else
+    {
+        std::cout << "Podałeś złą liczbę dnaych. Wprowadź: ilość_studentów ilość_profesorów.\n";
+        return 0;
+    }
+
+	for(int i = 0; i < numberStudents; i++)
+    {
+        Person *s = new Person("Student" + std::to_string(i),Enterance,Student,corr);
+        ships.push_back(s);
+    }
+    for(int i = 0; i < numberProfesors; i++)
+    {
+        Person *p = new Person("Profesor" + std::to_string(i),Enterance,Professor,corr);
+        trucks.push_back(t);
+	}
+
 	Room *wc = new Room("kibelek", 2, Toilet);
 	Room *corr = new Room("korytarz", 10, Corridor);
 	Person *st1 = new Person("Student",Waiting,Student,corr);

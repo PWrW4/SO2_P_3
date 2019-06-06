@@ -38,10 +38,11 @@
 executable/SO2_projekt3
 
 
-# Created by https://www.gitignore.io/api/clion+all
-# Edit at https://www.gitignore.io/?templates=clion+all
 
-### CLion+all ###
+# Created by https://www.gitignore.io/api/clion
+# Edit at https://www.gitignore.io/?templates=clion
+
+### CLion ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
@@ -112,21 +113,17 @@ fabric.properties
 # JetBrains templates
 **___jb_tmp___
 
-### CLion+all Patch ###
-# Ignores the whole .idea folder and all .iml files
-# See https://github.com/joeblau/gitignore.io/issues/186 and https://github.com/joeblau/gitignore.io/issues/360
+### CLion Patch ###
+# Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-.idea/
-
-# Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-249601023
-
-*.iml
-modules.xml
-.idea/misc.xml
-*.ipr
+# *.iml
+# modules.xml
+# .idea/misc.xml
+# *.ipr
 
 # Sonarlint plugin
 .idea/sonarlint
 
-# End of https://www.gitignore.io/api/clion+all
+# End of https://www.gitignore.io/api/clion
+
 

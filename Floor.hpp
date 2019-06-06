@@ -4,8 +4,6 @@
 
 class Floor{
 public:
-    Floor * up;
-    Floor * down;
     std::vector<Room*> floorRooms;
 
     Floor();
