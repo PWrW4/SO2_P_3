@@ -6,24 +6,33 @@
     {
         CalculateTraffic();
         slowing_factor=SLOWING_FACTOR;
-        bench = new bool[BENCHES];
+        bench.resize(BENCHES);
         for(int i=0;i<BENCHES;i++)
-            bench[i] = new bool[SEATS];
+        {
+            bench[i].resize(SEATS);
+            for (int j = 0; j < SEATS; j++)
+            {
+                bench[i][j] = false;
+            }
+        }
     }
 
     Corridor::Corridor()
     {
         CalculateTraffic();
         slowing_factor=SLOWING_FACTOR;
-        bench = new bool[BENCHES];
+        bench.resize(BENCHES);
         for(int i=0;i<BENCHES;i++)
-            bench[i] = new bool[SEATS];
+        {
+            bench[i].resize(SEATS);
+            for (int j = 0; j < SEATS; j++)
+            {
+                bench[i][j] = false;
+            }
+        }
     }
     Corridor::~Corridor()
     {
-        for(int i=0;i<BENCHES;i++)
-            delete bench[i];
-        delete bench;
     } 
  
     float Corridor::CalculateTraffic()
@@ -31,12 +40,12 @@
         return traffic = people.size()/capacity;
     }
 
-    void Occupy(bool **bench, int bench, int seat)
+    void Corridor::Occupy(int bench_id, int seat_id)
     {
-        bench[bench][seat] = true;
+        bench[bench_id][seat_id] = true;
     }
 
-    void Free(bool **bench, int bench, int seat)
+    void Corridor::Free(int bench_id, int seat_id)
     {
-        bench[bench][seat] = false;
+        bench[bench_id][seat_id] = false;
     }
