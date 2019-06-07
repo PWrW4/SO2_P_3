@@ -1,6 +1,9 @@
 #include <string>
+#include <iostream>
 #include "Classroom.hpp"
 #include "Person.hpp"
+
+using namespace std;
 
 	Classroom::Classroom(std::string name, int capacity)
         : Room(name, capacity, RoomType::E_Classroom)
@@ -21,7 +24,7 @@
         else
         {
             cout<<"na zajeciach jest juz prowadzacy!\n";
-            return -1
+            return -1;
         }   
     }
 
@@ -49,7 +52,7 @@
             cout<<"nie ma studentow w sali "<<name<<"!\n";
             return -1;
         }
-        vector<Person*>::iterator it = find(students.begin(), students.end(),student);
+        vector<Person*>::iterator it = find(students.begin(), students.end(), student);
         if(it == students.end() && students.back() != student)
         {
             cout<<"student nieobecny w "<<name<<"!\n";
