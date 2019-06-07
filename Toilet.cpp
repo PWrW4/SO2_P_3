@@ -1,5 +1,6 @@
 #include <string>
 #include "Toilet.hpp"
+#include "Person.hpp"
 
 	Toilet::Toilet(std::string name, int capacity)
         : Room(name, capacity, RoomType::E_Toilet)
@@ -27,4 +28,9 @@
     void Toilet::Free(bool *type, int index)
     {
         type[index] = false;
+    }
+
+    void Toilet::ServePerson(Person *person)
+    {
+    
     }
