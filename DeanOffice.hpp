@@ -4,9 +4,9 @@
 #include <condition_variable>
 #include "Room.hpp"
 
-#define STAMPS_CNT 3
-#define DOC_BUF_SIZE 5      // maksymalna liczba dokumentów danego typu w buforze
+#define STAMPS_CNT 3        // liczba pieczątek, niech będzie równa liczbie pracowników dziekanatu
 #define DOC_TYPES 3         // liczba typów dokumentów
+#define DOC_BUF_SIZE 5      // maksymalna liczba dokumentów danego typu w buforze
 
 using namespace std;
 

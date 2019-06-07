@@ -9,6 +9,7 @@ using namespace std;
       _f->mtx.lock();
       this->f.floorRooms = _f->floorRooms;
       _f->mtx.unlock();
+      this->timer = new Timer(TIME_MIN,TIME_MAX);
       this->name = name;
       this->status = status;
       this->type = type;
@@ -18,7 +19,10 @@ using namespace std;
       actualPosition->addPerson(this);
    }
    Person::Person() {}
-   Person::~Person() {}
+   Person::~Person() 
+   {
+      delete timer;
+   }
 
    void Person::operator()() {}
    void Person::mainLoop() {}

@@ -8,6 +8,10 @@
 #include "Status.cpp"
 #include "PersonType.cpp"
 #include "Floor.hpp"
+#include "Timer.hpp"
+
+#define TIME_MIN 2500
+#define TIME_MAX 3500
 
 class Room;
 
@@ -16,6 +20,8 @@ class Person
 public:
     std::thread t;
     std::string name;
+    std::string progress_bar;
+    Timer *timer;
 	Room *actualPosition;
     Status status;
     PersonType type;
@@ -29,6 +35,7 @@ public:
     virtual void operator()();      // method to override in upper classes, main thread function
     virtual void mainLoop();
     int travel(Room *destination);
+
     void dispose();                 // WC routine method - usable only when in Toilet
     void getTP();                   // fetching toilet paper - usable only when in Storage Room
     void Print();
