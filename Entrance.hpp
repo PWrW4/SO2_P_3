@@ -13,7 +13,7 @@ private:
 
 public:
     std::mutex EntranceMutex;
-
+    std::vector<Person*> enterancePeople;
     Entrance(std::string name, int capacity);
     Entrance();
     ~Entrance();

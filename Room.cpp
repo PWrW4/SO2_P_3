@@ -66,6 +66,6 @@ using namespace std;
         cout<<"list of people in "<<name<<":\n";
         for(int i=0; i<people.size();i++)
         {
-            cout<<people[i]->name<<endl;
+            cout<<people[i]<<endl;
         }
     }

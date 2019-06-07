@@ -2,8 +2,12 @@
 #include <string>
 #include <thread>
 #include <atomic>
+#include <random>
+#include <chrono>
+
 #include "Status.cpp"
 #include "PersonType.cpp"
+#include "Floor.hpp"
 
 class Room;
 
@@ -15,8 +19,10 @@ public:
 	Room *actualPosition;
     Status status;
     PersonType type;
+    Floor f;
     std::atomic<bool> end;
-    Person(std::string name, Status status, PersonType type, Room *actualPosition);
+    std::mt19937 rng{std::random_device{}()};
+    Person(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition);
     Person();
 	~Person();
 

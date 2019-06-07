@@ -3,8 +3,9 @@
 #include <string>
 #include <mutex>
 
-#include "Person.hpp"
 #include "RoomType.cpp"
+
+class Person;
 
 class Room
 {
@@ -12,6 +13,7 @@ public:
 	std::mutex travelMutex;
 	std::string name;
 	int capacity;
+	std::mutex typeMutex;
 	RoomType type;
 	std::vector <Person*> people;
 

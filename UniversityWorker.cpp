@@ -1,8 +1,8 @@
 #include "UniversityWorker.hpp"
 
 
-UniversityWorker::UniversityWorker(std::string name, Status status, PersonType type,Room *actualPosition)
-: Person(name,status,type,actualPosition)
+UniversityWorker::UniversityWorker(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition)
+: Person(name,_f,status,type,actualPosition)
 {
 }
 

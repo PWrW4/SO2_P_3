@@ -3,7 +3,7 @@
 #include <mutex>
 
 #include "Person.hpp"
-
+#include "Floor.hpp"
 #include "Classroom.hpp"
 #include "Cloakroom.hpp"
 #include "DeanOffice.hpp"
@@ -53,6 +53,8 @@ int main(int argc, char *argv[])
 	// Person *st2 = new Person("Profesor",E_Waiting,E_Professor,corr);
 	// Person *st3 = new Person("KierownikDziekanatu",E_Waiting,E_DziekanatCrew,corr);
 
+    Floor *f = new Floor();
+
     Room *strg = new Room("skladzik", 2, E_Storage);
     Room *wc = new Toilet("kibelek", 2);
 	Room *corr = new Corridor("korytarz", 100);
@@ -60,15 +62,22 @@ int main(int argc, char *argv[])
     Room *classroom = new Classroom("salka",30);
     Room *dziekanat = new DeanOffice("dziekanat",6);
 
+    // f->floorRooms.insert(strg);    
+    // f->floorRooms.insert(wc);    
+    // f->floorRooms.insert(corr);    
+    // f->floorRooms.insert(entr);    
+    // f->floorRooms.insert(classroom);    
+    // f->floorRooms.insert(dziekanat);    
+
 
 	for(int i = 0; i < numberStudents; i++)
     {
-        Student *s = new Student("Student" + std::to_string(i),E_Entering,E_Student,entr);
+        Student *s = new Student("Student" + std::to_string(i),f,E_Entering,E_Student,entr);
         students.push_back(s);
     }
     for(int i = 0; i < numberProfesors; i++)
     {
-        Person *p = new Person("Profesor" + std::to_string(i),E_Entering,E_Professor,entr);
+        Person *p = new Person("Profesor" + std::to_string(i),f,E_Entering,E_Professor,entr);
         profesors.push_back(p);
 	}
 

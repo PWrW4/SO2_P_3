@@ -5,7 +5,7 @@
 class Lecturer : public Person
 {
     public:
-        Lecturer(std::string name, Status status, PersonType type,Room *actualPosition);
+        Lecturer(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition);
         Lecturer();
         ~Lecturer();
         void mainLoop() override;

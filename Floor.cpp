@@ -2,3 +2,6 @@
 
 Floor::Floor(){
 }
+
+Floor::~Floor(){
+}

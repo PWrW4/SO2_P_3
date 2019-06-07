@@ -4,8 +4,11 @@
 
 using namespace std;
 
-   Person::Person(std::string name, Status status, PersonType type,Room *actualPosition)
+   Person::Person(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition)
    {
+      _f->mtx.lock();
+      this->f.floorRooms = _f->floorRooms;
+      _f->mtx.unlock();
       this->name = name;
       this->status = status;
       this->type = type;
