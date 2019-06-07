@@ -19,12 +19,12 @@
         delete cubicle, urinal;
     } 
 
-    void Occupy(bool *type, int index)
+    void Toilet::Occupy(bool *type, int index)
     {
         type[index] = true;
     }
 
-    void Free(bool *type, int index)
+    void Toilet::Free(bool *type, int index)
     {
         type[index] = false;
     }
