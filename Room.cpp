@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include "Room.hpp"
+#include "Person.hpp"
 
 using namespace std;
 
@@ -35,7 +36,15 @@ using namespace std;
             return -1;
         }
         people.push_back(person);
-        return 0;
+        int result;
+        if(person->type==PersonType::E_Student)
+            result = addStudent(person);
+        else
+            result = addWorker(person);
+        if(result<0)
+            return result;
+        else
+            return 0;
     }
 
 	int Room::delPerson(Person * person)
@@ -52,6 +61,15 @@ using namespace std;
             return -1;
         }
         people.erase(it);
+        int result;
+        if(person->type==PersonType::E_Student)
+            result = deleteStudent(person);
+        else
+            result = deleteWorker(person);
+        if(result<0)
+            return result;
+        else
+            return 0;
         return 0;
     }
 

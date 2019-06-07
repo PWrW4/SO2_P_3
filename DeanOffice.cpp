@@ -18,6 +18,7 @@
     }
 
     DeanOffice::DeanOffice()
+        : Room("dziekanat", 10, RoomType::E_DeanOffice)
     {
         docbuf = new int[DOC_BUF_SIZE];
         head = new int[DOC_TYPES];
