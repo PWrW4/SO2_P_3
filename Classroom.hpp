@@ -14,8 +14,6 @@ public:
     Person *professor;
     std::vector<Person*> students;
 
-
-
     int setProfessor(Person *professor);
     int freeProfessor();
     int addStudent(Person *student);

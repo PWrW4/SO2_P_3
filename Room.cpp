@@ -55,6 +55,62 @@ using namespace std;
         return 0;
     }
 
+    int Room::addStudent(Person *student)
+    {
+        if(students.size()==capacity-1)
+        {
+            cout<<"brak miejsc dla studentow w"<<name<<"!\n";
+            return -1;
+        }
+        students.push_back(student);
+        return 0;
+    }
+
+    int Room::deleteStudent(Person *student)
+    {
+        if(students.size()==0)
+        {
+            cout<<"nie ma studentow w pomieszczeniu "<<name<<"!\n";
+            return -1;
+        }
+        vector<Person*>::iterator it = find(students.begin(), students.end(), student);
+        if(it == students.end() && students.back() != student)
+        {
+            cout<<"student nieobecny w "<<name<<"!\n";
+            return -1;
+        }
+        students.erase(it);
+        return 0;
+    }
+
+    int Room::addWorker(Person *worker)
+    {
+        if(workers.size()==capacity-1)
+        {
+            cout<<"brak miejsc dla pracownikow w"<<name<<"!\n";
+            return -1;
+        }
+        workers.push_back(worker);
+        return 0;
+    }
+
+    int Room::deleteWorker(Person *worker)
+    {
+        if(workers.size()==0)
+        {
+            cout<<"nie ma pracownikow w pomieszczeniu "<<name<<"!\n";
+            return -1;
+        }
+        vector<Person*>::iterator it = find(workers.begin(), workers.end(), worker);
+        if(it == workers.end() && workers.back() != worker)
+        {
+            cout<<"pracownik nieobecny w "<<name<<"!\n";
+            return -1;
+        }
+        workers.erase(it);
+        return 0;
+    }
+
     void Room::Print()
     {
         cout<<name<<", "<<type<<", "<<capacity<<endl;
