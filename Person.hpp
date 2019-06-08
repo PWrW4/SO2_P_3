@@ -19,6 +19,7 @@ class Room;
 class Person
 {
 public:
+    Visualization * Display;
     std::thread person_thread;
     std::string name;
     std::string progress_bar;
@@ -29,7 +30,7 @@ public:
     Floor f;
     std::atomic<bool> end;
     std::mt19937 rng{std::random_device{}()};
-    Person(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition);
+    Person(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display);
     Person();
 	~Person();
 

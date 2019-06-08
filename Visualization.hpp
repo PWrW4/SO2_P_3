@@ -2,19 +2,38 @@
 //                              157x54
 #include <ncurses.h>
 #include <string>
+#include <mutex>
 #include <unistd.h>
+#include "DeanOffice.hpp"
 
 #define ROWS 10
 #define COLUMNS 4
 #define ROWS_STEP 4
 #define COLUMNS_STEP 23
 
+enum DeanOfficeCols
+{
+    percent = 0,
+    used_stamps = 1,
+    waiting = 2,
+    idle = 3,
+    working = 4,
+    docs = 5,
+    stud = 6
+};
+
 using namespace std;
 
 class Visualization
 {
 public:
+    int DeanOfficeX = 50,
+        DeanOfficeY = 50;
+    int DeanOfficeRows = STAMPS_CNT,
+        DeanOfficeColumns = 7,
+        DeanOfficeColumnsWidth = 3;
 
+    mutex *disp_mutex;
     string horizontal_line;
     string header;
     string flusher;
@@ -37,5 +56,8 @@ public:
     void PrintFork(int philosopher, bool isLeft, int fork_nr); // true - left    false - right
     void FlushFork(int philosopher, bool isLeft);
     void Scroll(int step);
+
+    void DrawDeanOffice();
+    void PutChar(int x, int y, string smth);
 
 };

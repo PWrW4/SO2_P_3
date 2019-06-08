@@ -33,17 +33,20 @@ int main(int argc, char *argv[])
     // Room *strg = new Room("skladzik", 2, E_Storage);
     // Room *wc = new Toilet("kibelek", 2);
     // Room *classroom = new Classroom("salka",30);
+    Visualization *display = new Visualization(ROWS,COLUMNS,ROWS_STEP,COLUMNS_STEP);
     Floor *f = new Floor();
     Room *entr = new Entrance("Wejscie", 50);
 	Room *corr = new Corridor("korytarz", 100);
     Room *dziekanat = new DeanOffice("dziekanat",6);
+    display->DrawDeanOffice();
 
-    Student *s = new Student("Student",f,E_Entering,E_Student,dziekanat);
+    Student *s = new Student("Student",f,E_Entering,E_Student,dziekanat, display);
     int a;
     cin>>a;
+    display->PutChar(50,50,"dupa");
     for(int i = 0;i<STAMPS_CNT;i++)
     {
-        dziekanatworkers[i] = new DeanCrew(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat);
+        dziekanatworkers[i] = new DeanCrew(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat,display);
  //       cout<<"stworzono pania z dziekanatu "<<i<<endl;
         //dziekanatworkers.push_back(pzd);
 //        thread_tab[i] = new thread(*dziekanatworkers[i]);

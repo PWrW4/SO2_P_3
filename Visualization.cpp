@@ -11,6 +11,7 @@ using namespace std;
       x_step(_COLUMNS_STEP),
       y_step(_ROWS_STEP)
     {
+        disp_mutex = new mutex;
         initscr(); 
         curs_set(0);
         start_color();
@@ -147,4 +148,34 @@ using namespace std;
     {
         scrl(step);
         refresh();
+    }
+
+    void Visualization::DrawDeanOffice()
+    {
+        disp_mutex->lock();
+        for(int j=0;j<DeanOfficeColumns*(DeanOfficeColumnsWidth+1)+1;j++)
+        {
+            mvprintw(DeanOfficeX,DeanOfficeY+j,"-");
+        }
+        for(int i=1;i<=DeanOfficeRows;i++)
+        {
+            for(int j=0 ; j<DeanOfficeColumns*(DeanOfficeColumnsWidth+1)+1 ; j+=(DeanOfficeColumnsWidth+1))
+            {
+                mvprintw(DeanOfficeX+i,DeanOfficeY+j,"|");
+            }
+        }
+        for(int j=0;j<=(DeanOfficeColumns-1)*(DeanOfficeColumnsWidth+1);j++)
+        {
+            mvprintw(DeanOfficeX+DeanOfficeRows+1,DeanOfficeY+j,"-");
+        }
+        refresh();
+        disp_mutex->unlock();
+    }
+
+    void Visualization::PutChar(int x, int y, string smth)
+    {
+        disp_mutex->lock();
+        mvprintw(y,x,smth.c_str());
+        refresh();
+        disp_mutex->unlock();
     }

@@ -5,7 +5,7 @@
 class Student : public Person
 {
     public:
-        Student(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition);
+        Student(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display);
         Student();
         ~Student();
         void mainLoop() override;
@@ -21,4 +21,6 @@ class Student : public Person
         void getRequest();
         void getDoc(int doc_type, int doc_slot);
         void checkStack(int doc_type);
+
+        void PutDeanOffice(int x, int y, string smth);
 };

@@ -5,8 +5,9 @@
 
 using namespace std;
 
-   Person::Person(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition)
+   Person::Person(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
    {
+      this->Display = Display;
       _f->mtx.lock();
       this->f.floorRooms = _f->floorRooms;
       _f->mtx.unlock();

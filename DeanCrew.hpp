@@ -6,7 +6,7 @@
 class DeanCrew : public Person
 {
     public:
-        DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status,Room *actualPosition, Room *myDeanOffice);
+        DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status,Room *actualPosition, Room *myDeanOffice,Visualization * Display);
         DeanCrew();
         ~DeanCrew();
 
@@ -28,5 +28,5 @@ class DeanCrew : public Person
         void produce(int doc_cnt);      // wyprodukuj doc_cnt dokumentów
         void makeDoc();                 // wyprodukuj jeden dokument
 
-
+        void Put(int x, int y, string smth);
 };
