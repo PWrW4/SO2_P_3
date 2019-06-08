@@ -37,17 +37,22 @@ int main(int argc, char *argv[])
     Room *entr = new Entrance("Wejscie", 50);
 	Room *corr = new Corridor("korytarz", 100);
     Room *dziekanat = new DeanOffice("dziekanat",6);
+    Student *s = new Student("Student",f,E_Entering,E_Student,entr);
 
-    for(int i = 0;i<STAMPS_CNT;i++)
-    {
-        dziekanatworkers[i] = new DeanCrew(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,entr,dziekanat);
-        cout<<"stworzono pania z dziekanatu "<<i<<endl;
-        //dziekanatworkers.push_back(pzd);
-//        thread_tab[i] = new thread(*dziekanatworkers[i]);
-        //thread_tab.push_back(thd);
-    }
+    s->generateRequest();
+    s->printRequest();
+
+//     for(int i = 0;i<STAMPS_CNT;i++)
+//     {
+//         dziekanatworkers[i] = new DeanCrew(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,entr,dziekanat);
+//         cout<<"stworzono pania z dziekanatu "<<i<<endl;
+//         //dziekanatworkers.push_back(pzd);
+// //        thread_tab[i] = new thread(*dziekanatworkers[i]);
+//         //thread_tab.push_back(thd);
+//     }
     
-    while(1){};
+    //while(1){};
+
     // if(argc == 3)
     // {
     //     numberStudents = atoi(argv[1]);

@@ -11,7 +11,6 @@ DeanCrew::DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string 
     deanCrew_cnt(deanCrew_cnt),
     doc_type(doc_type)
 {
-	srand(time(NULL));
 	progress_bar="";
 	this->myDeanOffice = dynamic_cast<DeanOffice *>(myDeanOffice);
 
