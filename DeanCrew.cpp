@@ -38,3 +38,15 @@ void DeanCrew::getStamp(int stamp) // actualPosition musi być DeanOffice albo z
 	actualPosition->stamps[stamp] = false;												// Zajmij
 	actualPosition->stamps_mutex[deanCrew_nr]->unlock();
 }
+
+void DeanCrew::produce() // actualPosition musi być DeanOffice albo zrealizowac inaczej dostęp
+{
+    unique_lock<std::mutex> docbuf_lck(actualPosition->docbuf_mutex[deanCrew_nr]);
+    while(actualPosition->cnt >= DOC_BUF_SIZE) 
+        actualPosition->docbuf_empty[deanCrew_nr].wait(docbuf_lck);
+    //actualPosition->docbuf[actualPosition->head] = jakaś_liczba;      // stworzenie dokumentu i włożenie na odpowiedni stos
+    actualPosition->head = (actualPosition->head+1) % DOC_BUF_SIZE; 
+    actualPosition->cnt++;
+    actualPosition->docbuf_full[deanCrew_nr].notify_one();   
+    actualPosition->docbuf_mutex[deanCrew_nr]->unlock();
+}

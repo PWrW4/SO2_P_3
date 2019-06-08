@@ -19,6 +19,7 @@ class DeanCrew : public Person
         void operator()();
 
         void getStamp(int stamp);
+        void produce();                 // wyprodukuj jeden dokument
 
 
 };
