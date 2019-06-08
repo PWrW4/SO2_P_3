@@ -17,4 +17,6 @@ public:
     Entrance(std::string name, int capacity);
     Entrance();
     ~Entrance();
+
+    void virtual_function();
 }; 

@@ -34,3 +34,5 @@
     {
     
     }
+
+    void Toilet::virtual_function(){}

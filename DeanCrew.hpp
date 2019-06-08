@@ -1,13 +1,16 @@
 #pragma once
 #include "Person.hpp"
 #include "Room.hpp"
+#include "DeanOffice.hpp"
 
 class DeanCrew : public Person
 {
     public:
-        DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition);
+        DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition, Room *myDeanOffice);
         DeanCrew();
         ~DeanCrew();
+
+        DeanOffice *myDeanOffice;
 
         int deanCrew_nr;
 	    int deanCrew_cnt;

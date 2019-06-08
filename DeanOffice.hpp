@@ -17,16 +17,18 @@ class DeanOffice : public Room
     DeanOffice();
     ~DeanOffice();
 
-    int *docbuf;                     // Bufor na dokumenty
-    int *head;                       // Tutaj wpisujemy do bufora nowy element 
-    int *tail;                       // Stad pobieramy element z bufora          
-    int *cnt;                        // Liczba elementow w buforze 
-    condition_variable *docbuf_empty;// Tu czekamy gdy brak miejsca w buforze 
-    condition_variable *docbuf_full; // Tu czekamy gdy brak rekordow w buforze 
+
+    int *docbuf;                     // Bufory na dokumenty
+    int *head;                       // Tutaj wpisujemy do buforów nowe elementy 
+    int *tail;                       // Stad pobieramy elementy z buforów          
+    int *cnt;                        // Liczby elementow w buforach 
+    condition_variable *docbuf_empty;// Tu czekamy gdy brak miejsca w buforach
+    condition_variable *docbuf_full; // Tu czekamy gdy brak rekordow w buforach 
     mutex *docbuf_mutex;             // Wzajemne wykluczanie dostępu do stosów dokumentów
 
     bool *stamps;                    // Pieczątki
     condition_variable *stamps_cond; // Oczekiwanie na pieczątki
     mutex *stamps_mutex;             // Wzajemne wykluczanie dostępu do pieczątek
 
+    void virtual_function();
 };

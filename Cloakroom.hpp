@@ -7,4 +7,6 @@ class Cloakroom : public Room
     Cloakroom(std::string name, int capacity);
     Cloakroom();
     ~Cloakroom();
+
+    void virtual_function();
 };

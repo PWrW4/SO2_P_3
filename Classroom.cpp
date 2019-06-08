@@ -14,3 +14,5 @@ using namespace std;
     Classroom::Classroom(){}
     Classroom::~Classroom(){}
 
+    void Classroom::virtual_function(){}
+

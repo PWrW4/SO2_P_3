@@ -11,4 +11,6 @@ public:
     Classroom();
     ~Classroom();
 
+    void virtual_function();
+
 };

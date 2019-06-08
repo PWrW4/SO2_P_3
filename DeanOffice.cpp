@@ -38,3 +38,5 @@
         delete docbuf,head,tail,cnt,docbuf_empty,docbuf_full,docbuf_mutex;
         delete stamps,stamps_cond,stamps_mutex;
     }
+
+    void DeanOffice::virtual_function(){}

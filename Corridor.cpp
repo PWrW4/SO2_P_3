@@ -49,3 +49,5 @@
     {
         bench[bench_id][seat_id] = false;
     }
+
+    void Corridor::virtual_function(){}

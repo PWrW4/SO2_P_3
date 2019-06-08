@@ -36,4 +36,7 @@ public:
 
 	void Print();
 	void PrintPeople();
+
+	virtual void virtual_function();
+
 };

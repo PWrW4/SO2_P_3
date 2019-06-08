@@ -9,3 +9,5 @@
 
     Entrance::Entrance(){}
     Entrance::~Entrance(){} 
+
+    void Entrance::virtual_function(){}

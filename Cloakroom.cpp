@@ -9,3 +9,5 @@
 
     Cloakroom::Cloakroom(){}
     Cloakroom::~Cloakroom(){}
+
+    void Cloakroom::virtual_function(){}

@@ -143,3 +143,5 @@ using namespace std;
             cout<<people[i]<<endl;
         }
     }
+
+    void Room::virtual_function(){}

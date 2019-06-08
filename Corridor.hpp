@@ -20,5 +20,6 @@ class Corridor : public Room
     void Occupy(int bench_id, int seat_id);
     void Free(int bench_id, int seat_id);
 
+    void virtual_function();
 }; 
  
