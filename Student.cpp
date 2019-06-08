@@ -42,9 +42,39 @@ void Student::run()
 {
     if(generateRequest())
  //       travel(dziekanat);
-        printRequest();
+ {
+    printRequest();
     getDoc(1,1);
     printRequest();
+    timer->delay();
+    getDoc(0,0);
+    printRequest();
+    timer->delay();
+    getDoc(2,2);
+    printRequest();
+    timer->delay();
+    getDoc(3,3);
+    printRequest();
+    timer->delay();
+    getDoc(4,4);
+    printRequest();
+    timer->delay();
+    getDoc(0,4);
+    printRequest();
+    timer->delay();
+    getDoc(1,3);
+    printRequest();
+    timer->delay();
+    getDoc(2,2);
+    printRequest();
+    timer->delay();
+    getDoc(3,1);
+    printRequest();
+    timer->delay();
+    getDoc(4,0);
+    printRequest();
+    timer->delay();
+ }
 }
 
 void Student::DeanOfficeRoutine()

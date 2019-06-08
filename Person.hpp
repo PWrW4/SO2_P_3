@@ -9,6 +9,7 @@
 #include "PersonType.cpp"
 #include "Floor.hpp"
 #include "Timer.hpp"
+#include "Visualization.hpp"
 
 #define TIME_MIN 2500
 #define TIME_MAX 3500
@@ -39,4 +40,5 @@ public:
     void dispose();                 // WC routine method - usable only when in Toilet
     void getTP();                   // fetching toilet paper - usable only when in Storage Room
     void Print();
+    void DoProgress(Visualization *Display,int id);
 };

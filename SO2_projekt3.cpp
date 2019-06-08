@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     for(int i = 0;i<STAMPS_CNT;i++)
     {
         dziekanatworkers[i] = new DeanCrew(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat);
-        cout<<"stworzono pania z dziekanatu "<<i<<endl;
+ //       cout<<"stworzono pania z dziekanatu "<<i<<endl;
         //dziekanatworkers.push_back(pzd);
 //        thread_tab[i] = new thread(*dziekanatworkers[i]);
         //thread_tab.push_back(thd);

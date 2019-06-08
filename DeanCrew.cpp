@@ -43,7 +43,7 @@ void DeanCrew::mainLoop()
 	//travel(myDeanOffice);
 	for(int i=0;i<4;i++)
 	{
-		// cout<<"DeanCrew"<<deanCrew_nr<<" arrival"<<endl;
+		 cout<<"DeanCrew"<<deanCrew_nr<<" arrival"<<endl;
 		// unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);
 		// cout<<"mutex lock DeanCrew"<<deanCrew_nr<<endl;
     	// while(myDeanOffice->cnt[deanCrew_nr] > 0)
@@ -62,12 +62,15 @@ void DeanCrew::mainLoop()
 
 void DeanCrew::getStamps()
 {
-	getStamp(first_stamp);
+	getStamp(first_stamp);		
 	getStamp(second_stamp);
 }
 void DeanCrew::getStamp(int stamp) // actualPosition musi być DeanOffice albo zrealizowac inaczej dostęp
 {
 	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" czeka na pieczatke "<<stamp<<endl;			// napisz
+
+
+
 	unique_lock<std::mutex> stamp_lck(*myDeanOffice->stamps_mutex);
   	while (!myDeanOffice->stamps[stamp]) 
 		myDeanOffice->stamps_cond[stamp].wait(stamp_lck);								// Czekaj na pieczątke
@@ -92,7 +95,7 @@ void DeanCrew::freeStamp(int stamp)
 	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" zwolnila pieczatke "<<stamp<<endl;		// napisz
 }
 
-void DeanCrew::produce(int doc_cnt) // actualPosition musi być DeanOffice albo zrealizowac inaczej dostęp
+void DeanCrew::produce(int doc_cnt) 
 {
 	for(int i=0; i<doc_cnt; i++)
 	{
@@ -114,11 +117,12 @@ void DeanCrew::makeDoc()
     unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);
     while(myDeanOffice->cnt[deanCrew_nr] >= DOC_BUF_SIZE) 
         myDeanOffice->docbuf_empty[deanCrew_nr].wait(docbuf_lck);
-    myDeanOffice->docbuf[deanCrew_nr][myDeanOffice->head[deanCrew_nr]] = 999;      // stworzenie dokumentu i włożenie na odpowiedni stos
+    myDeanOffice->docbuf[deanCrew_nr][myDeanOffice->head[deanCrew_nr]] = rand()%(DOC_BUF_SIZE*DOC_BUF_SIZE);      // stworzenie dokumentu i włożenie na odpowiedni stos
     myDeanOffice->head[deanCrew_nr] = (myDeanOffice->head[deanCrew_nr]+1) % DOC_BUF_SIZE; 
     myDeanOffice->cnt[deanCrew_nr]++;
 	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" stworzyla dokument typu "<<deanCrew_nr<<" stos: "<<myDeanOffice->cnt[deanCrew_nr]<<endl;		// napisz
     myDeanOffice->docbuf_full[deanCrew_nr].notify_one();   
     myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();
 }
+
 

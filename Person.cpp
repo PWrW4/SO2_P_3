@@ -1,5 +1,6 @@
 #include "Room.hpp"
 #include "Person.hpp"
+#include "Visualization.hpp"
 #include <iostream>
 
 using namespace std;
@@ -68,4 +69,26 @@ using namespace std;
    void Person::Print()
    {
       cout<<name<<", "<<type<<", "<<status<<", "<<actualPosition->name<<endl;
+   }
+
+   void Person::DoProgress(Visualization *Display,int id)
+   {
+	for(int i=0, color=0; i<Display->ec_width ; i++)						// Postęp czynności
+		{
+			if(i<Display->ec_width/2)												// Wybór koloru
+				color = COLOR_GREEN;
+			else if(i<3*Display->ec_width/4)
+				color = COLOR_YELLOW;
+			else
+				color = COLOR_RED;
+
+			timer->delay(Display->ec_width);
+			progress_bar+="#";
+			{
+				attron( COLOR_PAIR( color ) );
+				Display->Print(id,3,progress_bar);
+				attroff( COLOR_PAIR( color ) );
+			}
+		}
+		progress_bar="";
    }

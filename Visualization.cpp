@@ -57,9 +57,9 @@ using namespace std;
         x_actual = y_actual = 0;
 
         mvprintw(y_actual, x_actual, header.c_str());       // print real header
-        PrintCenter(-1,0,"Filozof");
+        PrintCenter(-1,0,"PaniZDziekanatu");
         PrintCenter(-1,1,"Czynnosc");
-        PrintCenter(-1,2,"Widelce");
+        PrintCenter(-1,2,"Pieczatki");
         PrintCenter(-1,3,"Postep");
 
         y_actual++;                                         // y_actual = 1

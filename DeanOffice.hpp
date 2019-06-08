@@ -5,8 +5,8 @@
 #include <condition_variable>
 #include "Room.hpp"
 
-#define STAMPS_CNT 3        // liczba pieczątek, niech będzie równa liczbie pracowników dziekanatu
-#define DOC_TYPES 3         // liczba typów dokumentów
+#define STAMPS_CNT 5        // liczba pieczątek, niech będzie równa liczbie pracowników dziekanatu
+#define DOC_TYPES 5         // liczba typów dokumentów
 #define DOC_BUF_SIZE 5      // maksymalna liczba dokumentów danego typu w buforze
 #define DOC_CNT 3           // liczba dokumentów danego typu produkowanych jednorazowo przez pracownika
 
@@ -18,7 +18,6 @@ class DeanOffice : public Room
     DeanOffice(string name, int capacity);
     DeanOffice();
     ~DeanOffice();
-
 
     int **docbuf;                     // Bufory na dokumenty
     int *head;                       // Tutaj wpisujemy do buforów nowe elementy 
