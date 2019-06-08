@@ -32,6 +32,7 @@ DeanCrew::DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string 
 }
 
 DeanCrew::~DeanCrew(){}
+
 void DeanCrew::run()
 {
 	mainLoop();
@@ -39,9 +40,18 @@ void DeanCrew::run()
 
 void DeanCrew::mainLoop()
 {
-	travel(myDeanOffice);
-	while(1)
+	//travel(myDeanOffice);
+	for(int i=0;i<4;i++)
 	{
+		// cout<<"DeanCrew"<<deanCrew_nr<<" arrival"<<endl;
+		// unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);
+		// cout<<"mutex lock DeanCrew"<<deanCrew_nr<<endl;
+    	// while(myDeanOffice->cnt[deanCrew_nr] > 0)
+    	// { 
+        // 	myDeanOffice->docbuf_empty[deanCrew_nr].wait(docbuf_lck);
+		// 	cout<<"DeanCrew"<<deanCrew_nr<<" wait for empty signal\n";
+    	// }
+		// myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();
 		// czekaj na powiadomienie o braku dokumentów
 		// wtedy zacznij procedure produkcji
 		getStamps();
@@ -86,14 +96,16 @@ void DeanCrew::produce(int doc_cnt) // actualPosition musi być DeanOffice albo 
 {
 	for(int i=0; i<doc_cnt; i++)
 	{
-		makeDoc();
 		if(myDeanOffice->cnt[deanCrew_nr] == DOC_BUF_SIZE)
 		{
 			freeStamps();
 			break;
 		}
 		else
+		{
+			makeDoc();
 			timer->delay();
+		}
 	}
 }
 
@@ -102,7 +114,7 @@ void DeanCrew::makeDoc()
     unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);
     while(myDeanOffice->cnt[deanCrew_nr] >= DOC_BUF_SIZE) 
         myDeanOffice->docbuf_empty[deanCrew_nr].wait(docbuf_lck);
-    myDeanOffice->docbuf[deanCrew_nr][myDeanOffice->head] = rand();      // stworzenie dokumentu i włożenie na odpowiedni stos
+    myDeanOffice->docbuf[deanCrew_nr][myDeanOffice->head[deanCrew_nr]] = 999;      // stworzenie dokumentu i włożenie na odpowiedni stos
     myDeanOffice->head[deanCrew_nr] = (myDeanOffice->head[deanCrew_nr]+1) % DOC_BUF_SIZE; 
     myDeanOffice->cnt[deanCrew_nr]++;
 	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" stworzyla dokument typu "<<deanCrew_nr<<" stos: "<<myDeanOffice->cnt[deanCrew_nr]<<endl;		// napisz

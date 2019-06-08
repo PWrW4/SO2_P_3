@@ -20,7 +20,7 @@ class DeanOffice : public Room
     ~DeanOffice();
 
 
-    int *docbuf;                     // Bufory na dokumenty
+    int **docbuf;                     // Bufory na dokumenty
     int *head;                       // Tutaj wpisujemy do buforów nowe elementy 
     int *tail;                       // Stad pobieramy elementy z buforów          
     int *cnt;                        // Liczby elementow w buforach 
@@ -33,4 +33,5 @@ class DeanOffice : public Room
     mutex *stamps_mutex;             // Wzajemne wykluczanie dostępu do pieczątek
 
     void virtual_function();
+    void printDocBuf();
 };

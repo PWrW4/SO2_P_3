@@ -1,10 +1,13 @@
 #include <string>
+#include <iostream>
 #include "DeanOffice.hpp"
 
 	DeanOffice::DeanOffice(std::string name, int capacity)
         : Room(name, capacity, RoomType::E_DeanOffice)
     {
-        docbuf = new int[DOC_BUF_SIZE];
+        docbuf = new int*[DOC_TYPES];
+        for(int i=0;i<DOC_TYPES;i++)
+            docbuf[i] = new int[DOC_BUF_SIZE];
         head = new int[DOC_TYPES];
         tail = new int[DOC_TYPES];
         cnt = new int[DOC_TYPES];
@@ -24,7 +27,9 @@
     DeanOffice::DeanOffice()
         : Room("dziekanat", 10, RoomType::E_DeanOffice)
     {
-        docbuf = new int[DOC_BUF_SIZE];
+        docbuf = new int*[DOC_TYPES];
+        for(int i=0;i<DOC_TYPES;i++)
+            docbuf[i] = new int[DOC_BUF_SIZE];
         head = new int[DOC_TYPES];
         tail = new int[DOC_TYPES];
         cnt = new int[DOC_TYPES];
@@ -44,3 +49,19 @@
     }
 
     void DeanOffice::virtual_function(){}
+
+
+    void DeanOffice::printDocBuf()
+{
+    cout<<"typ  | stosy\n"<<"----------------------------";
+    for(int i=0;i<DOC_TYPES;i++)
+    {
+        cout<<endl<<i<<".   |";
+        //for(int j=0;j<doc_types_cnt[i];j++)
+        for(int j=0;j<DOC_TYPES;j++)
+        {
+            cout<<docbuf[i][j]<<"  ";
+        }
+    }
+    cout<<endl;
+}
