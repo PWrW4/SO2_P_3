@@ -24,7 +24,7 @@ using namespace std;
       delete timer;
    }
 
-   void Person::operator()() {}
+   void Person::run() {}
    void Person::mainLoop() {}
 
 

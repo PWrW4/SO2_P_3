@@ -18,7 +18,7 @@ class Room;
 class Person
 {
 public:
-    std::thread t;
+    std::thread person_thread;
     std::string name;
     std::string progress_bar;
     Timer *timer;
@@ -32,7 +32,7 @@ public:
     Person();
 	~Person();
 
-    virtual void operator()();      // method to override in upper classes, main thread function
+    virtual void run();      // method to override in upper classes, main thread function
     virtual void mainLoop();
     int travel(Room *destination);
 

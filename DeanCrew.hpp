@@ -6,7 +6,7 @@
 class DeanCrew : public Person
 {
     public:
-        DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition, Room *myDeanOffice);
+        DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status,Room *actualPosition, Room *myDeanOffice);
         DeanCrew();
         ~DeanCrew();
 
@@ -18,8 +18,8 @@ class DeanCrew : public Person
         int first_stamp, second_stamp;  // id przysługujących pracownikowi pieczątek, współdzielone
         bool left_first;                // która pieczątka pierwsza do zabrania -> rozwiązanie deadlock
         
+        void run();
         void mainLoop() override;
-        void operator()();
 
         void getStamps();
         void getStamp(int stamp);       // pobierz pieczątkę first_stamp lub second_stamp

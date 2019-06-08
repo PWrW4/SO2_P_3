@@ -1,11 +1,12 @@
 #include <ctime>
+#include <thread>
 #include <cstdlib>
 #include "DeanCrew.hpp"
 
 using namespace std;
 
-DeanCrew::DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition, Room *myDeanOffice)
-    : Person(name,_f,status,type,actualPosition),
+DeanCrew::DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status, Room *actualPosition, Room *myDeanOffice)
+    : Person(name,_f,status,E_DziekanatCrew,actualPosition),
     deanCrew_nr(deanCrew_nr),
     deanCrew_cnt(deanCrew_cnt),
     doc_type(doc_type)
@@ -26,15 +27,19 @@ DeanCrew::DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string 
 		left_first = false;
 		swap(first_stamp,second_stamp);		    // zamień jeśli trzeba
 	}
+
+	thread thr(&DeanCrew::run, this);
+	std::swap(thr, person_thread);
 }
 
-void DeanCrew::operator()()
+void DeanCrew::run()
 {
 	mainLoop();
 }
 
 void DeanCrew::mainLoop()
 {
+	travel(myDeanOffice);
 	while(1)
 	{
 		// czekaj na powiadomienie o braku dokumentów
