@@ -21,8 +21,12 @@ class DeanCrew : public Person
         void mainLoop() override;
         void operator()();
 
-        void getStamp(int stamp);
-        void produce();                 // wyprodukuj jeden dokument
+        void getStamps();
+        void getStamp(int stamp);       // pobierz pieczątkę first_stamp lub second_stamp
+        void freeStamps();
+        void freeStamp(int stamp);      // zwolnij pieczątkę first_stamp lub second_stamp
+        void produce(int doc_cnt);      // wyprodukuj doc_cnt dokumentów
+        void makeDoc();                 // wyprodukuj jeden dokument
 
 
 };
