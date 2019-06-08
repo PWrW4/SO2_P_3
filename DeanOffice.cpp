@@ -13,8 +13,12 @@
         docbuf_mutex = new mutex[DOC_TYPES];
 
         stamps = new bool[STAMPS_CNT];
+        for(int i=0;i<STAMPS_CNT; i++)
+        {
+            stamps[i] = true;
+        }
         stamps_cond = new condition_variable[STAMPS_CNT];
-        stamps_mutex = new mutex[STAMPS_CNT];
+        stamps_mutex = new mutex;
     }
 
     DeanOffice::DeanOffice()
@@ -30,7 +34,7 @@
 
         stamps = new bool[STAMPS_CNT];
         stamps_cond = new condition_variable[STAMPS_CNT];
-        stamps_mutex = new mutex[STAMPS_CNT];
+        stamps_mutex = new mutex;
     }
 
     DeanOffice::~DeanOffice()

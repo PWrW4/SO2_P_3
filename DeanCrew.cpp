@@ -32,6 +32,7 @@ DeanCrew::DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string 
 	std::swap(thr, person_thread);
 }
 
+DeanCrew::~DeanCrew(){}
 void DeanCrew::run()
 {
 	mainLoop();
@@ -58,13 +59,13 @@ void DeanCrew::getStamps()
 void DeanCrew::getStamp(int stamp) // actualPosition musi być DeanOffice albo zrealizowac inaczej dostęp
 {
 	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" czeka na pieczatke "<<stamp<<endl;			// napisz
-	unique_lock<std::mutex> stamp_lck(myDeanOffice->stamps_mutex[deanCrew_nr]);
+	unique_lock<std::mutex> stamp_lck(*myDeanOffice->stamps_mutex);
   	while (!myDeanOffice->stamps[stamp]) 
 		myDeanOffice->stamps_cond[stamp].wait(stamp_lck);								// Czekaj na pieczątke
 
 	myDeanOffice->stamps[stamp] = false;												// Zajmij
 	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" zajela pieczatke "<<stamp<<endl;			// napisz
-	myDeanOffice->stamps_mutex[deanCrew_nr].unlock();
+	myDeanOffice->stamps_mutex->unlock();
 }
 
 void DeanCrew::freeStamps()
@@ -75,10 +76,10 @@ void DeanCrew::freeStamps()
 
 void DeanCrew::freeStamp(int stamp)
 {
-	myDeanOffice->stamps_mutex[deanCrew_nr].lock();
+	myDeanOffice->stamps_mutex->lock();
 	myDeanOffice->stamps[stamp] = true;												// Zwolnij pieczatke
 	myDeanOffice->stamps_cond[stamp].notify_one();
-	myDeanOffice->stamps_mutex[deanCrew_nr].unlock();
+	myDeanOffice->stamps_mutex->unlock();
 	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" zwolnila pieczatke "<<stamp<<endl;		// napisz
 }
 
@@ -87,7 +88,13 @@ void DeanCrew::produce(int doc_cnt) // actualPosition musi być DeanOffice albo 
 	for(int i=0; i<doc_cnt; i++)
 	{
 		makeDoc();
-		timer->delay();
+		if(myDeanOffice->cnt[deanCrew_nr] == DOC_BUF_SIZE)
+		{
+			freeStamps();
+			break;
+		}
+		else
+			timer->delay();
 	}
 }
 
@@ -99,7 +106,7 @@ void DeanCrew::makeDoc()
     myDeanOffice->docbuf[deanCrew_nr][myDeanOffice->head] = rand();      // stworzenie dokumentu i włożenie na odpowiedni stos
     myDeanOffice->head[deanCrew_nr] = (myDeanOffice->head[deanCrew_nr]+1) % DOC_BUF_SIZE; 
     myDeanOffice->cnt[deanCrew_nr]++;
-	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" stworzyla dokument typu "<<deanCrew_nr<<"stos: "<<myDeanOffice->cnt[deanCrew_nr]<<endl;		// napisz
+	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" stworzyla dokument typu "<<deanCrew_nr<<" stos: "<<myDeanOffice->cnt[deanCrew_nr]<<endl;		// napisz
     myDeanOffice->docbuf_full[deanCrew_nr].notify_one();   
     myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();
 }
