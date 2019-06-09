@@ -37,13 +37,9 @@ int main(int argc, char *argv[])
     Floor *f = new Floor();
     Room *entr = new Entrance("Wejscie", 50);
 	Room *corr = new Corridor("korytarz", 100);
-    Room *dziekanat = new DeanOffice("dziekanat",6);
+    Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*2);
     display->DrawDeanOffice();
 
-    Student *s = new Student("Student",f,E_Entering,E_Student,dziekanat, display);
-    int a;
-    cin>>a;
-    display->PutChar(50,50,"dupa");
     for(int i = 0;i<STAMPS_CNT;i++)
     {
         dziekanatworkers[i] = new DeanCrew(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat,display);
@@ -52,6 +48,15 @@ int main(int argc, char *argv[])
 //        thread_tab[i] = new thread(*dziekanatworkers[i]);
         //thread_tab.push_back(thd);
     }
+    
+    for(int i = 0; i < STAMPS_CNT; i++)
+    {
+        Student *s = new Student(1,"Student",f,E_Entering,E_Student,dziekanat, display);
+        students.push_back(s);
+    }
+
+    //int a;
+    //cin>>a;
     
     while(1){};
 

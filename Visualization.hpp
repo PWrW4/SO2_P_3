@@ -27,10 +27,10 @@ using namespace std;
 class Visualization
 {
 public:
-    int DeanOfficeX = 50,
-        DeanOfficeY = 50;
+    int DeanOfficeX = 0,
+        DeanOfficeY = 0;
     int DeanOfficeRows = STAMPS_CNT,
-        DeanOfficeColumns = 7,
+        DeanOfficeColumns = 6+STAMPS_CNT,
         DeanOfficeColumnsWidth = 3;
 
     mutex *disp_mutex;

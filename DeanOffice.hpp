@@ -19,7 +19,9 @@ class DeanOffice : public Room
     DeanOffice();
     ~DeanOffice();
 
-    int **docbuf;                     // Bufory na dokumenty
+    vector<int> *ques;
+
+    int **docbuf;                    // Bufory na dokumenty
     int *head;                       // Tutaj wpisujemy do buforów nowe elementy 
     int *tail;                       // Stad pobieramy elementy z buforów          
     int *cnt;                        // Liczby elementow w buforach 

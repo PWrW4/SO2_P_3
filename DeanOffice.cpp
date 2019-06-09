@@ -1,10 +1,12 @@
 #include <string>
 #include <iostream>
+#include <vector>
 #include "DeanOffice.hpp"
 
 	DeanOffice::DeanOffice(std::string name, int capacity)
         : Room(name, capacity, RoomType::E_DeanOffice)
     {
+        ques = new vector<int>(STAMPS_CNT,0);
         docbuf = new int*[DOC_TYPES];
         for(int i=0;i<DOC_TYPES;i++)
             docbuf[i] = new int[DOC_BUF_SIZE];

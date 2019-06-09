@@ -43,7 +43,8 @@ void DeanCrew::run()
 void DeanCrew::mainLoop()
 {
 	//travel(myDeanOffice);
-	for(int i=0;i<4;i++)
+	//for(int i=0;i<4;i++)
+	while(1)
 	{
 		//cout<<"DeanCrew"<<deanCrew_nr<<" arrival"<<endl;
 		// unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);
@@ -56,6 +57,9 @@ void DeanCrew::mainLoop()
 		// myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();
 		// czekaj na powiadomienie o braku dokumentów
 		// wtedy zacznij procedure produkcji
+		unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]); 
+        	myDeanOffice->docbuf_empty[deanCrew_nr].wait(docbuf_lck);
+		myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();	
 		getStamps();
 		produce(DOC_CNT);
 		freeStamps();
@@ -92,6 +96,8 @@ void DeanCrew::freeStamps()
 	Put(DeanOfficeCols::used_stamps,0,to_string(1));
 	freeStamp(second_stamp);
 	Put(DeanOfficeCols::used_stamps,0,to_string(0));
+	Put(DeanOfficeCols::waiting,0,"  ");
+	Put(DeanOfficeCols::idle,0,"d"+to_string(deanCrew_nr));
 }
 
 void DeanCrew::freeStamp(int stamp)
@@ -105,7 +111,7 @@ void DeanCrew::freeStamp(int stamp)
 
 void DeanCrew::produce(int doc_cnt) 
 {
-	Put(DeanOfficeCols::waiting,0," ");
+	Put(DeanOfficeCols::waiting,0,"  ");
 	Put(DeanOfficeCols::working,0,"d"+to_string(deanCrew_nr));
 
 	for(int i=0; i<doc_cnt; i++)

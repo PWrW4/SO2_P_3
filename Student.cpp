@@ -1,13 +1,16 @@
 #include <chrono>
 #include <random>
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 #include "Student.hpp"
 #include "DeanOffice.hpp"
 
-Student::Student(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
+Student::Student(int Student_nr,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
 : Person(name,_f,status,type,actualPosition,Display)
 {
+    Student_nr = Student_nr;
     thread thr(&Student::run, this);
 	std::swap(thr, person_thread);
 }
@@ -43,19 +46,10 @@ void Student::run()
     if(generateRequest())
  //       travel(dziekanat);
  {
-    for(int i=0;i<STAMPS_CNT;i++)
+    for(int i=0;i<rand()%(STAMPS_CNT+1);i++)
     {
-        PutDeanOffice(stud,i,"s");
-        getDoc(i,i);
-        PutDeanOffice(stud,i," ");
-//      printRequest();
-//      timer->delay();
-    }
-    for(int i=0, j=STAMPS_CNT-1;i<STAMPS_CNT;i++,j--)
-    {
-        PutDeanOffice(stud,i,"s");
-        getDoc(i,j);
-        PutDeanOffice(stud,i," ");
+        int docs_type = rand()%STAMPS_CNT;       
+        getDoc(docs_type,rand()%STAMPS_CNT);      
 //      printRequest();
 //      timer->delay();
     }
@@ -116,11 +110,17 @@ void Student::getDoc(int doc_type, int doc_slot)
     if(actualPosition->type == E_DeanOffice)
         myDeanOffice = dynamic_cast<DeanOffice *>(actualPosition);
 
+    myDeanOffice->docbuf_mutex[doc_type].lock();
+    int index = myDeanOffice->ques->at(doc_type);
+    PutDeanOffice(stud+index,doc_type,"s");
+    myDeanOffice->ques->at(doc_type)++;
+    myDeanOffice->docbuf_mutex[doc_type].unlock();
+
     unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[doc_type]);
 //    cout<<"mutex lock Student\n";
     while(myDeanOffice->cnt[doc_type] <= 0)
     { 
-            // myDeanOffice->docbuf_empty[doc_type].notify_one(); // kolejka pusta, powiadom pania z dziekanatu 
+            myDeanOffice->docbuf_empty[doc_type].notify_one(); // kolejka pusta, powiadom pania z dziekanatu 
             // cout<<"Student signaled empty\n";
         myDeanOffice->docbuf_full[doc_type].wait(docbuf_lck);
 //        cout<<"Student wait for doc\n";
@@ -133,6 +133,12 @@ void Student::getDoc(int doc_type, int doc_slot)
     myDeanOffice->docbuf_mutex[doc_type].unlock();
 
     PutDeanOffice(docs,doc_type,to_string(myDeanOffice->cnt[doc_type]));
+
+    myDeanOffice->docbuf_mutex[doc_type].lock();
+    myDeanOffice->ques->at(doc_type)--;
+    index = myDeanOffice->ques->at(doc_type);
+    PutDeanOffice(stud+index,doc_type," ");
+    myDeanOffice->docbuf_mutex[doc_type].unlock();
 }
 
 void Student::checkStack(int doc_type)

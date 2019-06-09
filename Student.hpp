@@ -5,12 +5,13 @@
 class Student : public Person
 {
     public:
-        Student(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display);
+        Student(int Student_nr,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display);
         Student();
         ~Student();
         void mainLoop() override;
         void run();
 
+        int Student_nr;
         int **request;           // tablica na tablice dokumentów danych typów - request[i][j] pole na j-ty dokument typu i
         int *doc_types_cnt;      // tablica na ilości dokumentów danych typów
 
