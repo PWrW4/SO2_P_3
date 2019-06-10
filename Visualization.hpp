@@ -11,6 +11,10 @@
 #define ROWS_STEP 4
 #define COLUMNS_STEP 23
 
+#define WORKING_COLOR   COLOR_YELLOW
+#define WAITING_COLOR   COLOR_RED
+#define IDLE_COLOR      COLOR_GREEN
+
 enum DeanOfficeCols
 {
     percent = 0,
@@ -58,6 +62,7 @@ public:
     void Scroll(int step);
 
     void DrawDeanOffice();
+    void PutChar(int x, int y, string smth, int color);
     void PutChar(int x, int y, string smth);
 
 };

@@ -26,7 +26,8 @@ DeanCrew::DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string 
 		left_first = false;
 		swap(first_stamp,second_stamp);		    // zamień jeśli trzeba
 	}
-	Put(DeanOfficeCols::idle,0,"d"+to_string(deanCrew_nr));
+	Put(DeanOfficeCols::idle,0,"d"+to_string(deanCrew_nr),IDLE_COLOR);
+
 	Put(DeanOfficeCols::used_stamps,0,to_string(0));
 	Put(DeanOfficeCols::docs,0,to_string(this->myDeanOffice->cnt[deanCrew_nr]));
 	thread thr(&DeanCrew::run, this);
@@ -69,12 +70,14 @@ void DeanCrew::mainLoop()
 
 void DeanCrew::getStamps()
 {
-	Put(DeanOfficeCols::idle,0,"  ");
-	Put(DeanOfficeCols::waiting,0,"d"+to_string(deanCrew_nr));
+		Put(DeanOfficeCols::idle,0,"  ");
+
+		Put(DeanOfficeCols::waiting,0,"d"+to_string(deanCrew_nr),WAITING_COLOR);
+
 	getStamp(first_stamp);
-	Put(DeanOfficeCols::used_stamps,0,to_string(1));		
+		Put(DeanOfficeCols::used_stamps,0,to_string(1));		
 	getStamp(second_stamp);
-	Put(DeanOfficeCols::used_stamps,0,to_string(2));
+		Put(DeanOfficeCols::used_stamps,0,to_string(2));
 }
 void DeanCrew::getStamp(int stamp) // actualPosition musi być DeanOffice albo zrealizowac inaczej dostęp
 {
@@ -92,13 +95,13 @@ void DeanCrew::getStamp(int stamp) // actualPosition musi być DeanOffice albo z
 
 void DeanCrew::freeStamps()
 {
-	Put(DeanOfficeCols::waiting,0,"d"+to_string(deanCrew_nr));
+		Put(DeanOfficeCols::waiting,0,"d"+to_string(deanCrew_nr),WAITING_COLOR);
 	freeStamp(first_stamp);
-	Put(DeanOfficeCols::used_stamps,0,to_string(1));
+		Put(DeanOfficeCols::used_stamps,0,to_string(1));
 	freeStamp(second_stamp);
-	Put(DeanOfficeCols::used_stamps,0,to_string(0));
-	Put(DeanOfficeCols::waiting,0,"  ");
-	Put(DeanOfficeCols::idle,0,"d"+to_string(deanCrew_nr));
+		Put(DeanOfficeCols::used_stamps,0,to_string(0));
+		Put(DeanOfficeCols::waiting,0,"  ");
+		Put(DeanOfficeCols::idle,0,"d"+to_string(deanCrew_nr),IDLE_COLOR);
 }
 
 void DeanCrew::freeStamp(int stamp)
@@ -112,8 +115,8 @@ void DeanCrew::freeStamp(int stamp)
 
 void DeanCrew::produce(int doc_cnt) 
 {
-	Put(DeanOfficeCols::waiting,0,"  ");
-	Put(DeanOfficeCols::working,0,"d"+to_string(deanCrew_nr));
+		Put(DeanOfficeCols::waiting,0,"  ");
+		Put(DeanOfficeCols::working,0,"d"+to_string(deanCrew_nr),WORKING_COLOR);
 
 	for(int i=0; i<doc_cnt; i++)
 	{
@@ -153,6 +156,13 @@ void DeanCrew::makeDoc()
     myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();								// odblokuj stos
 }
 
+
+void DeanCrew::Put(int x, int y, string smth,int color)
+{
+	int xr = Display->DeanOfficeX + x *(Display->DeanOfficeColumnsWidth+1) + Display->DeanOfficeColumnsWidth/2;
+	int yr = Display->DeanOfficeY + deanCrew_nr+1;
+	Display->PutChar(xr,yr,smth,color);
+}
 
 void DeanCrew::Put(int x, int y, string smth)
 {

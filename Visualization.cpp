@@ -172,6 +172,16 @@ using namespace std;
         disp_mutex->unlock();
     }
 
+    void Visualization::PutChar(int x, int y, string smth, int color)
+    {
+        disp_mutex->lock();
+        attron( COLOR_PAIR( color ) );
+        mvprintw(y,x,smth.c_str());
+        attroff( COLOR_PAIR( color ) );
+        refresh();
+        disp_mutex->unlock();
+    }
+
     void Visualization::PutChar(int x, int y, string smth)
     {
         disp_mutex->lock();

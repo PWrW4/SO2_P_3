@@ -9,7 +9,7 @@
 #define STAMPS_CNT 5        // liczba pieczątek, niech będzie równa liczbie pracowników dziekanatu
 #define DOC_TYPES 5         // liczba typów dokumentów
 #define DOC_BUF_SIZE 5      // maksymalna liczba dokumentów danego typu w buforze
-#define DOC_CNT 3           // liczba dokumentów danego typu produkowanych jednorazowo przez pracownika
+#define DOC_CNT 1           // liczba dokumentów danego typu produkowanych jednorazowo przez pracownika
 
 using namespace std;
 

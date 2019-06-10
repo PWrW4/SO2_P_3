@@ -28,5 +28,6 @@ class DeanCrew : public Person
         void produce(int doc_cnt);      // wyprodukuj doc_cnt dokumentów
         void makeDoc();                 // wyprodukuj jeden dokument
 
+        void Put(int x, int y, string smth, int color);
         void Put(int x, int y, string smth);
 };
