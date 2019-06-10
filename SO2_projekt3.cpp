@@ -14,6 +14,7 @@
 #include "Visualization.hpp"
 #include "Student.hpp"
 #include "DeanCrew.hpp"
+#include "Checker.hpp"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ std::vector<Person*> profesors;
 //std::vector<DeanCrew*> dziekanatworkers;
 //std::vector<thread*> thread_tab;
 DeanCrew **dziekanatworkers = new DeanCrew*[STAMPS_CNT];
+Checker **szatniaworkers = new Checker*[2];
 thread **thread_tab = new thread*[STAMPS_CNT];
 int numberStudents;
 int numberProfesors;
@@ -37,8 +39,10 @@ int main(int argc, char *argv[])
     Floor *f = new Floor();
     Room *entr = new Entrance("Wejscie", 50);
 	Room *corr = new Corridor("korytarz", 100);
+	Room *cloak = new Cloakroom("szatnia", 40);
     Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*2);
     display->DrawDeanOffice();
+    display->DrawCloakroom();
 
     for(int i = 0;i<STAMPS_CNT;i++)
     {
@@ -48,6 +52,11 @@ int main(int argc, char *argv[])
 //        thread_tab[i] = new thread(*dziekanatworkers[i]);
         //thread_tab.push_back(thd);
     }
+
+    // for(int i = 0;i<STAMPS_CNT;i++)
+    // {
+    //     szatniaworkers[i] = new Checker(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat,display);
+    // }
     
     for(int i = 0; i < STAMPS_CNT; i++)
     {

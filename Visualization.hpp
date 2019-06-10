@@ -31,6 +31,8 @@ using namespace std;
 class Visualization
 {
 public:
+    int CloakroomX = 0,
+        CloakroomY = 45;
     int DeanOfficeX = 0,
         DeanOfficeY = 0;
     int DeanOfficeRows = STAMPS_CNT,
@@ -62,6 +64,7 @@ public:
     void Scroll(int step);
 
     void DrawDeanOffice();
+    void DrawCloakroom();
     void PutChar(int x, int y, string smth, int color);
     void PutChar(int x, int y, string smth);
 

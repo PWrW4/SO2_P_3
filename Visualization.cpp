@@ -172,6 +172,28 @@ using namespace std;
         disp_mutex->unlock();
     }
 
+    void Visualization::DrawCloakroom()
+    {
+        disp_mutex->lock();
+        for(int j=0;j<=16;j++)
+        {
+            mvprintw(CloakroomX,CloakroomY+j,"-");
+        }
+        for(int i=1;i<=5;i++)
+        {
+            mvprintw(CloakroomX+i,CloakroomY+16,"|");
+            mvprintw(CloakroomX+i,CloakroomY,"|");
+        }
+        for(int j=1;j<=15;j++)
+        {
+            mvprintw(CloakroomX+3,CloakroomY+j,"=");
+        }
+        mvprintw(CloakroomX+1,CloakroomY+5,"#");
+        mvprintw(CloakroomX+1,CloakroomY+12,"#");
+        refresh();
+        disp_mutex->unlock();
+    }
+
     void Visualization::PutChar(int x, int y, string smth, int color)
     {
         disp_mutex->lock();
