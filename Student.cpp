@@ -111,10 +111,13 @@ void Student::getDoc(int doc_type, int doc_slot)
         myDeanOffice = dynamic_cast<DeanOffice *>(actualPosition);
 
     myDeanOffice->docbuf_mutex[doc_type].lock();
+    myDeanOffice->que->at(doc_type).push_back(Student_nr);
     int index = myDeanOffice->ques->at(doc_type);
     PutDeanOffice(stud+index,doc_type,"s");
     myDeanOffice->ques->at(doc_type)++;
     myDeanOffice->docbuf_mutex[doc_type].unlock();
+
+    //while(myDeanOffice->que->at(doc_type).front() != Student_nr){};
 
     unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[doc_type]);
 //    cout<<"mutex lock Student\n";
@@ -135,9 +138,11 @@ void Student::getDoc(int doc_type, int doc_slot)
     PutDeanOffice(docs,doc_type,to_string(myDeanOffice->cnt[doc_type]));
 
     myDeanOffice->docbuf_mutex[doc_type].lock();
+    myDeanOffice->que->at(doc_type).erase( myDeanOffice->que->at(doc_type).begin());
     myDeanOffice->ques->at(doc_type)--;
     index = myDeanOffice->ques->at(doc_type);
     PutDeanOffice(stud+index,doc_type," ");
+
     myDeanOffice->docbuf_mutex[doc_type].unlock();
 }
 

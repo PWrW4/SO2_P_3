@@ -7,6 +7,7 @@
         : Room(name, capacity, RoomType::E_DeanOffice)
     {
         ques = new vector<int>(STAMPS_CNT,0);
+        que = new vector<vector<int>>(STAMPS_CNT,vector<int>(STAMPS_CNT,-1));
         docbuf = new int*[DOC_TYPES];
         for(int i=0;i<DOC_TYPES;i++)
             docbuf[i] = new int[DOC_BUF_SIZE];

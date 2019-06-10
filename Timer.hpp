@@ -4,8 +4,8 @@
 #include <unistd.h>
 
 #define DEBUG 0
-#define TIME_MIN 2500
-#define TIME_MAX 3500
+#define TIME_MIN 5000
+#define TIME_MAX 10000
 
 class Timer
 {

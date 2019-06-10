@@ -51,8 +51,9 @@ int main(int argc, char *argv[])
     
     for(int i = 0; i < STAMPS_CNT; i++)
     {
-        Student *s = new Student(1,"Student",f,E_Entering,E_Student,dziekanat, display);
+        Student *s = new Student(i,"Student",f,E_Entering,E_Student,dziekanat, display);
         students.push_back(s);
+        usleep(1000000);
     }
 
     //int a;

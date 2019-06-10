@@ -20,6 +20,7 @@ class DeanOffice : public Room
     ~DeanOffice();
 
     vector<int> *ques;
+    vector<vector<int>> *que;
 
     int **docbuf;                    // Bufory na dokumenty
     int *head;                       // Tutaj wpisujemy do buforów nowe elementy 
