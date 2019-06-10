@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     {
         Student *s = new Student(i,"Student",f,E_Entering,E_Student,dziekanat, display);
         students.push_back(s);
-        usleep(1000000);
+        usleep(100000);
     }
 
     //int a;

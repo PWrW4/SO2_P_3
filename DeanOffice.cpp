@@ -1,13 +1,17 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <queue>
 #include "DeanOffice.hpp"
 
 	DeanOffice::DeanOffice(std::string name, int capacity)
         : Room(name, capacity, RoomType::E_DeanOffice)
     {
         ques = new vector<int>(STAMPS_CNT,0);
-        que = new vector<vector<int>>(STAMPS_CNT,vector<int>(STAMPS_CNT,-1));
+        que = new vector<queue<int>>(STAMPS_CNT,queue<int>());
+        queue_mutex = new mutex[DOC_TYPES];
+        queue_changed = new condition_variable[DOC_TYPES];
+
         docbuf = new int*[DOC_TYPES];
         for(int i=0;i<DOC_TYPES;i++)
             docbuf[i] = new int[DOC_BUF_SIZE];
@@ -47,6 +51,7 @@
 
     DeanOffice::~DeanOffice()
     {
+        delete ques,que,queue_mutex,queue_changed;
         delete docbuf,head,tail,cnt,docbuf_empty,docbuf_full,docbuf_mutex;
         delete stamps,stamps_cond,stamps_mutex;
     }

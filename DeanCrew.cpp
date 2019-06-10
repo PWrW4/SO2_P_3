@@ -57,12 +57,13 @@ void DeanCrew::mainLoop()
 		// myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();
 		// czekaj na powiadomienie o braku dokumentów
 		// wtedy zacznij procedure produkcji
-		unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]); 
-        	myDeanOffice->docbuf_empty[deanCrew_nr].wait(docbuf_lck);
-		myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();	
-		getStamps();
-		produce(DOC_CNT);
-		freeStamps();
+		unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);	// blokada stosu
+			myDeanOffice->docbuf_full[deanCrew_nr].notify_all();						// wyślij powiadomienie o oczekiwaniu na prace do wykonania  
+        	myDeanOffice->docbuf_empty[deanCrew_nr].wait(docbuf_lck);					// czekaj na powiadomienie o pustym stosie dokumentów
+		myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();								// odblokuj stos
+		getStamps();																	// pobranie pieczątek
+		produce(DOC_CNT);																// produkuj N dokumentów
+		freeStamps();																	// zwolnij pieczątki
 	}
 }
 
@@ -79,13 +80,13 @@ void DeanCrew::getStamp(int stamp) // actualPosition musi być DeanOffice albo z
 {
 //	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" czeka na pieczatke "<<stamp<<endl;			// napisz
 
-	unique_lock<std::mutex> stamp_lck(*myDeanOffice->stamps_mutex);
-  	while (!myDeanOffice->stamps[stamp]) 
-		myDeanOffice->stamps_cond[stamp].wait(stamp_lck);								// Czekaj na pieczątke
+	unique_lock<std::mutex> stamp_lck(*myDeanOffice->stamps_mutex);						// blokuj pieczatki
+  	while (!myDeanOffice->stamps[stamp]) 												// czy pieczątka wolna
+		myDeanOffice->stamps_cond[stamp].wait(stamp_lck);								// Czekaj na zwolnienie
 
 	myDeanOffice->stamps[stamp] = false;												// Zajmij
-//	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" zajela pieczatke "<<stamp<<endl;			// napisz
 	myDeanOffice->stamps_mutex->unlock();
+//	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" zajela pieczatke "<<stamp<<endl;			// napisz
 
 }
 
@@ -104,7 +105,7 @@ void DeanCrew::freeStamp(int stamp)
 {
 	myDeanOffice->stamps_mutex->lock();
 	myDeanOffice->stamps[stamp] = true;												// Zwolnij pieczatke
-	myDeanOffice->stamps_cond[stamp].notify_one();
+	myDeanOffice->stamps_cond[stamp].notify_one();									// powiadom o zwolnieniu
 	myDeanOffice->stamps_mutex->unlock();
 //	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" zwolnila pieczatke "<<stamp<<endl;		// napisz
 }
@@ -116,21 +117,23 @@ void DeanCrew::produce(int doc_cnt)
 
 	for(int i=0; i<doc_cnt; i++)
 	{
-		if(myDeanOffice->cnt[deanCrew_nr] == DOC_BUF_SIZE)
+		myDeanOffice->docbuf_mutex[deanCrew_nr].lock();								// blokuj stos 
+		if(myDeanOffice->cnt[deanCrew_nr] == DOC_BUF_SIZE)							// sprawdź czy pełny
 		{
-			freeStamps();
-			break;
+			myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();
+			freeStamps();															// zwolnij pieczątki
+			break;																	// przerwij produkcję
 		}
 		else
 		{
+			myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();
 			for(int i=1;i<100;i++)
 			{
-				Put(DeanOfficeCols::percent,0,to_string(i));
+				Put(DeanOfficeCols::percent,0,to_string(i));						// postęp - procenty
 				timer->delay(100);
 			}
 			Put(DeanOfficeCols::percent,0,"  ");
-			makeDoc();
-			Put(DeanOfficeCols::docs,0,to_string(myDeanOffice->cnt[deanCrew_nr]));
+			makeDoc();																// twórz dokument
 		}
 	}
 	Put(DeanOfficeCols::working,0,"  ");
@@ -138,15 +141,16 @@ void DeanCrew::produce(int doc_cnt)
 
 void DeanCrew::makeDoc()
 {
-    unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);
-    while(myDeanOffice->cnt[deanCrew_nr] >= DOC_BUF_SIZE) 
-        myDeanOffice->docbuf_empty[deanCrew_nr].wait(docbuf_lck);
-    myDeanOffice->docbuf[deanCrew_nr][myDeanOffice->head[deanCrew_nr]] = rand()%(DOC_BUF_SIZE*DOC_BUF_SIZE);      // stworzenie dokumentu i włożenie na odpowiedni stos
-    myDeanOffice->head[deanCrew_nr] = (myDeanOffice->head[deanCrew_nr]+1) % DOC_BUF_SIZE; 
-    myDeanOffice->cnt[deanCrew_nr]++;
+    unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);	// blokuj stos
+    while(myDeanOffice->cnt[deanCrew_nr] >= DOC_BUF_SIZE) 							// sprawdź czy jest miejsce na nowy dokument
+        myDeanOffice->docbuf_empty[deanCrew_nr].wait(docbuf_lck);					// czekaj na zwolnienie miejsca (wątek blokuje pieczątki!) - problem zlikwidowany
+    myDeanOffice->docbuf[deanCrew_nr][myDeanOffice->head[deanCrew_nr]] = rand()%(DOC_BUF_SIZE*DOC_BUF_SIZE);      	// stworzenie dokumentu i włożenie na odpowiedni stos
+    myDeanOffice->head[deanCrew_nr] = (myDeanOffice->head[deanCrew_nr]+1) % DOC_BUF_SIZE;							// bufor cykliczny - aktualizacja głowy
+    myDeanOffice->cnt[deanCrew_nr]++;												// zwiększ ilość dokumentów na stosie
 //	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" stworzyla dokument typu "<<deanCrew_nr<<" stos: "<<myDeanOffice->cnt[deanCrew_nr]<<endl;		// napisz
-    myDeanOffice->docbuf_full[deanCrew_nr].notify_one();   
-    myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();
+    myDeanOffice->docbuf_full[deanCrew_nr].notify_all();							// powiadom o dodaniu dokumentu
+	Put(DeanOfficeCols::docs,0,to_string(myDeanOffice->cnt[deanCrew_nr]));   		// wizualizacja - aktualna liczba dokumentow na stosie
+    myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();								// odblokuj stos
 }
 
 

@@ -2,6 +2,7 @@
 #include <string>
 #include <mutex>
 #include <vector>
+#include <queue>
 #include <condition_variable>
 #include "Room.hpp"
 
@@ -20,7 +21,9 @@ class DeanOffice : public Room
     ~DeanOffice();
 
     vector<int> *ques;
-    vector<vector<int>> *que;
+    vector<queue<int>> *que;
+    mutex *queue_mutex;
+    condition_variable *queue_changed;
 
     int **docbuf;                    // Bufory na dokumenty
     int *head;                       // Tutaj wpisujemy do buforów nowe elementy 

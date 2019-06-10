@@ -110,40 +110,43 @@ void Student::getDoc(int doc_type, int doc_slot)
     if(actualPosition->type == E_DeanOffice)
         myDeanOffice = dynamic_cast<DeanOffice *>(actualPosition);
 
-    myDeanOffice->docbuf_mutex[doc_type].lock();
-    myDeanOffice->que->at(doc_type).push_back(Student_nr);
+    unique_lock<std::mutex> queue_lck(myDeanOffice->queue_mutex[doc_type]); // blokada kolejki
+    //myDeanOffice->queue_mutex[doc_type].lock();
+    myDeanOffice->que->at(doc_type).push(Student_nr);               // Student ustawia się w kolejce
     int index = myDeanOffice->ques->at(doc_type);
-    PutDeanOffice(stud+index,doc_type,"s");
-    myDeanOffice->ques->at(doc_type)++;
-    myDeanOffice->docbuf_mutex[doc_type].unlock();
+    PutDeanOffice(stud+index,doc_type,"s");                         // wizualizuj ustawienie się w kolejce na odpowiednim miejscu
+    myDeanOffice->ques->at(doc_type)++;                             // indeks kolejnego miejsca w kolejce
 
-    //while(myDeanOffice->que->at(doc_type).front() != Student_nr){};
+    while(myDeanOffice->que->at(doc_type).front() != Student_nr)                  // Student sprawdza czy jego kolej
+        myDeanOffice->queue_changed[doc_type].wait(queue_lck);      // czekaj na swoją kolej
+    myDeanOffice->queue_mutex[doc_type].unlock();                   // zwolnij kolejke
 
-    unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[doc_type]);
+
+    unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[doc_type]);   // blokada stosu
 //    cout<<"mutex lock Student\n";
     while(myDeanOffice->cnt[doc_type] <= 0)
     { 
-            myDeanOffice->docbuf_empty[doc_type].notify_one(); // kolejka pusta, powiadom pania z dziekanatu 
-            // cout<<"Student signaled empty\n";
-        myDeanOffice->docbuf_full[doc_type].wait(docbuf_lck);
+            myDeanOffice->docbuf_empty[doc_type].notify_one();      // kolejka pusta, powiadom pania z dziekanatu 
+            // cout<<"Student signaled empty doc stack\n";
+        myDeanOffice->docbuf_full[doc_type].wait(docbuf_lck);       // czekaj na pojawienie się dokumentów - odblokuj dostęp do stosu
 //        cout<<"Student wait for doc\n";
-    }
+    }                                                               // blokada stosu
     request[doc_type][doc_slot] = myDeanOffice->docbuf[doc_type][myDeanOffice->tail[doc_type]];      // pobranie dokumentu i włożenie na odpowiednie miejsce
     myDeanOffice->tail[doc_type] = (myDeanOffice->tail[doc_type]+1) % DOC_BUF_SIZE; 
     myDeanOffice->cnt[doc_type]--;
-//	cout<<"Student"<<name<<" odebrał dokument typu "<<doc_type<<" stos: "<<myDeanOffice->cnt[doc_type]<<endl;		// napisz
-    myDeanOffice->docbuf_empty[doc_type].notify_one();   
-    myDeanOffice->docbuf_mutex[doc_type].unlock();
+    PutDeanOffice(docs,doc_type,to_string(myDeanOffice->cnt[doc_type]));    // aktualizacja stanu stosu
+    myDeanOffice->docbuf_empty[doc_type].notify_one();              // powiadom pania z dziekanatu o zwolnionym miejscu na stosie w razie jakby czekała
+    myDeanOffice->docbuf_mutex[doc_type].unlock();                  // odblokuj dostęp do stosu
 
-    PutDeanOffice(docs,doc_type,to_string(myDeanOffice->cnt[doc_type]));
 
-    myDeanOffice->docbuf_mutex[doc_type].lock();
-    myDeanOffice->que->at(doc_type).erase( myDeanOffice->que->at(doc_type).begin());
-    myDeanOffice->ques->at(doc_type)--;
+
+    myDeanOffice->queue_mutex[doc_type].lock();                     // blokada kolejki
+    myDeanOffice->que->at(doc_type).pop();                         // student był pierwszy, pobrał dokument, wychodzi z kolejki
+    myDeanOffice->ques->at(doc_type)--;                             // indeks zwolnionego miejsca w kolejce ( na końcu )
     index = myDeanOffice->ques->at(doc_type);
-    PutDeanOffice(stud+index,doc_type," ");
-
-    myDeanOffice->docbuf_mutex[doc_type].unlock();
+    PutDeanOffice(stud+index,doc_type," ");                         // wizualizacja zwolnionego miejsca i przesunięcia kolejki
+    myDeanOffice->queue_changed[doc_type].notify_all();             // powiadom studentów o zmianie kolejki - niech sprawdzą czy ich kolej
+    myDeanOffice->queue_mutex[doc_type].unlock();                   // zwolnij kolejkę
 }
 
 void Student::checkStack(int doc_type)
