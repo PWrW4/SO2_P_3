@@ -5,8 +5,8 @@ Checker::Checker(std::string name,Floor * _f, Status status, PersonType type,Roo
 {
     checkerId = id;
     c = dynamic_cast<Cloakroom *>(actualPosition);
-    // thread thr(&Student::mainLoop, this);
-	// std::swap(thr, person_thread);
+    thread thr(&Checker::mainLoop, this);
+	std::swap(thr, person_thread);
 }
 
 void Checker::mainLoop(){
