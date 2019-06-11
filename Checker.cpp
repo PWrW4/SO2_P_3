@@ -82,7 +82,7 @@ void Checker::mainLoop(){
                         else
                         {
                             c->mtx_rightWieszak.unlock();
-                            c->mtx_leftWieszak.lock()
+                            c->mtx_leftWieszak.lock();
                             std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
                             for (int i = 0; i < c->leftWieszak.size(); i++)
