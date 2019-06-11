@@ -8,6 +8,8 @@
 #include "DeanOffice.hpp"
 #include "Cloakroom.hpp"
 
+
+
 Student::Student(int Student_nr,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
 : Person(name,_f,status,type,actualPosition,Display)
 {

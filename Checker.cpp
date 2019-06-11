@@ -30,12 +30,12 @@ void Checker::mainLoop(){
                     if (rnd == 0)
                     {
                         std::unique_lock<std::mutex> wieszak(c->mtx_rightWieszak);
-                        c->rightWieszak.insert(k);
+                        c->rightWieszak.insert(c->rightWieszak.end(),k);
                     }
                     else
                     {
                         std::unique_lock<std::mutex> wieszak(c->mtx_leftWieszak);
-                        c->leftWieszak.insert(k);
+                        c->leftWieszak.insert(c->rightWieszak.end(),k);
                     }
                     lck_student.lock();
                     s->studentWaitBool = false;
@@ -59,7 +59,7 @@ void Checker::mainLoop(){
                         }
                         if (d != -1)
                         {
-                            c->leftWieszak.erase(c->leftWieszak() + d);
+                            c->leftWieszak.erase(c->leftWieszak.begin() + d);
                         }
                         c->mtx_leftWieszak.unlock();
                     }
@@ -76,7 +76,7 @@ void Checker::mainLoop(){
                         }
                         if (d != -1)
                         {
-                            c->rightWieszak.erase(c->leftWieszak() + d);
+                            c->rightWieszak.erase(c->leftWieszak.begin() + d);
                             c->mtx_rightWieszak.unlock();
                         }
                         else
@@ -94,7 +94,7 @@ void Checker::mainLoop(){
                             }
                             if (d != -1)
                             {
-                                c->leftWieszak.erase(c->leftWieszak() + d);
+                                c->leftWieszak.erase(c->leftWieszak.begin() + d);
                             }
                             c->mtx_leftWieszak.unlock();
                         }

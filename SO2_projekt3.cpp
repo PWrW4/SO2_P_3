@@ -6,7 +6,7 @@
 #include "Person.hpp"
 #include "Floor.hpp"
 #include "Classroom.hpp"
-#include "Cloakroom.hpp"
+// #include "Cloakroom.hpp"
 #include "Entrance.hpp"
 #include "Toilet.hpp"
 #include "Corridor.hpp"
@@ -15,6 +15,8 @@
 #include "Student.hpp"
 #include "DeanCrew.hpp"
 #include "Checker.hpp"
+
+class Cloakroom;
 
 using namespace std;
 

@@ -5,6 +5,8 @@
 #include <queue>
 #include "Student.hpp"
 
+class Student;
+
 class Cloakroom : public Room
 {
     public:

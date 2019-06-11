@@ -4,6 +4,8 @@
 #include <condition_variable>
 #include <mutex>
 
+// class Cloakroom;
+
 class Student : public Person
 {
     public:

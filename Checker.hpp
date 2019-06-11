@@ -4,7 +4,7 @@
 #include "Cloakroom.hpp"
 #include <mutex>
 #include "Student.hpp"
-
+#include <vector>
 
 class Checker : public Person
 {
