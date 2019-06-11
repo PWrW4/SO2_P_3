@@ -3,10 +3,14 @@
 Checker::Checker(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display, int id)
 : Person(name,_f,status,type,actualPosition,Display)
 {
+    drawLeftSlot("ls");
+    drawRightSlot("rs");
+    drawLeftWieszak("lw");
+    drawRightWieszak("rw");
     checkerId = id;
     c = dynamic_cast<Cloakroom *>(actualPosition);
-    thread thr(&Checker::mainLoop, this);
-	std::swap(thr, person_thread);
+    // thread thr(&Checker::mainLoop, this);
+	// std::swap(thr, person_thread);
 }
 
 void Checker::mainLoop(){
@@ -114,6 +118,35 @@ void Checker::mainLoop(){
         }
         
     }
+}
+
+void Checker::drawLeftSlot(std::string s){
+    std::unique_lock<std::mutex> locker_drawing(*Display->disp_mutex);
+    int xr = Display->CloakroomY + s1X;
+	int yr = Display->CloakroomX + s1Y;
+    locker_drawing.unlock();
+	Display->PutChar(xr,yr,s);
+}
+void Checker::drawRightSlot(std::string s){
+    std::unique_lock<std::mutex> locker_drawing(*Display->disp_mutex);
+    int xr = Display->CloakroomY + s2X;
+	int yr = Display->CloakroomX + s2Y;
+    locker_drawing.unlock();
+	Display->PutChar(xr,yr,s);
+}
+void Checker::drawLeftWieszak(std::string s){
+    std::unique_lock<std::mutex> locker_drawing(*Display->disp_mutex);
+    int xr = Display->CloakroomY + lwX;
+	int yr = Display->CloakroomX + lwY;
+    locker_drawing.unlock();
+	Display->PutChar(xr,yr,s);
+}
+void Checker::drawRightWieszak(std::string s){
+    std::unique_lock<std::mutex> locker_drawing(*Display->disp_mutex);
+    int xr = Display->CloakroomY + rwX;
+	int yr = Display->CloakroomX + rwY;
+    locker_drawing.unlock();
+	Display->PutChar(xr,yr,s);
 }
 
 void Checker::operator()(){}

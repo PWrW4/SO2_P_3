@@ -14,14 +14,19 @@ class Checker : public Person
         ~Checker();
         void mainLoop() override;
 
+        void drawLeftSlot(std::string s);
+        void drawRightSlot(std::string s);
+        void drawRightWieszak(std::string s);
+        void drawLeftWieszak(std::string s);
+
         int checkerId=-1;
 
         Cloakroom *c;
 
-        int s1X = 2;
-        int s2X = 2;
-        int s1Y = 5;
-        int s2Y = 9;
+        int s1X = 5;
+        int s1Y = 2;
+        int s2X = 9;
+        int s2Y = 2;
         int lwX = 3;
         int lwY = 1;
         int rwY = 1;

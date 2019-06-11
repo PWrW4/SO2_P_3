@@ -47,24 +47,24 @@ int main(int argc, char *argv[])
 
     for(int i = 0;i<STAMPS_CNT;i++)
     {
-        dziekanatworkers[i] = new DeanCrew(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat,display);
+        //dziekanatworkers[i] = new DeanCrew(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat,display);
  //       cout<<"stworzono pania z dziekanatu "<<i<<endl;
         //dziekanatworkers.push_back(pzd);
 //        thread_tab[i] = new thread(*dziekanatworkers[i]);
         //thread_tab.push_back(thd);
     }
 
-    // for(int i = 0;i<STAMPS_CNT;i++)
-    // {
-    //     szatniaworkers[i] = new Checker(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat,display);
-    // }
-    
-    for(int i = 0; i < STAMPS_CNT; i++)
+    for(int i = 0;i<2;i++)
     {
-        Student *s = new Student(i,"Student",f,E_Entering,E_Student,dziekanat, display);
-        students.push_back(s);
-        usleep(100000);
+        szatniaworkers[i] = new Checker("Szatniarka" + std::to_string(i+1),f,E_Entering,E_Student,dziekanat, display,i+1);
     }
+    
+    // for(int i = 0; i < STAMPS_CNT; i++)
+    // {
+    //     Student *s = new Student(i,"Student",f,E_Entering,E_Student,dziekanat, display);
+    //     students.push_back(s);
+    //     usleep(100000);
+    // }
 
     //int a;
     //cin>>a;
