@@ -15,8 +15,8 @@ Student::Student(int Student_nr,std::string name,Floor * _f, Status status, Pers
 {
     this->Student_nr = Student_nr;
     kurtka = Student_nr;
-    // thread thr(&Student::run, this);
-    thread thr(&Student::mainLoop, this);
+    thread thr(&Student::run, this);
+    // thread thr(&Student::mainLoop, this);
 	std::swap(thr, person_thread);
 }
 
@@ -78,19 +78,61 @@ void Student::mainLoop(){
     }    
 }
 
+// void Student::run()
+// {
+//     if(generateRequest())
+//  //       travel(dziekanat);
+//  {
+//     for(int i=0;i<rand()%(STAMPS_CNT+1);i++)
+//     {
+//         int docs_type = rand()%STAMPS_CNT;       
+//         getDoc(docs_type,rand()%STAMPS_CNT);      
+// //      printRequest();
+// //      timer->delay();
+//     }
+//  }
+// }
+//
 void Student::run()
 {
-    if(generateRequest())
- //       travel(dziekanat);
- {
-    for(int i=0;i<rand()%(STAMPS_CNT+1);i++)
+    int sleep = 0;
+    sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+    for (auto &r : f.floorRooms)
     {
-        int docs_type = rand()%STAMPS_CNT;       
-        getDoc(docs_type,rand()%STAMPS_CNT);      
-//      printRequest();
-//      timer->delay();
+        if (r->type == E_Corridor)
+        {
+            travel(r);
+        }
     }
- }
+    sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+    Room *cRoom = nullptr;
+    for (Room * r : f.floorRooms)
+    {
+        if (r->type == E_Cloakroom)
+        {
+            travel(r);
+            cRoom = r;
+        }
+    }
+
+    Cloakroom *c = dynamic_cast<Cloakroom *>(cRoom);
+    c->enterQueue(this);
+    // studentWaitBool = true;
+    // unique_lock<std::mutex> queue_lck(studentWaitMutex);
+    // while (studentWaitBool)
+    //     studentWaitCond.wait(queue_lck);
+
+    // sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+    // std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+    // for (auto &r : f.floorRooms)
+    // {
+    //     if (r->type == E_Corridor)
+    //     {
+    //         travel(r);
+    //     }
+    // }
 }
 
 void Student::DeanOfficeRoutine()

@@ -36,12 +36,20 @@ int main(int argc, char *argv[])
     // Room *strg = new Room("skladzik", 2, E_Storage);
     // Room *wc = new Toilet("kibelek", 2);
     // Room *classroom = new Classroom("salka",30);
+
     Visualization *display = new Visualization(ROWS,COLUMNS,ROWS_STEP,COLUMNS_STEP);
     Floor *f = new Floor();
-    Room *entr = new Entrance("Wejscie", 50);
+
+    Room *entr = new Entrance("Wejscie", 999);
 	Room *corr = new Corridor("korytarz", 100);
-	Room *cloak = new Cloakroom("szatnia", 40);
+	Room *cloak = new Cloakroom("szatnia", 26,display);
     Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*2);
+
+    f->floorRooms.insert(f->floorRooms.end(),entr);
+    f->floorRooms.insert(f->floorRooms.end(),corr);
+    f->floorRooms.insert(f->floorRooms.end(),cloak);
+    f->floorRooms.insert(f->floorRooms.end(),dziekanat);
+
     display->DrawDeanOffice();
     display->DrawCloakroom();
 
@@ -56,15 +64,16 @@ int main(int argc, char *argv[])
 
     for(int i = 0;i<2;i++)
     {
-        szatniaworkers[i] = new Checker("Szatniarka" + std::to_string(i+1),f,E_Entering,E_Student,dziekanat, display,i+1);
+        szatniaworkers[i] = new Checker("Szatniarka" + std::to_string(i+1),f,E_Working,E_CloakroomCrew,cloak, display,i+1);
     }
     
-    // for(int i = 0; i < STAMPS_CNT; i++)
-    // {
-    //     Student *s = new Student(i,"Student",f,E_Entering,E_Student,dziekanat, display);
-    //     students.push_back(s);
-    //     usleep(100000);
-    // }
+    for(int i = 0; i < 1/* STAMPS_CNT */; i++)
+    {
+        // Student *s = new Student(i,"Student",f,E_Entering,E_Student,dziekanat, display);
+        Student *s = new Student(i,"Student",f,E_Entering,E_Student,entr, display);
+        students.push_back(s);
+        usleep(100000);
+    }
 
     //int a;
     //cin>>a;

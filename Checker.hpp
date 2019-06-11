@@ -23,6 +23,8 @@ class Checker : public Person
 
         Cloakroom *c;
 
+        std::string chName;
+
         int s1X = 5;
         int s1Y = 2;
         int s2X = 9;

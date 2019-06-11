@@ -4,6 +4,7 @@
 #include <mutex>
 #include <vector>
 #include <queue>
+#include <thread>
 #include "Student.hpp"
 
 class Student;
@@ -11,14 +12,20 @@ class Student;
 class Cloakroom : public Room
 {
     public:
-    Cloakroom(std::string name, int capacity);
+    Cloakroom(std::string name, int capacity,Visualization * Display);
     Cloakroom();
     ~Cloakroom();
 
+    std::thread t;
+
+    Visualization * v;
+
     void enterQueue(Student* s);
 
-    void drawLQueue();
-    void drawRQueue();
+    void drawQueue();
+
+    void drawLQueue(int a);
+    void drawRQueue(int a);
 
     std::mutex mtx_leftWieszak;
     std::mutex mtx_rightWieszak;
