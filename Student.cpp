@@ -16,8 +16,8 @@ Student::Student(int Student_nr,std::string name,Floor * _f, Status status, Pers
     this->Student_nr = Student_nr;
     kurtka = Student_nr;
     //thread thr(&Student::run, this);
-    thread thr(&Student::mainLoop, this);
-	std::swap(thr, person_thread);
+    // thread thr(&Student::mainLoop, this);
+	// std::swap(thr, person_thread);
 }
 
 void Student::mainLoop(){
