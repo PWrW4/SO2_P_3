@@ -58,11 +58,11 @@ void Checker::mainLoop(){
                     }
                     else
                     {
+                        std::unique_lock<std::mutex> wieszak(c->mtx_leftWieszak);
                         drawLeftSlot("  ");
                         drawLeftWieszak(chName);
                         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-                        std::unique_lock<std::mutex> wieszak(c->mtx_leftWieszak);
-                        c->leftWieszak.insert(c->rightWieszak.end(),k);
+                        c->leftWieszak.insert(c->leftWieszak.end(),k);
                         drawLeftSlot(chName);
                         drawLeftWieszak("  ");
                     }
@@ -178,11 +178,11 @@ void Checker::mainLoop(){
                     }
                     else
                     {
+                        std::unique_lock<std::mutex> wieszak(c->mtx_leftWieszak);
                         drawRightSlot("  ");
                         drawLeftWieszak(chName);
                         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-                        std::unique_lock<std::mutex> wieszak(c->mtx_leftWieszak);
-                        c->leftWieszak.insert(c->rightWieszak.end(),k);
+                        c->leftWieszak.insert(c->leftWieszak.end(),k);
                         drawRightSlot(chName);
                         drawLeftWieszak("  ");
                     }
