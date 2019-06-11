@@ -1,3 +1,4 @@
+#pragma once
 #include "Room.hpp"
 #include <string>
 #include <thread>
