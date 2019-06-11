@@ -1,6 +1,8 @@
 #pragma once
 #include "Person.hpp"
 #include "Room.hpp"
+#include <condition_variable>
+#include <mutex>
 
 class Student : public Person
 {
@@ -15,6 +17,10 @@ class Student : public Person
         int **request;           // tablica na tablice dokumentów danych typów - request[i][j] pole na j-ty dokument typu i
         int *doc_types_cnt;      // tablica na ilości dokumentów danych typów
 
+        int kurtka;
+        std::condition_variable studentWaitCond;
+        std::mutex studentWaitMutex;
+        std::atomic<bool> studentWaitBool;
 
         void DeanOfficeRoutine();
         bool generateRequest(); // false gdy student nie potrzebuje żadnego dokumentu

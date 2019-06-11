@@ -1,13 +1,31 @@
 #pragma once
 #include "Person.hpp"
 #include "Room.hpp"
+#include "Cloakroom.hpp"
+#include <mutex>
+#include "Student.hpp"
+
 
 class Checker : public Person
 {
     public:
-        Checker(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display);
+        Checker(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display, int id);
         Checker();
         ~Checker();
         void mainLoop() override;
+
+        int checkerId=-1;
+
+        Cloakroom *c;
+
+        int s1X = 2;
+        int s2X = 2;
+        int s1Y = 5;
+        int s2Y = 9;
+        int lwX = 3;
+        int lwY = 1;
+        int rwY = 1;
+        int rwX = 10;
+
         void operator()();
 };

@@ -6,12 +6,15 @@
 #include <vector>
 #include "Student.hpp"
 #include "DeanOffice.hpp"
+#include "Cloakroom.hpp"
 
 Student::Student(int Student_nr,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
 : Person(name,_f,status,type,actualPosition,Display)
 {
-    Student_nr = Student_nr;
-    thread thr(&Student::run, this);
+    this->Student_nr = Student_nr;
+    kurtka = Student_nr;
+    //thread thr(&Student::run, this);
+    thread thr(&Student::mainLoop, this);
 	std::swap(thr, person_thread);
 }
 
@@ -25,16 +28,48 @@ void Student::mainLoop(){
         switch (t)
         {
         case E_Entrance:
+        {
             sleep = std::uniform_int_distribution<int>(15, 30)(rng);
-            std::this_thread::sleep_for(std::chrono::milliseconds(100*sleep));
-            //travel()
+            std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+            for (auto &r : f.floorRooms)
+            {
+                if (r->type == E_Corridor)
+                {
+                    travel(r);
+                }
+            }
+            sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+            Room *cRoom = nullptr;
+            for (auto &r : f.floorRooms)
+            {
+                if (r->type == E_Cloakroom)
+                {
+                    travel(r);
+                    cRoom = r;
+                }
+            }
+
+            Cloakroom *c = dynamic_cast<Cloakroom *>(cRoom);
+            c->enterQueue(this);
+            studentWaitBool = true;
+            unique_lock<std::mutex> queue_lck(studentWaitMutex);
+            while(studentWaitBool) studentWaitCond.wait(queue_lck);
+
+            sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+            for (auto &r : f.floorRooms)
+            {
+                if (r->type == E_Corridor)
+                {
+                    travel(r);
+                }
+            }
             break;
+        }
         case E_Corridor:
-            sleep = std::uniform_int_distribution<int>(15, 30)(rng);
-            std::this_thread::sleep_for(std::chrono::milliseconds(100*sleep));
-            //travel()
             break;
-        
+
         default:
             break;
         }

@@ -3,6 +3,7 @@
 #include <mutex>
 #include <vector>
 #include <queue>
+#include "Student.hpp"
 
 class Cloakroom : public Room
 {
@@ -11,14 +12,19 @@ class Cloakroom : public Room
     Cloakroom();
     ~Cloakroom();
 
+    void enterQueue(Student* s);
+
+    void drawLQueue();
+    void drawRQueue();
+
     std::mutex mtx_leftWieszak;
     std::mutex mtx_rightWieszak;
     std::vector<int> leftWieszak;
     std::vector<int> rightWieszak;
     std::mutex mtx_lq;
     std::mutex mtx_rq;
-    std::queue <int> ql;
-    std::queue <int> qr;
+    std::queue <Student*> ql;
+    std::queue <Student*> qr;
 
 
     void virtual_function();
