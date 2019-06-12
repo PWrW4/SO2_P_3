@@ -11,6 +11,7 @@ class Room
 {
 public:
 	std::string name;
+	std::mutex capMutex;
 	int capacity;
 	RoomType type;
 	std::mutex travelMutex;

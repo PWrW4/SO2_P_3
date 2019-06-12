@@ -194,6 +194,28 @@ using namespace std;
         disp_mutex->unlock();
     }
 
+    void Visualization::DrawCorridor(){
+        disp_mutex->lock();
+        for(int i=0;i<=10;i++)
+        {
+            mvprintw(CorridorX+i,CorridorY,"|");
+        }
+        for(int i=1;i<=17;i++)
+        {
+            mvprintw(0+i,CorridorY+100,"|");
+        }
+        for(int j=1;j<=100;j++)
+        {
+            mvprintw(0,0+j,"-");
+        }
+        for(int j=1;j<=99;j++)
+        {
+            mvprintw(CorridorX+10,CorridorY+j,"-");
+        }
+        refresh();
+        disp_mutex->unlock();
+    }
+
     void Visualization::DrawEnterance()
     {
         disp_mutex->lock();
