@@ -119,20 +119,20 @@ void Student::run()
 
     Cloakroom *c = dynamic_cast<Cloakroom *>(cRoom);
     c->enterQueue(this);
-    // studentWaitBool = true;
-    // unique_lock<std::mutex> queue_lck(studentWaitMutex);
-    // while (studentWaitBool)
-    //     studentWaitCond.wait(queue_lck);
+    studentWaitBool = true;
+    unique_lock<std::mutex> queue_lck(studentWaitMutex);
+    while (studentWaitBool)
+        studentWaitCond.wait(queue_lck);
 
-    // sleep = std::uniform_int_distribution<int>(15, 30)(rng);
-    // std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
-    // for (auto &r : f.floorRooms)
-    // {
-    //     if (r->type == E_Corridor)
-    //     {
-    //         travel(r);
-    //     }
-    // }
+    sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+    for (auto &r : f.floorRooms)
+    {
+        if (r->type == E_Corridor)
+        {
+            travel(r);
+        }
+    }
 }
 
 void Student::DeanOfficeRoutine()
