@@ -33,6 +33,8 @@ class Visualization
 public:
     int CloakroomX = 0,
         CloakroomY = 45;
+    int EnteranceX = 0,
+        EnteranceY = 62;
     int DeanOfficeX = 0,
         DeanOfficeY = 0;
     int DeanOfficeRows = STAMPS_CNT,
@@ -63,6 +65,7 @@ public:
     void FlushFork(int philosopher, bool isLeft);
     void Scroll(int step);
 
+    void DrawEnterance();
     void DrawDeanOffice();
     void DrawCloakroom();
     void PutChar(int x, int y, string smth, int color);

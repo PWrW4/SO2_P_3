@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
     Visualization *display = new Visualization(ROWS,COLUMNS,ROWS_STEP,COLUMNS_STEP);
     Floor *f = new Floor();
 
-    Room *entr = new Entrance("Wejscie", 999);
-	Room *corr = new Corridor("korytarz", 100);
+    Room *entr = new Entrance("Wejscie", 999, display);
+	Room *corr = new Corridor("korytarz", 100, display);
 	Room *cloak = new Cloakroom("szatnia", 26,display);
     Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*2);
 
@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
 
     display->DrawDeanOffice();
     display->DrawCloakroom();
+    display->DrawEnterance();
 
     for(int i = 0;i<STAMPS_CNT;i++)
     {

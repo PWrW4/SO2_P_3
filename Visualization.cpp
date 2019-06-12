@@ -194,6 +194,27 @@ using namespace std;
         disp_mutex->unlock();
     }
 
+    void Visualization::DrawEnterance()
+    {
+        disp_mutex->lock();
+        for(int j=0;j<=8;j++)
+        {
+            mvprintw(EnteranceX,EnteranceY+j,"-");
+        }
+        for(int i=1;i<=4;i++)
+        {
+            mvprintw(EnteranceX+i,EnteranceY+8,"|");
+            mvprintw(EnteranceX+i,EnteranceY,"|");
+        }
+        for(int j=1;j<=7;j++)
+        {
+            mvprintw(EnteranceX+4,EnteranceY+j,"-");
+        }
+        mvprintw(EnteranceX+4,EnteranceY+4," ");
+        refresh();
+        disp_mutex->unlock();
+    }
+
     void Visualization::PutChar(int x, int y, string smth, int color)
     {
         disp_mutex->lock();
