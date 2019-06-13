@@ -5,12 +5,13 @@
 #include "Visualization.hpp"
 #include "Room.hpp"
 #include "Person.hpp"
-#include "Student.hpp"
-#include "Lecturer.hpp"
+// #include "Student.hpp"
+// #include "Lecturer.hpp"
 #include <queue>
 #include <mutex>
 
-class Person;
+class Lecturer;
+class Student;
 
 class Classroom : public Room
 {

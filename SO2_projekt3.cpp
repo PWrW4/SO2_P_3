@@ -3,6 +3,7 @@
 #include <mutex>
 #include <thread>
 
+#include "Lecturer.hpp"
 #include "Person.hpp"
 #include "Floor.hpp"
 #include "Classroom.hpp"
@@ -49,6 +50,8 @@ int main(int argc, char *argv[])
     {
         Room * l = new Classroom("klasa" + to_string(i), 9,display, i);
         f->floorRooms.insert(f->floorRooms.end(),l);
+        Lecturer * Lec = new Lecturer("Profesor" + std::to_string(i),f,E_Working,E_Professor,l, display);
+        profesors.push_back(Lec);
     }
     
 

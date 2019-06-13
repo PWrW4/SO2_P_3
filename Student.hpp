@@ -3,6 +3,15 @@
 #include "Room.hpp"
 #include <condition_variable>
 #include <mutex>
+#include <chrono>
+#include <random>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+#include "DeanOffice.hpp"
+#include "Cloakroom.hpp"
+#include "Classroom.hpp"
 
 
 class Student : public Person
