@@ -42,7 +42,7 @@ void Student::mainLoop()
 
             timer->delay(2500,3500); // wait for random time between 2,5s and 3,5s
 
-            switch(room_type%4)
+            switch(room_type%5)
             {
                 case 0:
                     rtype =  E_Entrance;
@@ -55,6 +55,9 @@ void Student::mainLoop()
                     break;
                 case 3:
                     rtype = E_Classroom;
+                    break;
+                case 4:
+                    rtype = E_Toilet;
                     break;
                 default:
                     break;
@@ -98,6 +101,9 @@ void Student::mainLoop()
         }
         case E_Classroom:
             ClassroomRoutine();
+            break;
+        case E_Toilet:
+            ToiletRoutine();
             break;
         default:
             break;
@@ -249,6 +255,28 @@ void Student::ClassroomRoutine(){
     }
 }
 
+void Student::ToiletRoutine()
+{
+    Room *cRoom;
+    cRoom = this->actualPosition;
+    Toilet *myToilet; 
+    if(cRoom->type == E_Toilet)
+        myToilet = dynamic_cast<Toilet *>(cRoom);
+
+    if(ToiletDecide() == 2)
+        OccupyCubi(myToilet);
+    else
+        OccupyUri(myToilet);
+
+    for (auto &r : f.floorRooms)
+    {
+        if (r->type == E_Corridor)
+        {
+            travel(r);
+        }
+    }
+}
+
 bool Student::generateRequest()
 {
     request = new int*[DOC_TYPES];            // tablica na tablice dokumentów danych typów
@@ -349,8 +377,63 @@ void Student::getDoc(int doc_type, int doc_slot)
     myDeanOffice->queue_mutex[doc_type].unlock();                   // zwolnij kolejkę
 }
 
-void Student::checkStack(int doc_type)
+int Student::ToiletDecide()
 {
+    int random = rand()%100;
+    if(random<34)
+        return 2;
+    else
+        return 1;
+}
+
+void Student::OccupyUri(Toilet *t)
+{
+
+}
+
+void Student::OccupyCubi(Toilet *t)
+{
+    t->cub_wait_mutex->lock();
+    t->cub_wait++;
+    PutToilet(5,5,to_string(t->cub_wait),WAITING_COLOR);
+    t->cub_wait_mutex->unlock();
+    bool found = false;
+    int cub_index;
+
+    unique_lock<std::mutex> cub_lck(*t->cub_mutex);
+    while(!found)
+    {
+        for(int i=0;i<CUBICLE_CNT;i++)
+        {
+            if(!t->cubicle[i])
+            {
+                t->cub_wait_mutex->lock();
+                t->cub_wait--;
+                PutToilet(5,5,to_string(t->cub_wait),WAITING_COLOR);
+                PutToilet(5,11+CUBICLE_W*i,"S",WORKING_COLOR);
+                PutToilet(3,11+CUBICLE_W*i,"__",WORKING_COLOR);
+                t->cub_wait_mutex->unlock();
+
+                t->cubicle[i] = true;
+                found = true;
+                cub_index = i;
+                break;
+            }
+        }    
+        t->cub_cond->wait(cub_lck);
+    }
+
+    t->cub_mutex->unlock();
+
+    timer->delay(2500,3500);
+
+    t->cub_mutex->lock();
+    t->cubicle[cub_index] = false;
+        PutToilet(5,11+CUBICLE_W*cub_index," ",WORKING_COLOR);
+        PutToilet(3,11+CUBICLE_W*cub_index," \\",WORKING_COLOR);
+    found = false;
+    t->cub_cond->notify_all();
+    t->cub_mutex->unlock();
 
 }
 
@@ -365,10 +448,25 @@ void Student::randomNextPosition()
         r = f.floorRooms[rand_index];
     }
 }
+
 void Student::PutDeanOffice(int x, int y, string smth)
 {
 	int xr = Display->DeanOfficeX + x *(Display->DeanOfficeColumnsWidth+1) + Display->DeanOfficeColumnsWidth/2;
 	int yr = Display->DeanOfficeY + y+1;
+	Display->PutChar(xr,yr,smth);
+}
+
+void Student::PutToilet(int x, int y, string smth,int color)
+{
+	int xr = Display->ToiletX + x;
+	int yr = Display->ToiletY + y;
+	Display->PutChar(xr,yr,smth,color);
+}
+
+void Student::PutToilet(int x, int y, string smth)
+{
+	int xr = Display->ToiletX + x;
+	int yr = Display->ToiletY + y;
 	Display->PutChar(xr,yr,smth);
 }
 
