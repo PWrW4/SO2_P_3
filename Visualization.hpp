@@ -5,6 +5,7 @@
 #include <mutex>
 #include <unistd.h>
 #include "DeanOffice.hpp"
+#include "Toilet.hpp"
 
 #define ROWS 10
 #define COLUMNS 4
@@ -41,6 +42,8 @@ public:
         CorridorY = 0;
     int ClassRoomX = 17,
         ClassRoomY = 0;
+    int ToiletX = 0,
+        ToiletY = 71;
     int DeanOfficeRows = STAMPS_CNT,
         DeanOfficeColumns = 6+STAMPS_CNT,
         DeanOfficeColumnsWidth = 3;
@@ -74,6 +77,7 @@ public:
     void DrawEnterance();
     void DrawDeanOffice();
     void DrawCloakroom();
+    void DrawToilet();
     void PutChar(int x, int y, string smth, int color);
     void PutChar(int x, int y, string smth);
 

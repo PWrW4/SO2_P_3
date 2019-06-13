@@ -273,6 +273,53 @@ using namespace std;
         disp_mutex->unlock();
     }
 
+    void Visualization::DrawToilet()
+    {
+        disp_mutex->lock();
+        for(int j=0;j<=TOILET_COL*TOILET_COL_W+1;j++)
+        {
+            mvprintw(ToiletX,ToiletY+j,"-");
+        }
+        for(int i=1;i<=TOILET_ROW*TOILET_ROW_W;i++)
+        {
+            mvprintw(ToiletX+i,ToiletY,"|");
+            mvprintw(ToiletX+i,ToiletY+TOILET_COL*TOILET_COL_W,"|");
+        }
+        for(int j=0;j<=TOILET_COL*TOILET_COL_W;j++)
+        {
+            if(!(j==1 || j==2))
+                mvprintw(ToiletX+TOILET_ROW+1,ToiletY+j,"=");
+        }
+
+        for(int j=9;j<TOILET_COL*TOILET_COL_W;j++)
+        {
+            if(j%2 == 1)
+                mvprintw(ToiletX+1,ToiletY+j,"|");
+            else
+                mvprintw(ToiletX+1,ToiletY+j,"U");
+            
+        }
+
+        for(int j=9;j<TOILET_COL*TOILET_COL_W;j++)
+        {
+            if(j%4 == 0)
+                mvprintw(ToiletX+3,ToiletY+j,"\\");
+            if(j%4 == 1)
+            {
+                mvprintw(ToiletX+3,ToiletY+j,"_");
+                mvprintw(ToiletX+4,ToiletY+j,"|");
+                mvprintw(ToiletX+5,ToiletY+j,"|");
+            }
+            if(j%4 == 2)
+                mvprintw(ToiletX+3,ToiletY+j,"_");
+        }
+
+
+
+        refresh();
+        disp_mutex->unlock();
+    }
+
     void Visualization::PutChar(int x, int y, string smth, int color)
     {
         disp_mutex->lock();
