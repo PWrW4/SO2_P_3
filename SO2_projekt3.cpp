@@ -45,6 +45,13 @@ int main(int argc, char *argv[])
 	Room *cloak = new Cloakroom("szatnia", 26,display);
     Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*(STAMPS_CNT+1));
 
+    for (int i = 0; i < 5; i++)
+    {
+        Room * l = new Classroom("klasa" + to_string(i), 9,display, i);
+        f->floorRooms.insert(f->floorRooms.end(),l);
+    }
+    
+
     f->floorRooms.insert(f->floorRooms.end(),entr);
     f->floorRooms.insert(f->floorRooms.end(),corr);
     f->floorRooms.insert(f->floorRooms.end(),cloak);
@@ -54,6 +61,7 @@ int main(int argc, char *argv[])
     display->DrawCloakroom();
     display->DrawEnterance();
     display->DrawCorridor();
+    display->DrawClassroom();
 
     for(int i = 0;i<STAMPS_CNT;i++)
     {

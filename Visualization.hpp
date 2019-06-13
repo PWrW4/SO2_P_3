@@ -39,6 +39,8 @@ public:
         DeanOfficeY = 0;
     int CorridorX = 7,
         CorridorY = 0;
+    int ClassRoomX = 17,
+        ClassRoomY = 0;
     int DeanOfficeRows = STAMPS_CNT,
         DeanOfficeColumns = 6+STAMPS_CNT,
         DeanOfficeColumnsWidth = 3;
@@ -67,6 +69,7 @@ public:
     void FlushFork(int philosopher, bool isLeft);
     void Scroll(int step);
 
+    void DrawClassroom();
     void DrawCorridor();
     void DrawEnterance();
     void DrawDeanOffice();

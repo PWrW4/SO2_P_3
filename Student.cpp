@@ -1,12 +1,13 @@
+#include "Student.hpp"
 #include <chrono>
 #include <random>
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-#include "Student.hpp"
 #include "DeanOffice.hpp"
 #include "Cloakroom.hpp"
+#include "Classroom.hpp"
 
 
 
@@ -14,7 +15,7 @@ Student::Student(int Student_nr,std::string name,Floor * _f, Status status, Pers
 : Person(name,_f,status,type,actualPosition,Display)
 {
     this->Student_nr = Student_nr;
-    kurtka = Student_nr;
+    kurtka = this->Student_nr;
     thread thr(&Student::run, this);
     // thread thr(&Student::mainLoop, this);
 	std::swap(thr, person_thread);
@@ -41,7 +42,7 @@ void Student::mainLoop()
 
             timer->delay(2500,3500); // wait for random time between 2,5s and 3,5s
 
-            switch(room_type%3)
+            switch(room_type%4)
             {
                 case 0:
                     rtype =  E_Entrance;
@@ -52,14 +53,36 @@ void Student::mainLoop()
                 case 2:
                     rtype =  E_DeanOffice;
                     break;
+                case 3:
+                    rtype = E_Classroom;
+                    break;
                 default:
                     break;
             }
             Room *cRoom = nullptr;
+            int cId = 0;
+            if (rtype==E_Classroom)
+            {
+                cId = rand() % 5;
+            }
+            
             for (Room * r : f.floorRooms)
             {
-                if (r->type == rtype)
-                    while(travel(r)==-1);
+                if (rtype == E_Classroom)
+                {
+                    if (r->type == rtype)
+                    {
+                        if (dynamic_cast<Classroom *>(r)->id == cId)
+                        {
+                            travel(r);
+                        }
+                    }
+                }
+                else
+                {
+                    if (r->type == rtype)
+                        travel(r);
+                }
             }
             break;
         }
@@ -73,6 +96,9 @@ void Student::mainLoop()
             CloakroomRoutine();
             break;
         }
+        case E_Classroom:
+            ClassroomRoutine();
+            break;
         default:
             break;
         }
@@ -164,7 +190,7 @@ void Student::DeanOfficeRoutine()
 
 void Student::EntranceRoutine()
 {
-    timer->delay(15,30);
+    timer->delay(3000,5000);
 
     for (auto &r : f.floorRooms)
     {
@@ -193,6 +219,32 @@ void Student::CloakroomRoutine()
         if (r->type == E_Corridor)
         {
             while(travel(r)==-1);
+        }
+    }
+}
+
+void Student::ClassroomRoutine(){
+    Room *cRoom;
+    cRoom = this->actualPosition;
+    Classroom *c = dynamic_cast<Classroom *>(cRoom);
+    c->studentEnter(this);
+    zaliczone = false;
+    studentWaitBool = true;
+    unique_lock<std::mutex> class_lck(studentWaitMutex);
+    
+    while (!zaliczone)
+    {
+        while(studentWaitBool) 
+            studentWaitCond.wait(class_lck);
+    }      
+
+    timer->delay(15,30);
+    
+    for (auto &r : f.floorRooms)
+    {
+        if (r->type == E_Corridor)
+        {
+            travel(r);
         }
     }
 }
@@ -319,3 +371,62 @@ void Student::PutDeanOffice(int x, int y, string smth)
 	int yr = Display->DeanOfficeY + y+1;
 	Display->PutChar(xr,yr,smth);
 }
+
+// void Student::run()
+// {
+//     Room *cRoom = nullptr;
+//     int sleep = 0;
+
+//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+//     for (auto &r : f.floorRooms)
+//     {
+//         if (r->type == E_Corridor)
+//         {
+//             while (travel(r) == -1)
+//                 ;
+//         }
+//     }
+//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+
+//     for (Room *r : f.floorRooms)
+//     {
+//         if (r->type == E_Cloakroom)
+//         {
+//             while (travel(r) == -1)
+//                 ;
+//             cRoom = r;
+//         }
+//     }
+
+//     Cloakroom *c = dynamic_cast<Cloakroom *>(cRoom);
+//     c->enterQueue(this);
+//     studentWaitBool = true;
+//     unique_lock<std::mutex> queue_lck(studentWaitMutex);
+//     while (studentWaitBool)
+//         studentWaitCond.wait(queue_lck);
+
+//     //ten sleap nie potrzebny
+//     // sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+//     // std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+//     for (auto &r : f.floorRooms)
+//     {
+//         if (r->type == E_Corridor)
+//         {
+//             while (travel(r) == -1)
+//                 ;
+//         }
+//     }
+
+//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+//     for (Room *r : f.floorRooms)
+//     {
+//         if (r->type == E_Entrance)
+//         {
+//             while (travel(r) == -1)
+//                 ;
+//         }
+//     }
+// }
