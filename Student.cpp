@@ -164,7 +164,7 @@ void Student::DeanOfficeRoutine()
 
 void Student::EntranceRoutine()
 {
-    timer->delay(15,30);
+    timer->delay(3000,5000);
 
     for (auto &r : f.floorRooms)
     {
