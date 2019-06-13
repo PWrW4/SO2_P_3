@@ -248,12 +248,17 @@ void Student::getDoc(int doc_type, int doc_slot)
 
     unique_lock<std::mutex> queue_lck(myDeanOffice->queue_mutex[doc_type]); // blokada kolejki
     //myDeanOffice->queue_mutex[doc_type].lock();
+    while(myDeanOffice->que->at(doc_type).size()>=STAMPS_CNT)                    // sprawdź czy jest miejsce
+        myDeanOffice->queue_changed[doc_type].wait(queue_lck);      // czekaj na wolne miejsce w kolejce
+
     myDeanOffice->que->at(doc_type).push(Student_nr);               // Student ustawia się w kolejce
     int index = myDeanOffice->ques->at(doc_type);
     PutDeanOffice(stud+index,doc_type,"s");                         // wizualizuj ustawienie się w kolejce na odpowiednim miejscu
     myDeanOffice->ques->at(doc_type)++;                             // indeks kolejnego miejsca w kolejce
 
-    while(myDeanOffice->que->at(doc_type).front() != Student_nr)                  // Student sprawdza czy jego kolej
+//Display->PutChar(50,50+doc_type,to_string(myDeanOffice->ques->at(doc_type)));
+
+    while(myDeanOffice->que->at(doc_type).front() != Student_nr)    // Student sprawdza czy jego kolej
         myDeanOffice->queue_changed[doc_type].wait(queue_lck);      // czekaj na swoją kolej
     myDeanOffice->queue_mutex[doc_type].unlock();                   // zwolnij kolejke
 
@@ -281,8 +286,11 @@ void Student::getDoc(int doc_type, int doc_slot)
 
 
     myDeanOffice->queue_mutex[doc_type].lock();                     // blokada kolejki
-    myDeanOffice->que->at(doc_type).pop();                         // student był pierwszy, pobrał dokument, wychodzi z kolejki
+    myDeanOffice->que->at(doc_type).pop();                          // student był pierwszy, pobrał dokument, wychodzi z kolejki
     myDeanOffice->ques->at(doc_type)--;                             // indeks zwolnionego miejsca w kolejce ( na końcu )
+    
+//Display->PutChar(50,50+doc_type,to_string(myDeanOffice->ques->at(doc_type)));
+
     index = myDeanOffice->ques->at(doc_type);
     PutDeanOffice(stud+index,doc_type," ");                         // wizualizacja zwolnionego miejsca i przesunięcia kolejki
     myDeanOffice->queue_changed[doc_type].notify_all();             // powiadom studentów o zmianie kolejki - niech sprawdzą czy ich kolej

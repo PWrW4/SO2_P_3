@@ -59,10 +59,11 @@ void DeanCrew::mainLoop()
 		// czekaj na powiadomienie o braku dokumentów
 		// wtedy zacznij procedure produkcji
 		unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);	// blokada stosu
-		myDeanOffice->docbuf_full[deanCrew_nr].notify_all();							// wyślij powiadomienie o oczekiwaniu na prace do wykonania  
         while(!myDeanOffice->isWorking[deanCrew_nr])
+		{
+			myDeanOffice->docbuf_full[deanCrew_nr].notify_all();							// wyślij powiadomienie o oczekiwaniu na prace do wykonania  
 			myDeanOffice->docbuf_empty[deanCrew_nr].wait(docbuf_lck);					// czekaj na powiadomienie o pustym stosie dokumentów
-
+		}
 		myDeanOffice->docbuf_mutex[deanCrew_nr].unlock();								// odblokuj stos
 		getStamps();																	// pobranie pieczątek
 		produce(DOC_CNT);																// produkuj N dokumentów
