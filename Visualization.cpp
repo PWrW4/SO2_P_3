@@ -194,6 +194,41 @@ using namespace std;
         disp_mutex->unlock();
     }
 
+    void Visualization::DrawClassroom()
+    {
+        int x = ClassRoomX;
+        int y = ClassRoomY;
+        disp_mutex->lock();
+        for (int k = 0; k < 5; k++)
+        {
+            for (int i = 1; i <= 11; i++)
+            {
+                mvprintw(x + i, y + 9, "|");                
+                mvprintw(x + i, y, "|");
+                if (i == 1 || i == 4 || i == 7 || i == 10)
+                {
+                    mvprintw(x + i, y+1, "#");
+                    mvprintw(x + i, y+8, "#");
+                }
+                
+            }
+            for (int j = 0; j < 10; j++)
+            {
+                mvprintw(x + 12, y + j, "-");
+            }
+            for (int j = 0; j < 10; j++)
+            {
+                mvprintw(x, y + j, "-");
+            }
+            mvprintw(x, y + 4 , "  ");
+            y+=9;
+        }
+        
+
+        refresh();
+        disp_mutex->unlock();
+    }
+
     void Visualization::DrawCorridor(){
         disp_mutex->lock();
         for(int i=0;i<=10;i++)
@@ -232,7 +267,8 @@ using namespace std;
         {
             mvprintw(EnteranceX+4,EnteranceY+j,"-");
         }
-        mvprintw(EnteranceX+4,EnteranceY+4," ");
+        mvprintw(EnteranceX+4,EnteranceY+3," ");
+        mvprintw(EnteranceX+4,EnteranceY+5," ");
         refresh();
         disp_mutex->unlock();
     }

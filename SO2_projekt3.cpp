@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
     display->DrawCloakroom();
     display->DrawEnterance();
     display->DrawCorridor();
+    display->DrawClassroom();
 
     for(int i = 0;i<STAMPS_CNT;i++)
     {
