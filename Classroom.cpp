@@ -1,5 +1,7 @@
 
 #include "Classroom.hpp"
+#include "Student.hpp"
+#include "Lecturer.hpp"
 
 Classroom::Classroom(std::string name, int capacity, Visualization *Display, int _id)
     : Room(name, capacity, RoomType::E_Classroom)

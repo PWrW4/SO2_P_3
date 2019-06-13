@@ -5,8 +5,6 @@
 #include "Visualization.hpp"
 #include "Room.hpp"
 #include "Person.hpp"
-// #include "Student.hpp"
-// #include "Lecturer.hpp"
 #include <queue>
 #include <mutex>
 

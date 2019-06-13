@@ -4,7 +4,6 @@
 #include <thread>
 #include "Room.hpp"
 #include "Visualization.hpp"
-// #include "Student.hpp"
 #include <mutex>
 #include <unistd.h>
 #define SLOWING_FACTOR 1

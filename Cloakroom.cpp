@@ -1,4 +1,5 @@
 #include "Cloakroom.hpp"
+#include "Student.hpp"
 
 Cloakroom::Cloakroom(std::string name, int capacity,Visualization * Display)
     : Room(name, capacity, RoomType::E_Cloakroom)

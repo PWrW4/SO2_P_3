@@ -1,6 +1,7 @@
 #include <string>
 #include "Corridor.hpp"
 #include <iostream>
+#include "Student.hpp"
 
 	Corridor::Corridor(std::string name, int capacity, Visualization * _v)
         : Room(name, capacity, RoomType::E_Corridor)

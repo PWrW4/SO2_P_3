@@ -5,7 +5,7 @@
 #include <vector>
 #include <queue>
 #include <thread>
-#include "Student.hpp"
+#include "Visualization.hpp"
 
 class Student;
 
