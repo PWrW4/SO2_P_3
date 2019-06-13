@@ -1,18 +1,25 @@
-#include <string>
-#include <iostream>
+
 #include "Classroom.hpp"
-#include "Person.hpp"
 
-using namespace std;
+Classroom::Classroom(std::string name, int capacity, Visualization *Display, int _id)
+    : Room(name, capacity, RoomType::E_Classroom)
+{
+    v = Display;
+    id = _id;
+    v->disp_mutex->lock();
+    x = v->ClassRoomX;
+    y = v->ClassRoomY;
+    v->disp_mutex->unlock();
 
-	Classroom::Classroom(std::string name, int capacity)
-        : Room(name, capacity, RoomType::E_Classroom)
-    {
+    thread thr(&Classroom::drawClass, this);
+	std::swap(thr, t);
+}
 
-    }
+void Classroom::drawClass(){
 
-    Classroom::Classroom(){}
-    Classroom::~Classroom(){}
+}
 
-    void Classroom::virtual_function(){}
+Classroom::Classroom() {}
+Classroom::~Classroom() {}
 
+void Classroom::virtual_function() {}

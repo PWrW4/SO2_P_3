@@ -45,6 +45,13 @@ int main(int argc, char *argv[])
 	Room *cloak = new Cloakroom("szatnia", 26,display);
     Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*2);
 
+    for (int i = 0; i < 5; i++)
+    {
+        Room * l = new Classroom("klasa" + to_string(i), 9,display, i);
+        f->floorRooms.insert(f->floorRooms.end(),l);
+    }
+    
+
     f->floorRooms.insert(f->floorRooms.end(),entr);
     f->floorRooms.insert(f->floorRooms.end(),corr);
     f->floorRooms.insert(f->floorRooms.end(),cloak);
