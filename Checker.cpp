@@ -52,7 +52,7 @@ void Checker::mainLoop(){
                         drawLeftSlot("  ");
                         drawRightWieszak(chName);
                         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-                        c->rightWieszak.insert(c->rightWieszak.end(),k);
+                        c->rightWieszak.insert(c->rightWieszak.begin(),k);
                         drawLeftSlot(chName);
                         drawRightWieszak("  ");
                     }
@@ -62,7 +62,7 @@ void Checker::mainLoop(){
                         drawLeftSlot("  ");
                         drawLeftWieszak(chName);
                         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-                        c->leftWieszak.insert(c->leftWieszak.end(),k);
+                        c->leftWieszak.insert(c->leftWieszak.begin(),k);
                         drawLeftSlot(chName);
                         drawLeftWieszak("  ");
                     }
@@ -96,7 +96,7 @@ void Checker::mainLoop(){
                         drawLeftSlot(chName);
                         drawLeftWieszak("  ");
                     }
-                    if (d != -1) //pętla zaczynająca od prawego
+                    if (d == -1) //pętla zaczynająca od prawego
                     {
                         c->mtx_rightWieszak.lock();
                         drawLeftSlot("  ");
@@ -111,7 +111,7 @@ void Checker::mainLoop(){
                         }
                         if (d != -1)
                         {
-                            c->rightWieszak.erase(c->leftWieszak.begin() + d);
+                            c->rightWieszak.erase(c->rightWieszak.begin() + d);
                             c->mtx_rightWieszak.unlock();
                             drawLeftSlot(chName);
                             drawRightWieszak("  ");
@@ -172,7 +172,7 @@ void Checker::mainLoop(){
                         drawRightSlot("  ");
                         drawRightWieszak(chName);
                         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-                        c->rightWieszak.insert(c->rightWieszak.end(),k);
+                        c->rightWieszak.insert(c->rightWieszak.begin(),k);
                         drawRightSlot(chName);
                         drawRightWieszak("  ");
                     }
@@ -182,7 +182,7 @@ void Checker::mainLoop(){
                         drawRightSlot("  ");
                         drawLeftWieszak(chName);
                         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-                        c->leftWieszak.insert(c->leftWieszak.end(),k);
+                        c->leftWieszak.insert(c->leftWieszak.begin(),k);
                         drawRightSlot(chName);
                         drawLeftWieszak("  ");
                     }
@@ -216,7 +216,7 @@ void Checker::mainLoop(){
                         drawRightSlot(chName);
                         drawLeftWieszak("  ");
                     }
-                    if (d != -1) //pętla zaczynająca od prawego
+                    if (d == -1) //pętla zaczynająca od prawego
                     {
                         c->mtx_rightWieszak.lock();
                         drawRightSlot("  ");
@@ -231,7 +231,7 @@ void Checker::mainLoop(){
                         }
                         if (d != -1)
                         {
-                            c->rightWieszak.erase(c->leftWieszak.begin() + d);
+                            c->rightWieszak.erase(c->rightWieszak.begin() + d);
                             c->mtx_rightWieszak.unlock();
                             drawRightSlot(chName);
                             drawRightWieszak("  ");
