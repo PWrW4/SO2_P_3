@@ -1,12 +1,13 @@
+#include "Student.hpp"
 #include <chrono>
 #include <random>
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-#include "Student.hpp"
 #include "DeanOffice.hpp"
 #include "Cloakroom.hpp"
+#include "Classroom.hpp"
 
 
 
@@ -41,7 +42,7 @@ void Student::mainLoop()
 
             timer->delay(2500,3500); // wait for random time between 2,5s and 3,5s
 
-            switch(room_type%3)
+            switch(room_type%4)
             {
                 case 0:
                     rtype =  E_Entrance;
@@ -52,14 +53,36 @@ void Student::mainLoop()
                 case 2:
                     rtype =  E_DeanOffice;
                     break;
+                case 3:
+                    rtype = E_Classroom;
+                    break;
                 default:
                     break;
             }
             Room *cRoom = nullptr;
+            int cId = 0;
+            if (rtype==E_Classroom)
+            {
+                cId = rand() % 5;
+            }
+            
             for (Room * r : f.floorRooms)
             {
-                if (r->type == rtype)
-                    travel(r);
+                if (rtype == E_Classroom)
+                {
+                    if (r->type == rtype)
+                    {
+                        if (dynamic_cast<Classroom *>(r)->id == cId)
+                        {
+                            travel(r);
+                        }
+                    }
+                }
+                else
+                {
+                    if (r->type == rtype)
+                        travel(r);
+                }
             }
             break;
         }
@@ -73,6 +96,9 @@ void Student::mainLoop()
             CloakroomRoutine();
             break;
         }
+        case E_Classroom:
+            ClassroomRoutine();
+            break;
         default:
             break;
         }
@@ -185,6 +211,32 @@ void Student::CloakroomRoutine()
     unique_lock<std::mutex> queue_lck(studentWaitMutex);
     while(studentWaitBool) 
         studentWaitCond.wait(queue_lck);
+
+    timer->delay(15,30);
+    
+    for (auto &r : f.floorRooms)
+    {
+        if (r->type == E_Corridor)
+        {
+            travel(r);
+        }
+    }
+}
+
+void Student::ClassroomRoutine(){
+    Room *cRoom;
+    cRoom = this->actualPosition;
+    Classroom *c = dynamic_cast<Classroom *>(cRoom);
+    c->studentEnter(this);
+    zaliczone = false;
+    studentWaitBool = true;
+    unique_lock<std::mutex> class_lck(studentWaitMutex);
+    
+    while (!zaliczone)
+    {
+        while(studentWaitBool) 
+            studentWaitCond.wait(class_lck);
+    }      
 
     timer->delay(15,30);
     

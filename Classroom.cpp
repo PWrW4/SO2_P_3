@@ -143,7 +143,17 @@ void Classroom::drawStanowisko(int nr){
 }
 
 void Classroom::studentEnter(Student * s){
-    
+    std::lock(mtx_stanowiska,mtx_q);
+    std::lock_guard<std::mutex> lstan(mtx_stanowiska, std::adopt_lock);
+    std::lock_guard<std::mutex> lque(mtx_q, std::adopt_lock);
+    for (int i = 0; i < 8; i++)
+    {
+        if(stanowiska[i]==nullptr){
+            stanowiska[i] = s;
+            q.push(i);
+            break;
+        }
+    }
 }
 
 Classroom::Classroom() {}

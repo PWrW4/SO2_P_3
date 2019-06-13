@@ -19,6 +19,8 @@ class Student : public Person
         int *doc_types_cnt;      // tablica na ilości dokumentów danych typów
         Room *nextPosition;
 
+        std::atomic<bool> zaliczone;
+
         int kurtka;
         std::condition_variable studentWaitCond;
         std::mutex studentWaitMutex;
@@ -27,6 +29,7 @@ class Student : public Person
         void DeanOfficeRoutine();
         void EntranceRoutine();
         void CloakroomRoutine();
+        void ClassroomRoutine();
         bool generateRequest(); // false gdy student nie potrzebuje żadnego dokumentu
         void printRequest();
         void getRequest();
