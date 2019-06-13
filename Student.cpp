@@ -14,7 +14,7 @@ Student::Student(int Student_nr,std::string name,Floor * _f, Status status, Pers
 : Person(name,_f,status,type,actualPosition,Display)
 {
     this->Student_nr = Student_nr;
-    kurtka = Student_nr;
+    kurtka = this->Student_nr;
     thread thr(&Student::run, this);
     // thread thr(&Student::mainLoop, this);
 	std::swap(thr, person_thread);
@@ -240,3 +240,62 @@ void Student::PutDeanOffice(int x, int y, string smth)
 	int yr = Display->DeanOfficeY + y+1;
 	Display->PutChar(xr,yr,smth);
 }
+
+// void Student::run()
+// {
+//     Room *cRoom = nullptr;
+//     int sleep = 0;
+
+//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+//     for (auto &r : f.floorRooms)
+//     {
+//         if (r->type == E_Corridor)
+//         {
+//             while (travel(r) == -1)
+//                 ;
+//         }
+//     }
+//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+
+//     for (Room *r : f.floorRooms)
+//     {
+//         if (r->type == E_Cloakroom)
+//         {
+//             while (travel(r) == -1)
+//                 ;
+//             cRoom = r;
+//         }
+//     }
+
+//     Cloakroom *c = dynamic_cast<Cloakroom *>(cRoom);
+//     c->enterQueue(this);
+//     studentWaitBool = true;
+//     unique_lock<std::mutex> queue_lck(studentWaitMutex);
+//     while (studentWaitBool)
+//         studentWaitCond.wait(queue_lck);
+
+//     //ten sleap nie potrzebny
+//     // sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+//     // std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+//     for (auto &r : f.floorRooms)
+//     {
+//         if (r->type == E_Corridor)
+//         {
+//             while (travel(r) == -1)
+//                 ;
+//         }
+//     }
+
+//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
+//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
+//     for (Room *r : f.floorRooms)
+//     {
+//         if (r->type == E_Entrance)
+//         {
+//             while (travel(r) == -1)
+//                 ;
+//         }
+//     }
+// }
