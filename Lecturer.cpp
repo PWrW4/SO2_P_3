@@ -30,12 +30,18 @@ void Lecturer::mainLoop(){
             klasa->nauczyciel[dest] = this;
             currentPos = dest;
             n_lck.unlock();
-            timer->delay(1000,2000);
+            timer->delay(3000,7000);
             std::unique_lock<std::mutex> s_lck(klasa->mtx_stanowiska);
             Student * s = klasa->stanowiska[dest];
             s_lck.unlock();
             s->studentWaitMutex.lock();
-            s->zaliczone = true;
+            int zal = std::uniform_int_distribution<int>(0, 100)(rng);
+            if (zal > 30)
+            {
+                s->zaliczone = true;
+            }else{
+                s->zaliczone = false;
+            }          
             s->studentWaitBool = false;
             s->studentWaitCond.notify_one();
             s->studentWaitMutex.unlock();
@@ -47,7 +53,7 @@ void Lecturer::mainLoop(){
             q_lck.unlock();
         }      
 
-        timer->delay(1000,2000);        
+        timer->delay(1500,3000);        
     }    
 }
 

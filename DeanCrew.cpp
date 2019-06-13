@@ -153,7 +153,7 @@ void DeanCrew::makeDoc()
     unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);	// blokuj stos
     while(myDeanOffice->cnt[deanCrew_nr] >= DOC_BUF_SIZE) 							// sprawdź czy jest miejsce na nowy dokument
         myDeanOffice->docbuf_empty[deanCrew_nr].wait(docbuf_lck);					// czekaj na zwolnienie miejsca (wątek blokuje pieczątki!) - problem zlikwidowany
-    myDeanOffice->docbuf[deanCrew_nr][myDeanOffice->head[deanCrew_nr]] = rand()%(DOC_BUF_SIZE*DOC_BUF_SIZE);      	// stworzenie dokumentu i włożenie na odpowiedni stos
+    myDeanOffice->docbuf[deanCrew_nr][myDeanOffice->head[deanCrew_nr]] = std::uniform_int_distribution<int>(0, (DOC_BUF_SIZE*DOC_BUF_SIZE)-1)(rng);    	// stworzenie dokumentu i włożenie na odpowiedni stos
     myDeanOffice->head[deanCrew_nr] = (myDeanOffice->head[deanCrew_nr]+1) % DOC_BUF_SIZE;							// bufor cykliczny - aktualizacja głowy
     myDeanOffice->cnt[deanCrew_nr]++;												// zwiększ ilość dokumentów na stosie
 //	cout<<"PaniZDziekanatu"<<deanCrew_nr<<" stworzyla dokument typu "<<deanCrew_nr<<" stos: "<<myDeanOffice->cnt[deanCrew_nr]<<endl;		// napisz

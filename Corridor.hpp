@@ -4,9 +4,14 @@
 #include <thread>
 #include "Room.hpp"
 #include "Visualization.hpp"
+// #include "Student.hpp"
+#include <mutex>
+#include <unistd.h>
 #define SLOWING_FACTOR 1
-#define BENCHES 6
+#define BENCHES 4
 #define SEATS 4
+
+class Student;
 
 class Corridor : public Room
 {
@@ -14,7 +19,9 @@ class Corridor : public Room
     float traffic;
     float slowing_factor;
     std::thread t;
-    std::vector<std::vector<bool>> bench;
+
+    std::mutex bMtx;
+    std::vector<std::vector<Student *>> bench;
 
     Visualization * v;
 
@@ -25,8 +32,8 @@ class Corridor : public Room
     void drawPeople();
 
     float CalculateTraffic();
-    void Occupy(int bench_id, int seat_id);
-    void Free(int bench_id, int seat_id);
+
+    bool sitAndFix(Student * s);
 
     void virtual_function();
 }; 

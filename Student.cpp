@@ -13,7 +13,6 @@ Student::Student(int Student_nr,std::string name,Floor * _f, Status status, Pers
 
 void Student::mainLoop()
 {
-    int room_type=0;
     while (!this->end)
     {
         this->actualPosition->typeMutex.lock();
@@ -28,11 +27,11 @@ void Student::mainLoop()
         }
         case E_Corridor:
         {
-            RoomType rtype;
+            int rtype = std::uniform_int_distribution<int>(0, 3)(rng);
 
             timer->delay(2500,3500); // wait for random time between 2,5s and 3,5s
 
-            switch(room_type%4)
+            switch(rtype)
             {
                 case 0:
                     rtype =  E_Entrance;
@@ -53,7 +52,7 @@ void Student::mainLoop()
             int cId = 0;
             if (rtype==E_Classroom)
             {
-                cId = rand() % 5;
+                cId = std::uniform_int_distribution<int>(0, 4)(rng);
             }
             
             for (Room * r : f.floorRooms)
@@ -64,14 +63,14 @@ void Student::mainLoop()
                     {
                         if (dynamic_cast<Classroom *>(r)->id == cId)
                         {
-                            travel(r);
+                            while(travel(r)==-1);
                         }
                     }
                 }
                 else
                 {
                     if (r->type == rtype)
-                        travel(r);
+                        while(travel(r)==-1);
                 }
             }
             break;
@@ -92,7 +91,6 @@ void Student::mainLoop()
         default:
             break;
         }
-        room_type++;
     }    
 }
 
@@ -168,6 +166,23 @@ void Student::ClassroomRoutine(){
     {
         while(studentWaitBool) 
             studentWaitCond.wait(class_lck);
+
+        if (!zaliczone)
+        {
+            Corridor * corr = nullptr;
+            for (Room * r : f.floorRooms)
+            {
+                if (r->type == E_Corridor)
+                {
+                    while(travel(r)==-1);
+                    corr = dynamic_cast<Corridor *>(r);
+                }
+            }
+            
+            while(!corr->sitAndFix(this));
+
+            while(travel(cRoom)==-1);
+        }
     }      
 
     timer->delay(15,30);
@@ -176,7 +191,7 @@ void Student::ClassroomRoutine(){
     {
         if (r->type == E_Corridor)
         {
-            travel(r);
+            while(travel(r)==-1);
         }
     }
 }
@@ -188,7 +203,7 @@ bool Student::generateRequest()
     int sum = 0;
     for(int i=0;i<DOC_TYPES;i++)
     {
-        doc_types_cnt[i] = rand()%3;
+        doc_types_cnt[i] = std::uniform_int_distribution<int>(0, 2)(rng);
         sum += doc_types_cnt[i];
         //request[i]= new int[doc_types_cnt[i]];      // tablica na doc_types_cnt[i] dokumentów typu i
         request[i]= new int[DOC_TYPES];
@@ -293,7 +308,7 @@ void Student::randomNextPosition()
     Room *r = actualPosition;            // metoda powinna być wywoływana tylko w korytarzu
     while(r->type == E_Corridor)         // zatem pętla się wykona minimum raz
     {
-        rand_index = rand() % max_index;
+        rand_index = std::uniform_int_distribution<int>(0, max_index)(rng);
         r = f.floorRooms[rand_index];
     }
 }

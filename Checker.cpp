@@ -31,7 +31,7 @@ void Checker::mainLoop(){
     
     while (!this->end)
     {   
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         if (checkerId == 1)
         {
             std::unique_lock<std::mutex> lck(c->mtx_lq);
@@ -45,7 +45,7 @@ void Checker::mainLoop(){
                     int k = s->kurtka;
                     s->kurtka = -1;
                     lck_student.unlock();
-                    int rnd = rand() % 2;
+                    int rnd = std::uniform_int_distribution<int>(0, 1)(rng);;
                     if (rnd == 0)
                     {
                         std::unique_lock<std::mutex> wieszak(c->mtx_rightWieszak);
@@ -165,7 +165,7 @@ void Checker::mainLoop(){
                     int k = s->kurtka;
                     s->kurtka = -1;
                     lck_student.unlock();
-                    int rnd = rand() % 2;
+                    int rnd = std::uniform_int_distribution<int>(0, 1)(rng);;
                     if (rnd == 0)
                     {
                         std::unique_lock<std::mutex> wieszak(c->mtx_rightWieszak);

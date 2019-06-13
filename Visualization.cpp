@@ -247,6 +247,15 @@ using namespace std;
         {
             mvprintw(CorridorX+10,CorridorY+j,"-");
         }
+
+        int bench = 72;
+
+        for (int i = 0; i < 4; i++)
+        {
+            mvprintw(1, bench + (7*i), "/");
+            mvprintw(1, bench + (7*i) + 5, "\\");
+        }
+
         refresh();
         disp_mutex->unlock();
     }

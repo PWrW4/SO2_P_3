@@ -11,6 +11,7 @@
 #include <vector>
 #include "DeanOffice.hpp"
 #include "Cloakroom.hpp"
+#include "Corridor.hpp"
 #include "Classroom.hpp"
 
 
