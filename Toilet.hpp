@@ -19,6 +19,4 @@ class Toilet : public Room
     void Occupy(bool *type, int index);
     void Free(bool *type, int index);
     void ServePerson(Person *person);
-
-    void virtual_function();
 };
