@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
         szatniaworkers[i] = new Checker("Szatniarka" + std::to_string(i+1),f,E_Working,E_CloakroomCrew,cloak, display,i+1);
     }
     
-    for(int i = 0; i < 6/* STAMPS_CNT */; i++)
+    for(int i = 0; i < 50/* STAMPS_CNT */; i++)
     {
         // Student *s = new Student(i,"Student",f,E_Entering,E_Student,dziekanat, display);
         Student *s = new Student(i,"Student",f,E_Entering,E_Student,entr, display);

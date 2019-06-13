@@ -32,7 +32,7 @@ using namespace std;
     {
         if(people.size()==capacity)
         {
-            cout<<"brak miejsc w "<<name<<"!\n";
+            //cout<<"brak miejsc w "<<name<<"!\n";
             return -1;
         }
         people.push_back(person);
@@ -51,13 +51,13 @@ using namespace std;
     {
         if(people.size()==0)
         {
-            cout<<"nikogo nie ma w "<<name<<"!\n";
+            //cout<<"nikogo nie ma w "<<name<<"!\n";
             return -1;
         }
         vector<Person*>::iterator it = find(people.begin(), people.end(),person);
         if(it == people.end() && people.back() != person)
         {
-            cout<<"osoba nieobecna w "<<name<<"!\n";
+            //cout<<"osoba nieobecna w "<<name<<"!\n";
             return -1;
         }
         people.erase(it);
@@ -77,7 +77,7 @@ using namespace std;
     {
         if(students.size()==capacity-1)
         {
-            cout<<"brak miejsc dla studentow w"<<name<<"!\n";
+            //cout<<"brak miejsc dla studentow w"<<name<<"!\n";
             return -1;
         }
         students.push_back(student);
@@ -88,13 +88,13 @@ using namespace std;
     {
         if(students.size()==0)
         {
-            cout<<"nie ma studentow w pomieszczeniu "<<name<<"!\n";
+            //cout<<"nie ma studentow w pomieszczeniu "<<name<<"!\n";
             return -1;
         }
         vector<Person*>::iterator it = find(students.begin(), students.end(), student);
         if(it == students.end() && students.back() != student)
         {
-            cout<<"student nieobecny w "<<name<<"!\n";
+            //cout<<"student nieobecny w "<<name<<"!\n";
             return -1;
         }
         students.erase(it);
@@ -105,7 +105,7 @@ using namespace std;
     {
         if(workers.size()==capacity-1)
         {
-            cout<<"brak miejsc dla pracownikow w"<<name<<"!\n";
+            //cout<<"brak miejsc dla pracownikow w"<<name<<"!\n";
             return -1;
         }
         workers.push_back(worker);
@@ -116,13 +116,13 @@ using namespace std;
     {
         if(workers.size()==0)
         {
-            cout<<"nie ma pracownikow w pomieszczeniu "<<name<<"!\n";
+            //cout<<"nie ma pracownikow w pomieszczeniu "<<name<<"!\n";
             return -1;
         }
         vector<Person*>::iterator it = find(workers.begin(), workers.end(), worker);
         if(it == workers.end() && workers.back() != worker)
         {
-            cout<<"pracownik nieobecny w "<<name<<"!\n";
+            //cout<<"pracownik nieobecny w "<<name<<"!\n";
             return -1;
         }
         workers.erase(it);
