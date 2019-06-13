@@ -380,7 +380,7 @@ void Student::getDoc(int doc_type, int doc_slot)
 int Student::ToiletDecide()
 {
     int random = rand()%100;
-    if(random<34)
+    if(random<200)
         return 2;
     else
         return 1;
@@ -400,6 +400,8 @@ void Student::OccupyCubi(Toilet *t)
     bool found = false;
     int cub_index;
 
+    timer->delay(500,1000);
+    
     unique_lock<std::mutex> cub_lck(*t->cub_mutex);
     while(!found)
     {
@@ -410,8 +412,8 @@ void Student::OccupyCubi(Toilet *t)
                 t->cub_wait_mutex->lock();
                 t->cub_wait--;
                 PutToilet(5,5,to_string(t->cub_wait),WAITING_COLOR);
-                PutToilet(5,11+CUBICLE_W*i,"S",WORKING_COLOR);
-                PutToilet(3,11+CUBICLE_W*i,"__",WORKING_COLOR);
+                PutToilet(11+CUBICLE_W*i,5,"S",WORKING_COLOR);
+                PutToilet(11+CUBICLE_W*i,3,"__");
                 t->cub_wait_mutex->unlock();
 
                 t->cubicle[i] = true;
@@ -419,7 +421,9 @@ void Student::OccupyCubi(Toilet *t)
                 cub_index = i;
                 break;
             }
-        }    
+        }
+        if(found)
+            break;    
         t->cub_cond->wait(cub_lck);
     }
 
@@ -429,8 +433,8 @@ void Student::OccupyCubi(Toilet *t)
 
     t->cub_mutex->lock();
     t->cubicle[cub_index] = false;
-        PutToilet(5,11+CUBICLE_W*cub_index," ",WORKING_COLOR);
-        PutToilet(3,11+CUBICLE_W*cub_index," \\",WORKING_COLOR);
+        PutToilet(11+CUBICLE_W*cub_index,5," ",WORKING_COLOR);
+        PutToilet(11+CUBICLE_W*cub_index,3," \\");
     found = false;
     t->cub_cond->notify_all();
     t->cub_mutex->unlock();
@@ -458,15 +462,15 @@ void Student::PutDeanOffice(int x, int y, string smth)
 
 void Student::PutToilet(int x, int y, string smth,int color)
 {
-	int xr = Display->ToiletX + x;
-	int yr = Display->ToiletY + y;
+	int xr = Display->ToiletY + x;
+	int yr = Display->ToiletX + y;
 	Display->PutChar(xr,yr,smth,color);
 }
 
 void Student::PutToilet(int x, int y, string smth)
 {
-	int xr = Display->ToiletX + x;
-	int yr = Display->ToiletY + y;
+	int xr = Display->ToiletY + x;
+	int yr = Display->ToiletX + y;
 	Display->PutChar(xr,yr,smth);
 }
 

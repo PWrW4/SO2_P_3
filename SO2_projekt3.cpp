@@ -52,7 +52,6 @@ int main(int argc, char *argv[])
         f->floorRooms.insert(f->floorRooms.end(),l);
     }
     
-
     f->floorRooms.insert(f->floorRooms.end(),entr);
     f->floorRooms.insert(f->floorRooms.end(),corr);
     f->floorRooms.insert(f->floorRooms.end(),cloak);
