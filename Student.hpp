@@ -17,6 +17,7 @@ class Student : public Person
         int Student_nr;
         int **request;           // tablica na tablice dokumentów danych typów - request[i][j] pole na j-ty dokument typu i
         int *doc_types_cnt;      // tablica na ilości dokumentów danych typów
+        Room *nextPosition;
 
         int kurtka;
         std::condition_variable studentWaitCond;
@@ -24,11 +25,14 @@ class Student : public Person
         std::atomic<bool> studentWaitBool;
 
         void DeanOfficeRoutine();
+        void EntranceRoutine();
+        void CloakroomRoutine();
         bool generateRequest(); // false gdy student nie potrzebuje żadnego dokumentu
         void printRequest();
         void getRequest();
         void getDoc(int doc_type, int doc_slot);
         void checkStack(int doc_type);
+        void randomNextPosition();
 
         void PutDeanOffice(int x, int y, string smth);
 };
