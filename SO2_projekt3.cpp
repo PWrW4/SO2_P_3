@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     Room *entr = new Entrance("Wejscie", 999, display);
 	Room *corr = new Corridor("korytarz", 100, display);
 	Room *cloak = new Cloakroom("szatnia", 26,display);
-    Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*2);
+    Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*(STAMPS_CNT+1));
 
     f->floorRooms.insert(f->floorRooms.end(),entr);
     f->floorRooms.insert(f->floorRooms.end(),corr);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
         szatniaworkers[i] = new Checker("Szatniarka" + std::to_string(i+1),f,E_Working,E_CloakroomCrew,cloak, display,i+1);
     }
     
-    for(int i = 0; i < 6/* STAMPS_CNT */; i++)
+    for(int i = 0; i < 50/* STAMPS_CNT */; i++)
     {
         // Student *s = new Student(i,"Student",f,E_Entering,E_Student,dziekanat, display);
         Student *s = new Student(i,"Student",f,E_Entering,E_Student,entr, display);

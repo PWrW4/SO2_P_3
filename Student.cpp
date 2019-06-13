@@ -59,7 +59,7 @@ void Student::mainLoop()
             for (Room * r : f.floorRooms)
             {
                 if (r->type == rtype)
-                    travel(r);
+                    while(travel(r)==-1);
             }
             break;
         }
@@ -157,7 +157,7 @@ void Student::DeanOfficeRoutine()
     {
         if (r->type == E_Corridor)
         {
-            travel(r);
+            while(travel(r)==-1);
         }
     }
 }
@@ -170,7 +170,7 @@ void Student::EntranceRoutine()
     {
         if (r->type == E_Corridor)
         {
-            travel(r);
+            while(travel(r)==-1);
         }
     }
 }
@@ -192,7 +192,7 @@ void Student::CloakroomRoutine()
     {
         if (r->type == E_Corridor)
         {
-            travel(r);
+            while(travel(r)==-1);
         }
     }
 }
@@ -262,7 +262,11 @@ void Student::getDoc(int doc_type, int doc_slot)
 //    cout<<"mutex lock Student\n";
     while(myDeanOffice->cnt[doc_type] <= 0)
     { 
+        if(!myDeanOffice->isWorking[doc_type])
+        {
+            myDeanOffice->isWorking[doc_type] = true;
             myDeanOffice->docbuf_empty[doc_type].notify_one();      // kolejka pusta, powiadom pania z dziekanatu 
+        }
             // cout<<"Student signaled empty doc stack\n";
         myDeanOffice->docbuf_full[doc_type].wait(docbuf_lck);       // czekaj na pojawienie się dokumentów - odblokuj dostęp do stosu
 //        cout<<"Student wait for doc\n";
