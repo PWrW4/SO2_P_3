@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     Room *entr = new Entrance("Wejscie", 999, display);
 	Room *corr = new Corridor("korytarz", 100, display);
 	Room *cloak = new Cloakroom("szatnia", 26,display);
-    Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*2);
+    Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*(STAMPS_CNT+1));
 
     for (int i = 0; i < 5; i++)
     {

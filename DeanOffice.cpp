@@ -13,8 +13,12 @@
         queue_changed = new condition_variable[DOC_TYPES];
 
         docbuf = new int*[DOC_TYPES];
+        isWorking = new bool[DOC_TYPES];
         for(int i=0;i<DOC_TYPES;i++)
+        {
+            isWorking[i] = false;
             docbuf[i] = new int[DOC_BUF_SIZE];
+        }
         head = new int[DOC_TYPES];
         tail = new int[DOC_TYPES];
         cnt = new int[DOC_TYPES];
@@ -52,7 +56,7 @@
     DeanOffice::~DeanOffice()
     {
         delete ques,que,queue_mutex,queue_changed;
-        delete docbuf,head,tail,cnt,docbuf_empty,docbuf_full,docbuf_mutex;
+        delete docbuf,head,tail,cnt,docbuf_empty,docbuf_full,docbuf_mutex,isWorking;
         delete stamps,stamps_cond,stamps_mutex;
     }
 
