@@ -381,7 +381,7 @@ void Student::getDoc(int doc_type, int doc_slot)
 int Student::ToiletDecide()
 {
     int random = rand()%100;
-    if(random<0)
+    if(random<49)
         return 2;
     else
         return 1;
@@ -391,6 +391,7 @@ void Student::OccupyUri(Toilet *t)
 {
     t->uri_wait_mutex->lock();
     t->uri_wait++;
+    PutToilet(2,1,"  ");
     PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
     t->uri_wait_mutex->unlock();
     bool found = false;
@@ -409,11 +410,12 @@ void Student::OccupyUri(Toilet *t)
                 {
                     t->uri_wait_mutex->lock();
                     t->uri_wait--;
+                    PutToilet(2,1,"  ");
                     PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
                     PutToilet(10+URINAL_W*i,2,"S",WORKING_COLOR);
                     t->uri_wait_mutex->unlock();
 
-                    t->cubicle[i] = true;
+                    t->urinal[i] = true;
                     found = true;
                     uri_index = i;
                     break;
@@ -425,11 +427,12 @@ void Student::OccupyUri(Toilet *t)
                 {
                     t->uri_wait_mutex->lock();
                     t->uri_wait--;
+                    PutToilet(2,1,"  ");
                     PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
                     PutToilet(10+URINAL_W*i,2,"S",WORKING_COLOR);
                     t->uri_wait_mutex->unlock();
 
-                    t->cubicle[i] = true;
+                    t->urinal[i] = true;
                     found = true;
                     uri_index = i;
                     break;
@@ -439,11 +442,12 @@ void Student::OccupyUri(Toilet *t)
             {
                 t->uri_wait_mutex->lock();
                 t->uri_wait--;
+                PutToilet(2,1,"  ");
                 PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
                 PutToilet(10+URINAL_W*i,2,"S",WORKING_COLOR);
                 t->uri_wait_mutex->unlock();
 
-                t->cubicle[i] = true;
+                t->urinal[i] = true;
                 found = true;
                 uri_index = i;
                 break;
@@ -462,6 +466,7 @@ void Student::OccupyUri(Toilet *t)
     t->urinal[uri_index] = false;
         PutToilet(10+URINAL_W*uri_index,2," ");
     found = false;
+    timer->delay(250,500);
     t->uri_cond->notify_all();
     t->uri_mutex->unlock();
 }
@@ -470,6 +475,7 @@ void Student::OccupyCubi(Toilet *t)
 {
     t->cub_wait_mutex->lock();
     t->cub_wait++;
+    PutToilet(5,5,"  ");
     PutToilet(5,5,to_string(t->cub_wait),WAITING_COLOR);
     t->cub_wait_mutex->unlock();
     bool found = false;
@@ -487,6 +493,7 @@ void Student::OccupyCubi(Toilet *t)
                 t->cubicle[i] = true;
                 t->cub_wait_mutex->lock();
                 t->cub_wait--;
+                PutToilet(5,5,"  ");
                 PutToilet(5,5,to_string(t->cub_wait),WAITING_COLOR);
                 PutToilet(11+CUBICLE_W*i,5,"S",WORKING_COLOR);
                 PutToilet(11+CUBICLE_W*i,3,"__");
@@ -509,6 +516,7 @@ void Student::OccupyCubi(Toilet *t)
     t->cubicle[cub_index] = false;
         PutToilet(11+CUBICLE_W*cub_index,5," ");
         PutToilet(11+CUBICLE_W*cub_index,3," \\");
+    timer->delay(100,250);
     found = false;
     t->cub_cond->notify_all();
     t->cub_mutex->unlock();
