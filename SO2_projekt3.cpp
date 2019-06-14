@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     Floor *f = new Floor();
 
     Room *entr = new Entrance("Wejscie", 999, display);
-	Room *corr = new Corridor("korytarz", 90, display);
+	Room *corr = new Corridor("korytarz", 80, display);
 	Room *cloak = new Cloakroom("szatnia", 26,display);
     Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*(STAMPS_CNT+1));
     Room *kibelek = new Toilet("WC",18);
