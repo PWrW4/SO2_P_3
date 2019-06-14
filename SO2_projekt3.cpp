@@ -88,7 +88,8 @@ int main(int argc, char *argv[])
     }
     
     ScanForExit();
-    Cleanup();
+    delete display;
+    //Cleanup();
 }
 
 void JoinAll()

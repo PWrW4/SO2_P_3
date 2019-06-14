@@ -24,7 +24,7 @@ using namespace std;
    Person::~Person() 
    {
       delete timer;
-      	person_thread.join();
+      person_thread.join();
    }
 
    void Person::run() {}
