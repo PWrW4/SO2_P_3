@@ -62,7 +62,7 @@
                 {
                     if (bench[i][j] != nullptr)
                     {
-                        v->PutChar(72 + 1 + j + (7*i), 16, "s"); //std::to_string(bench[i][j]->id));
+                        v->PutChar(72 + 1 + j + (7*i), 16, "s",R_COLOR); //std::to_string(bench[i][j]->id));
                     }else{
                         v->PutChar(72 + 1 + j + (7*i), 16, " ");
                     }
@@ -150,7 +150,7 @@
         bMtx.unlock();
 
         if(cont)return false;
-        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 
         bMtx.lock();
         bench[a][b] = nullptr;
