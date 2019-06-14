@@ -42,8 +42,8 @@ void Student::mainLoop()
 
             timer->delay(2500,3500); // wait for random time between 2,5s and 3,5s
 
-            //switch(room_type%5)
-            switch(4)
+            switch(room_type%5)
+            //switch(4)
             {
                 case 0:
                     rtype =  E_Entrance;
