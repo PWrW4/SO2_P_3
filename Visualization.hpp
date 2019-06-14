@@ -14,6 +14,10 @@
 #define WORKING_COLOR   COLOR_YELLOW
 #define WAITING_COLOR   COLOR_RED
 #define IDLE_COLOR      COLOR_GREEN
+#define Y_COLOR   COLOR_YELLOW
+#define R_COLOR   COLOR_RED
+#define G_COLOR      COLOR_GREEN
+
 
 enum DeanOfficeCols
 {
