@@ -30,7 +30,12 @@ void Student::mainLoop()
         {
             int rtype = std::uniform_int_distribution<int>(0, 4)(rng);
 
-            timer->delay(2500,3500); // wait for random time between 2,5s and 3,5s
+            std::lock(dynamic_cast<Corridor *>(actualPosition)->capMutex,dynamic_cast<Corridor *>(actualPosition)->travelMutex);
+            int x = 3000 * (dynamic_cast<Corridor *>(actualPosition)->people.size()/dynamic_cast<Corridor *>(actualPosition)->capacity);
+            dynamic_cast<Corridor *>(actualPosition)->capMutex.unlock();
+            dynamic_cast<Corridor *>(actualPosition)->travelMutex.unlock();
+
+            timer->delay(2500+x,3500+x); // wait for random time between 2,5s and 3,5s
 
             switch(rtype)
             {
