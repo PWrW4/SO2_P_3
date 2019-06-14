@@ -10,6 +10,7 @@
 #include "Floor.hpp"
 #include "Timer.hpp"
 #include "Visualization.hpp"
+#include <mutex>
 
 #define TIME_MIN 2500
 #define TIME_MAX 3500
@@ -25,6 +26,7 @@ public:
     std::string progress_bar;
     Timer *timer;
 	Room *actualPosition;
+    std::mutex statMtx;
     Status status;
     PersonType type;
     Floor f;

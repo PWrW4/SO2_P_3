@@ -96,7 +96,21 @@ void Classroom::drawStanowisko(int nr){
         }
         else
         {
-            v->PutChar(cy+1,cx,"L");
+            nauczyciel[nr]->statMtx.lock();
+            Status status = nauczyciel[nr]->status;
+            nauczyciel[nr]->statMtx.unlock();
+            if (status == E_Working)
+            {
+                v->PutChar(cy+1, cx, "L", WAITING_COLOR);
+            }
+            if (status == E_Accessing)
+            {
+                v->PutChar(cy+1, cx, "L", WORKING_COLOR);
+            }
+            if (status == E_Waiting)
+            {
+                v->PutChar(cy+1, cx, "L", IDLE_COLOR);
+            }
         }
         mtx_nauczyciel.unlock();
     }
@@ -109,7 +123,21 @@ void Classroom::drawStanowisko(int nr){
         }
         else
         {
-            v->PutChar(cy-1,cx,"L");
+            nauczyciel[nr]->statMtx.lock();
+            Status status = nauczyciel[nr]->status;
+            nauczyciel[nr]->statMtx.unlock();
+            if (status == E_Working)
+            {
+                v->PutChar(cy - 1, cx, "L", WAITING_COLOR);
+            }
+            if (status == E_Accessing)
+            {
+                v->PutChar(cy - 1, cx, "L", WORKING_COLOR);
+            }
+            if (status == E_Waiting)
+            {
+                v->PutChar(cy - 1, cx, "L", IDLE_COLOR);
+            }
         }
         mtx_nauczyciel.unlock();
     }
