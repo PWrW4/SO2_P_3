@@ -287,8 +287,8 @@ void Student::getDoc(int doc_type, int doc_slot)
 
     while(myDeanOffice->que->at(doc_type).front() != Student_nr)    // Student sprawdza czy jego kolej
         myDeanOffice->queue_changed[doc_type].wait(queue_lck);      // czekaj na swoją kolej
-    myDeanOffice->queue_mutex[doc_type].unlock();                   // zwolnij kolejke
-
+    //myDeanOffice->queue_mutex[doc_type].unlock();                   // zwolnij kolejke
+    queue_lck.unlock();
 
     unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[doc_type]);   // blokada stosu
 //    cout<<"mutex lock Student\n";
@@ -308,8 +308,8 @@ void Student::getDoc(int doc_type, int doc_slot)
     myDeanOffice->cnt[doc_type]--;
     PutDeanOffice(docs,doc_type,to_string(myDeanOffice->cnt[doc_type]));    // aktualizacja stanu stosu
     myDeanOffice->docbuf_empty[doc_type].notify_one();              // powiadom pania z dziekanatu o zwolnionym miejscu na stosie w razie jakby czekała
-    myDeanOffice->docbuf_mutex[doc_type].unlock();                  // odblokuj dostęp do stosu
-
+//    myDeanOffice->docbuf_mutex[doc_type].unlock();                  // odblokuj dostęp do stosu
+    docbuf_lck.unlock();
 
 
     myDeanOffice->queue_mutex[doc_type].lock();                     // blokada kolejki
@@ -403,8 +403,8 @@ void Student::OccupyUri(Toilet *t)
             break;    
         t->uri_cond->wait(uri_lck);
     }
-
-    t->uri_mutex->unlock();
+    uri_lck.unlock();
+    //t->uri_mutex->unlock();
 
     timer->delay(2500,3500);
 
@@ -453,8 +453,8 @@ void Student::OccupyCubi(Toilet *t)
             break;    
         t->cub_cond->wait(cub_lck);
     }
-
-    t->cub_mutex->unlock();
+    cub_lck.unlock();
+//    t->cub_mutex->unlock();
 
     timer->delay(2500,3500);
 
