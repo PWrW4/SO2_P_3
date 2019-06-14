@@ -138,7 +138,7 @@ void DeanCrew::produce(int doc_cnt)
 			for(int i=1;i<100;i++)
 			{
 				Put(DeanOfficeCols::percent,0,to_string(i));						// postęp - procenty
-				timer->delay(100);
+				timer->delay(25,80);
 			}
 			Put(DeanOfficeCols::percent,0,"  ");
 			makeDoc();																// twórz dokument

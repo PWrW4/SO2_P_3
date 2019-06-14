@@ -114,7 +114,7 @@ void Student::run()
 void Student::DeanOfficeRoutine()
 {
     generateRequest();
-    for(int i=0;i<rand()%(STAMPS_CNT-1);i++)
+    for(int i=0;i<rand()%(STAMPS_CNT-2);i++)
     {
         int docs_type = rand()%STAMPS_CNT;       
         getDoc(docs_type,rand()%STAMPS_CNT);      
