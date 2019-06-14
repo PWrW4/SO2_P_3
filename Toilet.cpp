@@ -13,8 +13,8 @@
 
         uri_wait = 0;
         urinal = new bool[URINAL_CNT];
-        uri_mutex = new mutex[URINAL_CNT];
-        uri_wait_mutex = new mutex[URINAL_CNT];
+        uri_mutex = new mutex;
+        uri_wait_mutex = new mutex;
         uri_cond = new condition_variable;
 
         for(int i=0;i<CUBICLE_CNT;i++)

@@ -42,7 +42,8 @@ void Student::mainLoop()
 
             timer->delay(2500,3500); // wait for random time between 2,5s and 3,5s
 
-            switch(room_type%5)
+            //switch(room_type%5)
+            switch(4)
             {
                 case 0:
                     rtype =  E_Entrance;
@@ -380,7 +381,7 @@ void Student::getDoc(int doc_type, int doc_slot)
 int Student::ToiletDecide()
 {
     int random = rand()%100;
-    if(random<200)
+    if(random<0)
         return 2;
     else
         return 1;
@@ -388,7 +389,81 @@ int Student::ToiletDecide()
 
 void Student::OccupyUri(Toilet *t)
 {
+    t->uri_wait_mutex->lock();
+    t->uri_wait++;
+    PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
+    t->uri_wait_mutex->unlock();
+    bool found = false;
+    int uri_index;
 
+    timer->delay(500,1000);
+    
+    unique_lock<std::mutex> uri_lck(*t->uri_mutex);
+    while(!found)
+    {
+        for(int i=0;i<URINAL_CNT;i++)
+        {
+            if(i==0)
+            {
+                if(!t->urinal[i] && !t->urinal[i+1])
+                {
+                    t->uri_wait_mutex->lock();
+                    t->uri_wait--;
+                    PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
+                    PutToilet(10+URINAL_W*i,2,"S",WORKING_COLOR);
+                    t->uri_wait_mutex->unlock();
+
+                    t->cubicle[i] = true;
+                    found = true;
+                    uri_index = i;
+                    break;
+                }
+            }
+            else if(i==URINAL_CNT-1)
+            {
+                if(!t->urinal[i] && !t->urinal[i-1])
+                {
+                    t->uri_wait_mutex->lock();
+                    t->uri_wait--;
+                    PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
+                    PutToilet(10+URINAL_W*i,2,"S",WORKING_COLOR);
+                    t->uri_wait_mutex->unlock();
+
+                    t->cubicle[i] = true;
+                    found = true;
+                    uri_index = i;
+                    break;
+                }
+            }
+            else if(!t->urinal[i-1] && !t->urinal[i] && !t->urinal[i+1])
+            {
+                t->uri_wait_mutex->lock();
+                t->uri_wait--;
+                PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
+                PutToilet(10+URINAL_W*i,2,"S",WORKING_COLOR);
+                t->uri_wait_mutex->unlock();
+
+                t->cubicle[i] = true;
+                found = true;
+                uri_index = i;
+                break;
+            }
+        }
+        if(found)
+            break;    
+        t->uri_cond->wait(uri_lck);
+    }
+
+    t->uri_mutex->unlock();
+
+    timer->delay(2500,3500);
+
+    t->uri_mutex->lock();
+    t->urinal[uri_index] = false;
+        PutToilet(10+URINAL_W*uri_index,2," ");
+    found = false;
+    t->uri_cond->notify_all();
+    t->uri_mutex->unlock();
 }
 
 void Student::OccupyCubi(Toilet *t)
@@ -401,7 +476,7 @@ void Student::OccupyCubi(Toilet *t)
     int cub_index;
 
     timer->delay(500,1000);
-    
+
     unique_lock<std::mutex> cub_lck(*t->cub_mutex);
     while(!found)
     {
@@ -409,14 +484,13 @@ void Student::OccupyCubi(Toilet *t)
         {
             if(!t->cubicle[i])
             {
+                t->cubicle[i] = true;
                 t->cub_wait_mutex->lock();
                 t->cub_wait--;
                 PutToilet(5,5,to_string(t->cub_wait),WAITING_COLOR);
                 PutToilet(11+CUBICLE_W*i,5,"S",WORKING_COLOR);
                 PutToilet(11+CUBICLE_W*i,3,"__");
                 t->cub_wait_mutex->unlock();
-
-                t->cubicle[i] = true;
                 found = true;
                 cub_index = i;
                 break;
@@ -433,7 +507,7 @@ void Student::OccupyCubi(Toilet *t)
 
     t->cub_mutex->lock();
     t->cubicle[cub_index] = false;
-        PutToilet(11+CUBICLE_W*cub_index,5," ",WORKING_COLOR);
+        PutToilet(11+CUBICLE_W*cub_index,5," ");
         PutToilet(11+CUBICLE_W*cub_index,3," \\");
     found = false;
     t->cub_cond->notify_all();
