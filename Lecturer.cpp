@@ -1,11 +1,10 @@
 #include "Lecturer.hpp"
 
 
-Lecturer::Lecturer(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
-: Person(name,_f,status,type,actualPosition,Display)
+Lecturer::Lecturer(bool *isEnd,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
+: Person(isEnd,name,_f,status,type,actualPosition,Display)
 {
     status = E_Waiting;
-    end=false;
     klasa = dynamic_cast<Classroom *>(actualPosition);
     id = klasa->id;
 
@@ -22,7 +21,7 @@ void Lecturer::mainLoop(){
     statMtx.lock();
     status = E_Waiting;
     statMtx.unlock();
-    while (!end)
+    while(!(*isEnd))
     {
         statMtx.lock();
         status = E_Waiting;
@@ -40,7 +39,11 @@ void Lecturer::mainLoop(){
             status = E_Working;
             statMtx.unlock();
             n_lck.unlock();
+            if((*isEnd))
+			    return;
             timer->delay(3000, 7000);
+            if((*isEnd))
+			return;
             std::unique_lock<std::mutex> s_lck(klasa->mtx_stanowiska);
             Student *s = klasa->stanowiska[dest];
             s_lck.unlock();
@@ -67,7 +70,8 @@ void Lecturer::mainLoop(){
             status = E_Accessing;
             statMtx.unlock();
         }      
-
+        if((*isEnd))
+			return;
         timer->delay(1500,3000);        
     }    
 }

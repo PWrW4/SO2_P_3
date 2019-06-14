@@ -1,8 +1,8 @@
 #include "Student.hpp"
 
 
-Student::Student(int Student_nr,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
-: Person(name,_f,status,type,actualPosition,Display)
+Student::Student(bool *isEnd,int Student_nr,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
+: Person(isEnd,name,_f,status,type,actualPosition,Display)
 {
     this->Student_nr = Student_nr;
     kurtka = this->Student_nr;
@@ -12,7 +12,7 @@ Student::Student(int Student_nr,std::string name,Floor * _f, Status status, Pers
 
 void Student::mainLoop()
 {
-    while (!this->end)
+    while(!(*isEnd))
     {
         this->actualPosition->typeMutex.lock();
         RoomType t = this->actualPosition->type;

@@ -9,7 +9,7 @@
 class Checker : public Person
 {
     public:
-        Checker(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display, int id);
+        Checker(bool *isEnd,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display, int id);
         Checker();
         ~Checker();
         void mainLoop() override;

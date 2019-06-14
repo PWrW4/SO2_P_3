@@ -6,7 +6,7 @@
 class DeanCrew : public Person
 {
     public:
-        DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status,Room *actualPosition, Room *myDeanOffice,Visualization * Display);
+        DeanCrew(bool *isEnd,int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status,Room *actualPosition, Room *myDeanOffice,Visualization * Display);
         DeanCrew();
         ~DeanCrew();
 

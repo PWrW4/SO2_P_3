@@ -1,7 +1,7 @@
 #include "Checker.hpp"
 
-Checker::Checker(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display, int id)
-: Person(name,_f,status,type,actualPosition,Display)
+Checker::Checker(bool *isEnd,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display, int id)
+: Person(isEnd,name,_f,status,type,actualPosition,Display)
 {
     //testing
     // drawLeftSlot("ls");
@@ -23,7 +23,6 @@ Checker::Checker(std::string name,Floor * _f, Status status, PersonType type,Roo
         drawRightSlot(chName);
     }
     
-    this->end = false;
     c = dynamic_cast<Cloakroom *>(actualPosition);
     thread thr(&Checker::mainLoop, this);
 	std::swap(thr, person_thread);
@@ -33,7 +32,7 @@ Checker::~Checker(){}
 
 void Checker::mainLoop(){
     
-    while (!this->end)
+    while(!(*isEnd))
     {   
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         if (checkerId == 1)

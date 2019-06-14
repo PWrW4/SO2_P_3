@@ -22,6 +22,7 @@ using namespace std;
 
 void JoinAll();
 void Cleanup();
+void ScanForExit();
 std::vector<Person*> students;
 std::vector<Person*> profesors;
 std::vector<Person*> dziekanatworkers;
@@ -30,12 +31,14 @@ int numberStudents = 50;
 int numberProfesors = 5;
 int numberDziekanatworkers = STAMPS_CNT;
 int numberszatniaworkers = 2;
+bool *isEnd = new bool;
 Floor *f = new Floor();
 Visualization *display = new Visualization(ROWS,COLUMNS,ROWS_STEP,COLUMNS_STEP);
 
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
+    *isEnd = false;
 
     Room *entr = new Entrance("Wejscie", 999, display);
 	Room *corr = new Corridor("korytarz", 100, display);
@@ -48,7 +51,7 @@ int main(int argc, char *argv[])
         Room * l = new Classroom("klasa" + to_string(i), 9,display, i);
         f->floorRooms.insert(f->floorRooms.end(),l);
 
-        Lecturer * Lec = new Lecturer("Profesor" + std::to_string(i),f,E_Working,E_Professor,l, display);
+        Lecturer * Lec = new Lecturer(isEnd,"Profesor" + std::to_string(i),f,E_Working,E_Professor,l, display);
         profesors.push_back(Lec);
     }
     
@@ -67,24 +70,25 @@ int main(int argc, char *argv[])
 
     for(int i = 0;i<numberDziekanatworkers;i++)
     {
-        DeanCrew *d = new DeanCrew(i,numberDziekanatworkers,i%numberDziekanatworkers,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat,display);
+        DeanCrew *d = new DeanCrew(isEnd,i,numberDziekanatworkers,i%numberDziekanatworkers,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat,display);
         dziekanatworkers.push_back(d);
     }
 
     for(int i = 0;i<numberszatniaworkers;i++)
     {
-        Checker *c = new Checker("Szatniarka" + std::to_string(i+1),f,E_Working,E_CloakroomCrew,cloak, display,i+1);
+        Checker *c = new Checker(isEnd,"Szatniarka" + std::to_string(i+1),f,E_Working,E_CloakroomCrew,cloak, display,i+1);
         szatniaworkers.push_back(c);
     }
     
     for(int i = 0; i < numberStudents; i++)
     {    
-        Student *s = new Student(i,"Student",f,E_Entering,E_Student,entr, display);
+        Student *s = new Student(isEnd,i,"Student",f,E_Entering,E_Student,entr, display);
         students.push_back(s);
         usleep(100000);
     }
     
-    while(1){};
+    ScanForExit();
+    Cleanup();
 }
 
 void JoinAll()
@@ -94,6 +98,7 @@ void JoinAll()
 
 void Cleanup()
 {
+    delete display;
     for (Room * r : f->floorRooms)
         delete r;
     for (Person * c : szatniaworkers)
@@ -104,7 +109,20 @@ void Cleanup()
         delete p;
     for (Person * d : dziekanatworkers)
         delete d;
-    delete display;
     delete f;
 }   
+
+void ScanForExit()
+{
+	char q;
+	
+	while(!(*isEnd))
+	{
+		q=getch();
+		if(q=='q')
+			*isEnd=true;
+        sleep(0);
+	}
+    sleep(3);
+}
 

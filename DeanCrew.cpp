@@ -5,8 +5,8 @@
 
 using namespace std;
 
-DeanCrew::DeanCrew(int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status, Room *actualPosition, Room *myDeanOffice,Visualization * Display)
-    : Person(name,_f,status,E_DziekanatCrew,actualPosition, Display),
+DeanCrew::DeanCrew(bool *isEnd,int deanCrew_nr, int deanCrew_cnt, int doc_type, std::string name,Floor * _f, Status status, Room *actualPosition, Room *myDeanOffice,Visualization * Display)
+    : Person(isEnd,name,_f,status,E_DziekanatCrew,actualPosition, Display),
     deanCrew_nr(deanCrew_nr),
     deanCrew_cnt(deanCrew_cnt),
     doc_type(doc_type)
@@ -45,7 +45,7 @@ void DeanCrew::mainLoop()
 {
 	//travel(myDeanOffice);
 	//for(int i=0;i<4;i++)
-	while(1)
+	while(!(*isEnd))
 	{
 		//cout<<"DeanCrew"<<deanCrew_nr<<" arrival"<<endl;
 		// unique_lock<std::mutex> docbuf_lck(myDeanOffice->docbuf_mutex[deanCrew_nr]);

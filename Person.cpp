@@ -5,7 +5,7 @@
 
 using namespace std;
 
-   Person::Person(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
+   Person::Person(bool *isEnd,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
    {
       this->Display = Display;
       _f->mtx.lock();
@@ -16,7 +16,7 @@ using namespace std;
       this->status = status;
       this->type = type;
       this->actualPosition = actualPosition;
-      this->end = false;
+      this->isEnd = isEnd;
       std::lock_guard<std::mutex> lock_at_start(actualPosition->travelMutex);
       actualPosition->addPerson(this);
    }
