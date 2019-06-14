@@ -1,20 +1,19 @@
 #include "Student.hpp"
 
 
-Student::Student(int Student_nr,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
-: Person(name,_f,status,type,actualPosition,Display)
+Student::Student(bool *isEnd,int Student_nr,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display)
+: Person(isEnd,name,_f,status,type,actualPosition,Display)
 {
     this->Student_nr = Student_nr;
     kurtka = this->Student_nr;
     zaliczone == true;
-    // thread thr(&Student::run, this);
     thread thr(&Student::mainLoop, this);
 	std::swap(thr, person_thread);
 }
 
 void Student::mainLoop()
 {
-    while (!this->end)
+    while(!(*isEnd))
     {
         this->actualPosition->typeMutex.lock();
         RoomType t = this->actualPosition->type;
@@ -511,121 +510,3 @@ void Student::PutToilet(int x, int y, string smth)
 	int yr = Display->ToiletX + y;
 	Display->PutChar(xr,yr,smth);
 }
-
-// void Student::run()
-// {
-//     Room *cRoom = nullptr;
-//     int sleep = 0;
-
-//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
-//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
-//     for (auto &r : f.floorRooms)
-//     {
-//         if (r->type == E_Corridor)
-//         {
-//             while (travel(r) == -1)
-//                 ;
-//         }
-//     }
-//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
-//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
-
-//     for (Room *r : f.floorRooms)
-//     {
-//         if (r->type == E_Cloakroom)
-//         {
-//             while (travel(r) == -1)
-//                 ;
-//             cRoom = r;
-//         }
-//     }
-
-//     Cloakroom *c = dynamic_cast<Cloakroom *>(cRoom);
-//     c->enterQueue(this);
-//     studentWaitBool = true;
-//     unique_lock<std::mutex> queue_lck(studentWaitMutex);
-//     while (studentWaitBool)
-//         studentWaitCond.wait(queue_lck);
-
-//     //ten sleap nie potrzebny
-//     // sleep = std::uniform_int_distribution<int>(15, 30)(rng);
-//     // std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
-//     for (auto &r : f.floorRooms)
-//     {
-//         if (r->type == E_Corridor)
-//         {
-//             while (travel(r) == -1)
-//                 ;
-//         }
-//     }
-
-//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
-//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
-//     for (Room *r : f.floorRooms)
-//     {
-//         if (r->type == E_Entrance)
-//         {
-//             while (travel(r) == -1)
-//                 ;
-//         }
-//     }
-// }
-
-
-// void Student::run()
-// {
-//     if(generateRequest())
-//  //       travel(dziekanat);
-//  {
-//     for(int i=0;i<rand()%(STAMPS_CNT+1);i++)
-//     {
-//         int docs_type = rand()%STAMPS_CNT;       
-//         getDoc(docs_type,rand()%STAMPS_CNT);      
-// //      printRequest();
-// //      timer->delay();
-//     }
-//  }
-// }
-//
-// void Student::run()
-// {
-//     int sleep = 0;
-//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
-//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
-//     for (auto &r : f.floorRooms)
-//     {
-//         if (r->type == E_Corridor)
-//         {
-//             travel(r);
-//         }
-//     }
-//     sleep = std::uniform_int_distribution<int>(15, 30)(rng);
-//     std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
-//     Room *cRoom = nullptr;
-//     for (Room * r : f.floorRooms)
-//     {
-//         if (r->type == E_Cloakroom)
-//         {
-//             travel(r);
-//             cRoom = r;
-//         }
-//     }
-
-//     Cloakroom *c = dynamic_cast<Cloakroom *>(cRoom);
-//     c->enterQueue(this);
-//     studentWaitBool = true;
-//     unique_lock<std::mutex> queue_lck(studentWaitMutex);
-//     while (studentWaitBool)
-//         studentWaitCond.wait(queue_lck);
-
-//     //ten sleap nie potrzebny
-//     // sleep = std::uniform_int_distribution<int>(15, 30)(rng);
-//     // std::this_thread::sleep_for(std::chrono::milliseconds(100 * sleep));
-//     for (auto &r : f.floorRooms)
-//     {
-//         if (r->type == E_Corridor)
-//         {
-//             travel(r);
-//         }
-//     }
-// }
