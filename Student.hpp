@@ -1,6 +1,7 @@
 #pragma once
 #include "Person.hpp"
 #include "Room.hpp"
+#include "Toilet.hpp"
 #include <condition_variable>
 #include <mutex>
 #include <chrono>
@@ -40,12 +41,17 @@ class Student : public Person
         void EntranceRoutine();
         void CloakroomRoutine();
         void ClassroomRoutine();
+        void ToiletRoutine();
         bool generateRequest(); // false gdy student nie potrzebuje żadnego dokumentu
         void printRequest();
         void getRequest();
         void getDoc(int doc_type, int doc_slot);
-        void checkStack(int doc_type);
+        int ToiletDecide();
+        void OccupyUri(Toilet *t);
+        void OccupyCubi(Toilet *t);
         void randomNextPosition();
 
         void PutDeanOffice(int x, int y, string smth);
+        void PutToilet(int x, int y, string smth, int color);
+        void PutToilet(int x, int y, string smth);
 };

@@ -45,6 +45,9 @@ void Student::mainLoop()
                 case 3:
                     rtype = E_Classroom;
                     break;
+                case 4:
+                    rtype = E_Toilet;
+                    break;
                 default:
                     break;
             }
@@ -87,6 +90,9 @@ void Student::mainLoop()
         }
         case E_Classroom:
             ClassroomRoutine();
+            break;
+        case E_Toilet:
+            ToiletRoutine();
             break;
         default:
             break;
@@ -196,6 +202,28 @@ void Student::ClassroomRoutine(){
     }
 }
 
+void Student::ToiletRoutine()
+{
+    Room *cRoom;
+    cRoom = this->actualPosition;
+    Toilet *myToilet; 
+    if(cRoom->type == E_Toilet)
+        myToilet = dynamic_cast<Toilet *>(cRoom);
+
+    if(ToiletDecide() == 2)
+        OccupyCubi(myToilet);
+    else
+        OccupyUri(myToilet);
+
+    for (auto &r : f.floorRooms)
+    {
+        if (r->type == E_Corridor)
+        {
+            travel(r);
+        }
+    }
+}
+
 bool Student::generateRequest()
 {
     request = new int*[DOC_TYPES];            // tablica na tablice dokumentów danych typów
@@ -296,8 +324,148 @@ void Student::getDoc(int doc_type, int doc_slot)
     myDeanOffice->queue_mutex[doc_type].unlock();                   // zwolnij kolejkę
 }
 
-void Student::checkStack(int doc_type)
+int Student::ToiletDecide()
 {
+    int random = rand()%100;
+    if(random<49)
+        return 2;
+    else
+        return 1;
+}
+
+void Student::OccupyUri(Toilet *t)
+{
+    t->uri_wait_mutex->lock();
+    t->uri_wait++;
+    PutToilet(2,1,"  ");
+    PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
+    t->uri_wait_mutex->unlock();
+    bool found = false;
+    int uri_index;
+
+    timer->delay(500,1000);
+    
+    unique_lock<std::mutex> uri_lck(*t->uri_mutex);
+    while(!found)
+    {
+        for(int i=0;i<URINAL_CNT;i++)
+        {
+            if(i==0)
+            {
+                if(!t->urinal[i] && !t->urinal[i+1])
+                {
+                    t->uri_wait_mutex->lock();
+                    t->uri_wait--;
+                    PutToilet(2,1,"  ");
+                    PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
+                    PutToilet(10+URINAL_W*i,2,"S",WORKING_COLOR);
+                    t->uri_wait_mutex->unlock();
+
+                    t->urinal[i] = true;
+                    found = true;
+                    uri_index = i;
+                    break;
+                }
+            }
+            else if(i==URINAL_CNT-1)
+            {
+                if(!t->urinal[i] && !t->urinal[i-1])
+                {
+                    t->uri_wait_mutex->lock();
+                    t->uri_wait--;
+                    PutToilet(2,1,"  ");
+                    PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
+                    PutToilet(10+URINAL_W*i,2,"S",WORKING_COLOR);
+                    t->uri_wait_mutex->unlock();
+
+                    t->urinal[i] = true;
+                    found = true;
+                    uri_index = i;
+                    break;
+                }
+            }
+            else if(!t->urinal[i-1] && !t->urinal[i] && !t->urinal[i+1])
+            {
+                t->uri_wait_mutex->lock();
+                t->uri_wait--;
+                PutToilet(2,1,"  ");
+                PutToilet(2,1,to_string(t->uri_wait),WAITING_COLOR);
+                PutToilet(10+URINAL_W*i,2,"S",WORKING_COLOR);
+                t->uri_wait_mutex->unlock();
+
+                t->urinal[i] = true;
+                found = true;
+                uri_index = i;
+                break;
+            }
+        }
+        if(found)
+            break;    
+        t->uri_cond->wait(uri_lck);
+    }
+
+    t->uri_mutex->unlock();
+
+    timer->delay(2500,3500);
+
+    t->uri_mutex->lock();
+    t->urinal[uri_index] = false;
+        PutToilet(10+URINAL_W*uri_index,2," ");
+    found = false;
+    timer->delay(250,500);
+    t->uri_cond->notify_all();
+    t->uri_mutex->unlock();
+}
+
+void Student::OccupyCubi(Toilet *t)
+{
+    t->cub_wait_mutex->lock();
+    t->cub_wait++;
+    PutToilet(5,5,"  ");
+    PutToilet(5,5,to_string(t->cub_wait),WAITING_COLOR);
+    t->cub_wait_mutex->unlock();
+    bool found = false;
+    int cub_index;
+
+    timer->delay(500,1000);
+
+    unique_lock<std::mutex> cub_lck(*t->cub_mutex);
+    while(!found)
+    {
+        for(int i=0;i<CUBICLE_CNT;i++)
+        {
+            if(!t->cubicle[i])
+            {
+                t->cubicle[i] = true;
+                t->cub_wait_mutex->lock();
+                t->cub_wait--;
+                PutToilet(5,5,"  ");
+                PutToilet(5,5,to_string(t->cub_wait),WAITING_COLOR);
+                PutToilet(11+CUBICLE_W*i,5,"S",WORKING_COLOR);
+                PutToilet(11+CUBICLE_W*i,3,"__");
+                t->cub_wait_mutex->unlock();
+                found = true;
+                cub_index = i;
+                break;
+            }
+        }
+        if(found)
+            break;    
+        t->cub_cond->wait(cub_lck);
+    }
+
+    t->cub_mutex->unlock();
+
+    timer->delay(2500,3500);
+
+    t->cub_mutex->lock();
+    t->cubicle[cub_index] = false;
+        PutToilet(11+CUBICLE_W*cub_index,5," ");
+        PutToilet(11+CUBICLE_W*cub_index,3," \\");
+    timer->delay(100,250);
+    found = false;
+    t->cub_cond->notify_all();
+    t->cub_mutex->unlock();
 
 }
 
@@ -312,10 +480,25 @@ void Student::randomNextPosition()
         r = f.floorRooms[rand_index];
     }
 }
+
 void Student::PutDeanOffice(int x, int y, string smth)
 {
 	int xr = Display->DeanOfficeX + x *(Display->DeanOfficeColumnsWidth+1) + Display->DeanOfficeColumnsWidth/2;
 	int yr = Display->DeanOfficeY + y+1;
+	Display->PutChar(xr,yr,smth);
+}
+
+void Student::PutToilet(int x, int y, string smth,int color)
+{
+	int xr = Display->ToiletY + x;
+	int yr = Display->ToiletX + y;
+	Display->PutChar(xr,yr,smth,color);
+}
+
+void Student::PutToilet(int x, int y, string smth)
+{
+	int xr = Display->ToiletY + x;
+	int yr = Display->ToiletX + y;
 	Display->PutChar(xr,yr,smth);
 }
 
