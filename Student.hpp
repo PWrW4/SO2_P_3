@@ -5,6 +5,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <chrono>
+#include <atomic>
 #include <random>
 #include <algorithm>
 #include <cstdlib>
@@ -19,7 +20,7 @@
 class Student : public Person
 {
     public:
-        Student(int Student_nr,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display);
+        Student(bool *end,int Student_nr,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display);
         Student();
         ~Student();
         void mainLoop() override;

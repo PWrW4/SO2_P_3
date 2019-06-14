@@ -20,26 +20,25 @@
 
 using namespace std;
 
+void JoinAll();
+void Cleanup();
+void ScanForExit();
 std::vector<Person*> students;
 std::vector<Person*> profesors;
-//std::vector<DeanCrew*> dziekanatworkers;
-//std::vector<thread*> thread_tab;
-DeanCrew **dziekanatworkers = new DeanCrew*[STAMPS_CNT];
-Checker **szatniaworkers = new Checker*[2];
-thread **thread_tab = new thread*[STAMPS_CNT];
-int numberStudents;
-int numberProfesors;
+std::vector<Person*> dziekanatworkers;
+std::vector<Person*> szatniaworkers;
+int numberStudents = 50;
+int numberProfesors = 5;
+int numberDziekanatworkers = STAMPS_CNT;
+int numberszatniaworkers = 2;
+bool *isEnd = new bool;
+Floor *f = new Floor();
+Visualization *display = new Visualization(ROWS,COLUMNS,ROWS_STEP,COLUMNS_STEP);
 
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
-
-    // Room *strg = new Room("skladzik", 2, E_Storage);
-    // Room *wc = new Toilet("kibelek", 2);
-    // Room *classroom = new Classroom("salka",30);
-
-    Visualization *display = new Visualization(ROWS,COLUMNS,ROWS_STEP,COLUMNS_STEP);
-    Floor *f = new Floor();
+    *isEnd = false;
 
     Room *entr = new Entrance("Wejscie", 999, display);
 	Room *corr = new Corridor("korytarz", 80, display);
@@ -47,11 +46,12 @@ int main(int argc, char *argv[])
     Room *dziekanat = new DeanOffice("dziekanat",STAMPS_CNT*(STAMPS_CNT+1));
     Room *kibelek = new Toilet("WC",18);
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < numberProfesors; i++)
     {
         Room * l = new Classroom("klasa" + to_string(i), 9,display, i);
         f->floorRooms.insert(f->floorRooms.end(),l);
-        Lecturer * Lec = new Lecturer("Profesor" + std::to_string(i),f,E_Working,E_Professor,l, display);
+
+        Lecturer * Lec = new Lecturer(isEnd,"Profesor" + std::to_string(i),f,E_Working,E_Professor,l, display);
         profesors.push_back(Lec);
     }
     
@@ -68,176 +68,62 @@ int main(int argc, char *argv[])
     display->DrawClassroom();
     display->DrawToilet();
 
-    for(int i = 0;i<STAMPS_CNT;i++)
+    for(int i = 0;i<numberDziekanatworkers;i++)
     {
-        dziekanatworkers[i] = new DeanCrew(i,STAMPS_CNT,i%STAMPS_CNT,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat,display);
- //       cout<<"stworzono pania z dziekanatu "<<i<<endl;
-        //dziekanatworkers.push_back(pzd);
-//        thread_tab[i] = new thread(*dziekanatworkers[i]);
-        //thread_tab.push_back(thd);
+        DeanCrew *d = new DeanCrew(isEnd,i,numberDziekanatworkers,i%numberDziekanatworkers,"PaniZDziekanatu"+i,f,E_Entering,dziekanat,dziekanat,display);
+        dziekanatworkers.push_back(d);
     }
 
-    for(int i = 0;i<2;i++)
+    for(int i = 0;i<numberszatniaworkers;i++)
     {
-        szatniaworkers[i] = new Checker("Szatniarka" + std::to_string(i+1),f,E_Working,E_CloakroomCrew,cloak, display,i+1);
+        Checker *c = new Checker(isEnd,"Szatniarka" + std::to_string(i+1),f,E_Working,E_CloakroomCrew,cloak, display,i+1);
+        szatniaworkers.push_back(c);
     }
     
-    for(int i = 0; i < 80/* STAMPS_CNT */; i++)
-    {
-        // Student *s = new Student(i,"Student",f,E_Entering,E_Student,dziekanat, display);
-        Student *s = new Student(i,"Student",f,E_Entering,E_Student,entr, display);
+    for(int i = 0; i < numberStudents; i++)
+    {    
+        Student *s = new Student(isEnd,i,"Student",f,E_Entering,E_Student,entr, display);
         students.push_back(s);
         usleep(100000);
     }
-
-    //int a;
-    //cin>>a;
     
-    while(1){};
-
-    // if(argc == 3)
-    // {
-    //     numberStudents = atoi(argv[1]);
-    //     numberProfesors = atoi(argv[2]);
-
-    //     if(numberStudents <= 0 || numberProfesors <= 0)
-    //     {
-    //         std::cout << "Wprowadzane liczby muszą być większe od zera!\n";
-    //         return -1;
-    //     }
-    //     if(5 > numberStudents || numberStudents > 30 || 5 > numberProfesors || numberProfesors > 10)
-    //     {
-    //         std::cout << "Wprowadzane liczby muszą być większe niż 5 i nie większe niż 10.\n";
-    //         return -2;
-    //     }
-    // }
-    // else
-    // {
-    //     std::cout << "Podałeś złą liczbę dnaych. Wprowadź: ilość_studentów ilość_profesorów.\n";
-    //     return 0;
-    // }
-
-
-
-    // f->floorRooms.insert(strg);    
-    // f->floorRooms.insert(wc);    
-    //f->floorRooms.insert(corr);    
-    //f->floorRooms.insert(entr);    
-    // f->floorRooms.insert(classroom);    
-    //f->floorRooms.insert(dziekanat);    
-
-
-	// for(int i = 0; i < numberStudents; i++)
-    // {
-    //     Student *s = new Student("Student" + std::to_string(i),f,E_Entering,E_Student,entr);
-    //     students.push_back(s);
-    // }
-    // for(int i = 0; i < numberProfesors; i++)
-    // {
-    //     Person *p = new Person("Profesor" + std::to_string(i),f,E_Entering,E_Professor,entr);
-    //     profesors.push_back(p);
-	// }
-
-    // entr->Print();
-    // Room *room = corr;
-    // for(int i=0; i<students.size(); i++)    // go to corridor
-    // {
-    //     students[i]->travel(room);
-    // }
-    // for(int i=0; i<profesors.size(); i++)
-    // {
-    //     profesors[i]->travel(room);
-    // }
-
-    // entr->Print();
-    // corr->Print();
-    // for(int i=0; i<students.size(); i++)
-    // {
-    //     if(i<4)
-    //         room = wc;
-    //     else if(i > 10)
-    //         room = classroom;
-    //     else
-    //         room = dziekanat;
-        
-    //     students[i]->travel(room);
-    // }
-    // corr->Print();
-    // wc->Print();
-    // classroom->Print();
-    // dziekanat->Print();
-    // room = classroom;
-    // for(int i=0; i<profesors.size(); i++)
-    // {
-    //     profesors[i]->travel(room);
-    // }
-    // corr->Print();
-    // classroom->Print();
-
-    // std::cout<< "start koniec";
-    // for(auto s : students)
-    // {
-    //     s->t.join();
-    // }
-
-    // for(auto p : profesors)
-    // {
-    //     p->t.join();
-    // }
-
-    // std::cout<< "koniec koniec";
-    // endwin();
-    // for(int i=0; i<students.size(); i++) 
-    // {
-    //     delete students[i];
-    // }
-    // for(int i=0; i<profesors.size(); i++)
-    // {
-    //     delete profesors[i];
-    // }   
+    ScanForExit();
+    delete display;
+    //Cleanup();
 }
 
+void JoinAll()
+{
 
-// int main(int argc, char *argv[])// liczba filozofów, liczba powtórzeń sekwencji jedzenie-filozofowanie, minimalny czas, maksymalny czas [ms]
-// {
-// 	int Philosophers_cnt = 5,
-// 		Philosopher_it = 5,
-// 		Time_min = 2500,
-// 		Time_max = 3500;
+}
 
-// 	if(argc>1)
-// 	{
-// 		if(atoi(argv[1])>2)
-// 			Philosophers_cnt = atoi(argv[1]);
-// 		if(argc>2)
-// 		{
-// 			if(atoi(argv[2])>=0)
-// 				Philosopher_it = atoi(argv[2]);
-// 			if(argc>3)
-// 			{
-// 				if(atoi(argv[3])>0)
-// 					Time_min = atoi(argv[3]);
-// 				if(argc>4)
-// 				{
-// 					if(argv[4]>0)
-// 						Time_max = atoi(argv[4]);
-// 					if(atoi(argv[4])<Time_min)
-// 						swap(Time_max,Time_min);
-// 				}
-// 			}
-// 		}
-// 	}
+void Cleanup()
+{
+    delete display;
+    for (Room * r : f->floorRooms)
+        delete r;
+    for (Person * c : szatniaworkers)
+        delete c;
+    for (Person * s : students)
+        delete s;
+    for (Person * p : profesors)
+        delete p;
+    for (Person * d : dziekanatworkers)
+        delete d;
+    delete f;
+}   
 
-// 	cout<<Philosophers_cnt<<endl
-// 		<<Philosopher_it<<endl
-// 		<<Time_min<<endl
-// 		<<Time_max<<endl;
-
-// 	Application *app = new Application(Philosophers_cnt, Philosopher_it, Time_min,Time_max);
+void ScanForExit()
+{
+	char q;
 	
-// 	app->ScanForExit();
+	while(!(*isEnd))
+	{
+		q=getch();
+		if(q=='q')
+			*isEnd=true;
+        sleep(0);
+	}
+    sleep(3);
+}
 
-// 	app->joinAll();
-// 	delete app;
-// 	return 0;
-// }

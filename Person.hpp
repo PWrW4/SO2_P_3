@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <thread>
-#include <atomic>
 #include <random>
 #include <chrono>
 
@@ -30,9 +29,9 @@ public:
     Status status;
     PersonType type;
     Floor f;
-    std::atomic<bool> end;
+    bool *isEnd;
     std::mt19937 rng{std::random_device{}()};
-    Person(std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display);
+    Person(bool *isEnd,std::string name,Floor * _f, Status status, PersonType type,Room *actualPosition,Visualization * Display);
     Person();
 	~Person();
 
