@@ -252,8 +252,8 @@ using namespace std;
 
         for (int i = 0; i < 4; i++)
         {
-            mvprintw(1, bench + (7*i), "/");
-            mvprintw(1, bench + (7*i) + 5, "\\");
+            mvprintw(16, bench + (7*i), "\\");
+            mvprintw(16, bench + (7*i) + 5, "/");
         }
 
         refresh();

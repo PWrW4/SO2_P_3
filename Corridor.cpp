@@ -62,9 +62,9 @@
                 {
                     if (bench[i][j] != nullptr)
                     {
-                        v->PutChar(72 + 1 + j + (7*i), 1, "s"); //std::to_string(bench[i][j]->id));
+                        v->PutChar(72 + 1 + j + (7*i), 16, "s"); //std::to_string(bench[i][j]->id));
                     }else{
-                        v->PutChar(72 + 1 + j + (7*i), 1, " ");
+                        v->PutChar(72 + 1 + j + (7*i), 16, " ");
                     }
                 }
             }     
