@@ -114,7 +114,7 @@ void Student::run()
 void Student::DeanOfficeRoutine()
 {
     generateRequest();
-    for(int i=0;i<rand()%(STAMPS_CNT+1);i++)
+    for(int i=0;i<rand()%(STAMPS_CNT-1);i++)
     {
         int docs_type = rand()%STAMPS_CNT;       
         getDoc(docs_type,rand()%STAMPS_CNT);      
@@ -415,7 +415,7 @@ void Student::OccupyUri(Toilet *t)
     uri_lck.unlock();
     //t->uri_mutex->unlock();
 
-    timer->delay(2500,3500);
+    timer->delay(3500,5000);
 
     t->uri_mutex->lock();
     t->urinal[uri_index] = false;
@@ -465,7 +465,7 @@ void Student::OccupyCubi(Toilet *t)
     cub_lck.unlock();
 //    t->cub_mutex->unlock();
 
-    timer->delay(2500,3500);
+    timer->delay(5000,7500);
 
     t->cub_mutex->lock();
     t->cubicle[cub_index] = false;

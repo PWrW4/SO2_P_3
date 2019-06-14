@@ -27,7 +27,7 @@ std::vector<Person*> students;
 std::vector<Person*> profesors;
 std::vector<Person*> dziekanatworkers;
 std::vector<Person*> szatniaworkers;
-int numberStudents = 50;
+int numberStudents = 100;
 int numberProfesors = 5;
 int numberDziekanatworkers = STAMPS_CNT;
 int numberszatniaworkers = 2;
