@@ -49,7 +49,7 @@ void Lecturer::mainLoop(){
             s_lck.unlock();
             s->studentWaitMutex.lock();
             int zal = std::uniform_int_distribution<int>(0, 100)(rng);
-            if (zal > 25)
+            if (zal > 30)
             {
                 s->zaliczone = true;
             }

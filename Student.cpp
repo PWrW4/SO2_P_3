@@ -6,13 +6,14 @@ Student::Student(bool *isEnd,int Student_nr,std::string name,Floor * _f, Status 
 {
     this->Student_nr = Student_nr;
     kurtka = this->Student_nr;
-    zaliczone == true;
     thread thr(&Student::mainLoop, this);
 	std::swap(thr, person_thread);
 }
 
 void Student::mainLoop()
 {
+    zaliczone = true;
+    fixing = false;
     while(!(*isEnd))
     {
         this->actualPosition->typeMutex.lock();
@@ -168,9 +169,9 @@ void Student::ClassroomRoutine(){
     Room *cRoom;
     cRoom = this->actualPosition;
     Classroom *c = dynamic_cast<Classroom *>(cRoom);
-    c->studentEnter(this);
     zaliczone = false;
     studentWaitBool = true;
+    c->studentEnter(this);
     unique_lock<std::mutex> class_lck(studentWaitMutex);
     
     while (!zaliczone)
@@ -190,15 +191,14 @@ void Student::ClassroomRoutine(){
                     corr = dynamic_cast<Corridor *>(r);
                 }
             }
-            
+            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
             while(!corr->sitAndFix(this));
-
             timer->delay(15,30);
 
             while(travel(cRoom)==-1);
             c->studentEnter(this);
         }
-    }      
+    }
 
     timer->delay(15,30);
     

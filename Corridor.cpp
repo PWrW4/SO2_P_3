@@ -67,46 +67,74 @@
                         v->PutChar(72 + 1 + j + (7*i), 16, " ");
                     }
                 }
-            }     
-
-            a-=b;
+            }
 
             for (size_t i = 0; i < 80; i++)
             {
-                if (i < 40)
-                {
-                    v->PutChar(xr, yr, " ");
-                    xr++;
-                }
-                if (i == 40)
-                {
-                    xr=xb;
-                }
-                if (i >= 40 && i <= 80)
-                {
-                    v->PutChar(xr, yr + 2, " ");
-                    xr++;
-                }
+                v->PutChar(xr, yr, " ");
+                xr++;
             }
+
             xr = xb;
-            yr = yb;
-            for (size_t i = 0; i < a; i++)
+            Student * s;
+
+            capMutex.lock();
+            for (int i = 0; i < people.size(); i++)
             {
-                if (i < 40)
+                s = dynamic_cast<Student *>(people[i]);
+                if (s->zaliczone == true)
                 {
                     v->PutChar(xr, yr, "s");
                     xr++;
+                }else{
+                    if (s->fixing == false)
+                    {
+                        v->PutChar(xr, yr, "s", R_COLOR);
+                        xr++;
+                    }
                 }
-                if (i == 40)
-                {
-                    xr=xb;
-                }
-                if (i >= 40 && i <= 80)
-                {
-                    v->PutChar(xr, yr + 2, "s");
-                    xr++;
-                }
+                
             }
+            capMutex.unlock();
+
+            // a -= b;
+
+            // for (size_t i = 0; i < 80; i++)
+            // {
+            //     if (i < 40)
+            //     {
+            //         v->PutChar(xr, yr, " ");
+            //         xr++;
+            //     }
+            //     if (i == 40)
+            //     {
+            //         xr = xb;
+            //     }
+            //     if (i >= 40 && i <= 80)
+            //     {
+            //         v->PutChar(xr, yr + 2, " ");
+            //         xr++;
+            //     }
+            // }
+            // xr = xb;
+            // yr = yb;
+            // for (size_t i = 0; i < a; i++)
+            // {
+            //     if (i < 40)
+            //     {
+            //         v->PutChar(xr, yr, "s");
+            //         xr++;
+            //     }
+            //     if (i == 40)
+            //     {
+            //         xr = xb;
+            //     }
+            //     if (i >= 40 && i <= 80)
+            //     {
+            //         v->PutChar(xr, yr + 2, "s");
+            //         xr++;
+            //     }
+            // }
         }
     }
 
@@ -126,8 +154,6 @@
         int a,b;
         bool cont = true;
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
         bMtx.lock();
         for (int i = 0; i < BENCHES; i++)
         {
@@ -139,6 +165,7 @@
                     a = i;
                     b = j;
                     cont = false;
+                    s->fixing = true;
                     break;
                 }
             }
@@ -155,6 +182,8 @@
         bMtx.lock();
         bench[a][b] = nullptr;
         bMtx.unlock();
+        s->fixing = false;
+        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
         return true;
     }
 

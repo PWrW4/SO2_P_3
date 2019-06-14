@@ -32,6 +32,7 @@ class Student : public Person
         Room *nextPosition;
 
         std::atomic<bool> zaliczone;
+        std::atomic<bool> fixing;
 
         int kurtka;
         std::condition_variable studentWaitCond;
