@@ -6,6 +6,7 @@ Student::Student(int Student_nr,std::string name,Floor * _f, Status status, Pers
 {
     this->Student_nr = Student_nr;
     kurtka = this->Student_nr;
+    zaliczone == true;
     // thread thr(&Student::run, this);
     thread thr(&Student::mainLoop, this);
 	std::swap(thr, person_thread);
@@ -191,6 +192,7 @@ void Student::ClassroomRoutine(){
             timer->delay(15,30);
 
             while(travel(cRoom)==-1);
+            c->studentEnter(this);
         }
     }      
 
