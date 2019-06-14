@@ -29,6 +29,8 @@ Checker::Checker(std::string name,Floor * _f, Status status, PersonType type,Roo
 	std::swap(thr, person_thread);
 }
 
+Checker::~Checker(){}
+
 void Checker::mainLoop(){
     
     while (!this->end)
