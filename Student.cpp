@@ -27,7 +27,7 @@ void Student::mainLoop()
         }
         case E_Corridor:
         {
-            int rtype = std::uniform_int_distribution<int>(0, 3)(rng);
+            int rtype = std::uniform_int_distribution<int>(0, 4)(rng);
 
             timer->delay(2500,3500); // wait for random time between 2,5s and 3,5s
 
