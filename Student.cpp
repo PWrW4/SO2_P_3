@@ -170,6 +170,7 @@ void Student::ClassroomRoutine(){
     
     while (!zaliczone)
     {
+        studentWaitBool = true;
         while(studentWaitBool) 
             studentWaitCond.wait(class_lck);
 
@@ -186,6 +187,8 @@ void Student::ClassroomRoutine(){
             }
             
             while(!corr->sitAndFix(this));
+
+            timer->delay(15,30);
 
             while(travel(cRoom)==-1);
         }
